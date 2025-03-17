@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Cookie&family=Oswald:wght@200;400;700&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Work+Sans:wght@400;700&family=DM+Sans:wght@400;500&family=Space+Grotesk:wght@400;700&display=swap');
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Oswald', sans-serif; /* Set a default for the whole page */
+  font-family: 'Inter', sans-serif; /* Default font for the whole page */
   font-weight: 400;
-  color: #333; /* a general dark color */
+  color: #1D1D1F; /* Apple-inspired dark color */
 }
 
 @tailwind base;
@@ -15,20 +15,20 @@
 
 @layer base {
   body {
-    @apply bg-[#f8f8f6] overflow-x-hidden;
+    @apply bg-app-background overflow-x-hidden;
   }
 
   blockquote {
-    @apply text-app-cadet font-bold tracking-wide relative italic leading-relaxed;
-    font-family: 'Special Elite', monospace; /* Specific quote font */
-    font-size: 1.25rem; /* Increased size - try adjusting further */
-    @apply before:absolute before:text-app-cadet/40 before:text-5xl md:before:text-6xl before:w-16 before:h-16 before:-left-14 lg:before:-left-20 -top-2 md:before:-top-4 before:content-["“"];
-    @apply after:absolute after:text-app-cadet/40 after:text-5xl md:after:text-6xl after:w-16 after:h-16 after:-right-24 lg:after:-right-24 after:-bottom-12 after:content-["”"];
+    @apply text-app-primary font-bold tracking-wide relative italic leading-relaxed;
+    font-family: 'Space Grotesk', sans-serif; /* Modern font for quotes */
+    font-size: 1.25rem;
+    @apply before:absolute before:text-app-primary/40 before:text-5xl md:before:text-6xl before:w-16 before:h-16 before:-left-14 lg:before:-left-20 -top-2 md:before:-top-4 before:content-["“"];
+    @apply after:absolute after:text-app-primary/40 after:text-5xl md:after:text-6xl after:w-16 after:h-16 after:-right-24 lg:after:-right-24 after:-bottom-12 after:content-["”"];
   }
 
   cite {
-    @apply text-app-cadet font-app-main text-sm md:text-base lg:text-lg font-bold relative right-2 md:right-4 lg:right-12 -bottom-8;
-     font-size: 0.875rem; /* Adjusted the cite size */
+    @apply text-app-primary font-app-main text-sm md:text-base lg:text-lg font-bold relative right-2 md:right-4 lg:right-12 -bottom-8;
+    font-size: 0.875rem;
   }
 }
 
@@ -42,52 +42,18 @@
   }
 
   .svg-icon-group {
-    @apply stroke-app-cadet basic-transition group-hover:stroke-app-flame group-hover:scale-125;
+    @apply stroke-app-primary basic-transition group-hover:stroke-app-highlight group-hover:scale-125;
   }
 
   .title-text {
-    @apply before:block before:absolute before:top-1/2 before:w-[40px] md:before:w-[60px] lg:before:w-[70px] before:h-[3px] before:-left-16 md:before:-left-20  lg:before:-left-24  before:bg-app-flame before:content-[""];
-    @apply after:block after:absolute after:top-1/2 after:w-[40px] md:after:w-[60px] lg:after:w-[70px] after:h-[3px] after:-right-16 md:after:-right-20  lg:after:-right-24 after:bg-app-flame after:content-[""];
+    @apply before:block before:absolute before:top-1/2 before:w-[40px] md:before:w-[60px] lg:before:w-[70px] before:h-[3px] before:-left-16 md:before:-left-20  lg:before:-left-24  before:bg-app-highlight before:content-[""];
+    @apply after:block after:absolute after:top-1/2 after:w-[40px] md:after:w-[60px] lg:after:w-[70px] after:h-[3px] after:-right-16 md:after:-right-20  lg:after:-right-24 after:bg-app-highlight after:content-[""];
   }
 
   .pagination-buttons {
-    @apply bg-white text-[9px] xs:text-[13px] md:text-sm lg:text-[15px] text-app-cadet font-bold font-app-main px-[6px] xs:px-[10px] md:px-3 py-[2px] xs:py-[3px] md:py-1 rounded-md text-center ring-2 ring-app-cadet md:hover:bg-app-cadet md:hover:text-white active:scale-95 basic-transition;
+    @apply bg-white text-[9px] xs:text-[13px] md:text-sm lg:text-[15px] text-app-primary font-bold font-app-main px-[6px] xs:px-[10px] md:px-3 py-[2px] xs:py-[3px] md:py-1 rounded-md text-center ring-2 ring-app-primary md:hover:bg-app-primary md:hover:text-white active:scale-95 basic-transition;
   }
 
   .bg-image {
     @apply bg-cover bg-[url('https://i.imgur.com/nksYEBa.jpg')] relative overflow-hidden;
-    @apply before:content-[""] before:block before:blur-[10px] before:absolute before:left-0 before:top-0 before:bg-[#000] before:opacity-80 before:h-full before:w-full z-[1];
-  }
-
-  .card-hover {
-    @apply after:content-[""] after:bg-app-cadet/[0.35] after:w-[200%] after:h-[200%] after:scale-0 after:absolute after:transition-all after:ease-in-out after:hover:scale-100;
-  }
-
-  .cocktail-card {
-    @apply card-hover after:rounded-[50%]  after:origin-bottom-right after:-bottom-[50%] after:-right-[50%] after:duration-[600ms];
-  }
-
-  .ingredient-card {
-    @apply card-hover after:rounded-[50%]  after:origin-top-left after:-top-[50%] after:-left-[50%] after:duration-[600ms];
-  }
-
-  .from-bottom {
-    @apply card-hover after:rounded-[25%]  after:origin-bottom after:-top-[50%] after:-left-[50%] after:-right-[50%] after:duration-[800ms];
-  }
-
-  .from-right {
-    @apply card-hover after:rounded-md after:origin-right after:-top-[50%] after:-bottom-[50%] after:-right-[50%] after:duration-[800ms];
-  }
-
-  .menu-hover {
-    @apply after:content-[""] after:w-[100%] after:h-[3px] after:absolute after:top-[110%] after:left-0 after:bg-app-flame after:scale-x-0 after:hover:origin-right after:transition-transform after:ease-in-out after:duration-500;
-    @apply after:hover:scale-x-100 after:hover:origin-left;
-  }
-
-  .loading {
-    background: #eee;
-    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-    background-size: 200% 100%;
-  }
-  
-}
+    @apply before:content-[""] before:block before
