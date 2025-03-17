@@ -6,7 +6,7 @@ module.exports = {
         "app-flame": "#E4572E",
         "app-thin-flame": "#FF572E",
         "app-cadet": "#29335C",
-        "app-olivine": "#A8C686",
+        "app-olivine": "#6B8E23",  // Darker shade of green (example)
         "app-bg": "#F8F8F6",
       },
       fontFamily: {
@@ -53,12 +53,19 @@ module.exports = {
          'ingredient-name': '1.2em',
        },
         fontWeight: {
-         'cocktail-name': '700',  // Or '800'/'900' if '700' is not bold enough
-         'ingredient-name': '700', // Adjust these values as needed.
+         'cocktail-name': '900', // Up to 900
+         'ingredient-name': 'bold', // use tailwind built-in bold
+       },
+        textShadow: {
+           sm: '0 1px 2px var(--tw-shadow-color)',
+            DEFAULT: '0 2px 4px var(--tw-shadow-color)',
+            lg: '0 8px 16px var(--tw-shadow-color)',
+            xl: '0 2px 2px rgb(0 0 0 / 0.8)', // Example shadow (adjust)
        }
     },
   },
   plugins: [
     require('@tailwindcss/forms'),
+    require('tailwindcss-textshadow')  // Add the plugin
   ],
 };
