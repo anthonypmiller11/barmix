@@ -48,26 +48,24 @@ module.exports = {
         'xl': '1380px',
         '2xl': '1536px',
       },
-       fontSize: {
+      /*  fontSize: {                  //REMOVE TO CLEAN
          'cocktail-name': '1.2em', // 20% bigger (1em is the base size)
          'ingredient-name': '1.2em',
-       },
+       }, */                     //REMOVE TO CLEAN
         fontWeight: {
-         'cocktail-name': '900', // Up to 900
-         'ingredient-name': 'bold', // use tailwind built-in bold
-       },
-         letterSpacing: {
-           tightest: '-.075em',
-            tighter: '-.05em',
-            tight: '-.025em',
-            normal: '0em',
-            wide: '.025em',
-            wider: '.05em',
-            widest: '.1em',
-        }
+        //  'cocktail-name': '900', // Up to 900        //REMOVE TO CLEAN
+        // 'ingredient-name': 'bold', // use tailwind built-in bold    //REMOVE TO CLEAN
+        },
+       /*  textShadow: {
+           sm: '0 1px 2px var(--tw-shadow-color)',      //REMOVE TO CLEAN
+            DEFAULT: '0 2px 4px var(--tw-shadow-color)',  //REMOVE TO CLEAN
+            lg: '0 8px 16px var(--tw-shadow-color)',        //REMOVE TO CLEAN
+            xl: '0 2px 2px rgb(0 0 0 / 0.8)', // Example shadow (adjust)     //REMOVE TO CLEAN
+       } */
     },
   },
   plugins: [
     require('@tailwindcss/forms'),
+     //require('tailwindcss-textshadow') // REMOVE TO CLEAN
   ],
 };
