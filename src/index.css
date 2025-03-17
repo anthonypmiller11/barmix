@@ -22,8 +22,8 @@
     @apply text-app-cadet font-bold tracking-wide relative italic leading-relaxed;
     font-family: 'Space Grotesk', sans-serif; /* Modern font for quotes */
     font-size: 1.25rem;
-    @apply before:absolute before:text-app-cadet/40 before:text-5xl md:before:text-6xl before:w-16 before:h-16 before:-left-14 lg:before:-left-20 -top-2 md:before:-top-4 before:content-["“"];
-    @apply after:absolute after:text-app-cadet/40 after:text-5xl md:after:text-6xl after:w-16 after:h-16 after:-right-24 lg:after:-right-24 after:-bottom-12 after:content-["”"];
+    @apply before:absolute before:text-app-cadet/40 before:text-5xl md:before:text-6xl before:w-16 before:h-16 before:-left-14 lg:before:-left-20 -top-2 md:before:-top-4 before:content-['“'];
+    @apply after:absolute after:text-app-cadet/40 after:text-5xl md:after:text-6xl after:w-16 after:h-16 after:-right-24 lg:after:-right-24 after:-bottom-12 after:content-['”'];
   }
 
   cite {
@@ -46,8 +46,8 @@
   }
 
   .title-text {
-    @apply before:block before:absolute before:top-1/2 before:w-[40px] md:before:w-[60px] lg:before:w-[70px] before:h-[3px] before:-left-16 md:before:-left-20  lg:before:-left-24  before:bg-app-flame before:content-[""];
-    @apply after:block after:absolute after:top-1/2 after:w-[40px] md:after:w-[60px] lg:after:w-[70px] after:h-[3px] after:-right-16 md:after:-right-20  lg:after:-right-24 after:bg-app-flame after:content-[""];
+    @apply before:block before:absolute before:top-1/2 before:w-[40px] md:before:w-[60px] lg:before:w-[70px] before:h-[3px] before:-left-16 md:before:-left-20  lg:before:-left-24  before:bg-app-flame before:content-[''];
+    @apply after:block after:absolute after:top-1/2 after:w-[40px] md:after:w-[60px] lg:after:w-[70px] after:h-[3px] after:-right-16 md:after:-right-20  lg:after:-right-24 after:bg-app-flame after:content-[''];
   }
 
   .pagination-buttons {
@@ -56,6 +56,6 @@
 
   .bg-image {
     @apply bg-cover bg-[url('https://i.imgur.com/nksYEBa.jpg')] relative overflow-hidden;
-    @apply before:content-[""] before:block before:blur-[10px] before:absolute before:left-0 before:top-0 before:bg-[#000] before:opacity-80 before:h-full before:w-full z-[1];
+    @apply before:content-[' '] before:block before:blur-[10px] before:absolute before:left-0 before:top-0 before:bg-[#000] before:opacity-80 before:h-full before:w-full z-[1];
   }
 }
