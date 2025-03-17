@@ -46,8 +46,8 @@
   }
 
   .title-text {
-    @apply before:block before:absolute before:top-1/2 before:w-[40px] md:before:w-[60px] lg:before:w-[70px] before:h-[3px] before:-left-16 md:before:-left-20  lg:before:-left-24  before:bg-app-flame before:content-[' '];
-    @apply after:block after:absolute after:top-1/2 after:w-[40px] md:after:w-[60px] lg:after:w-[70px] after:h-[3px] after:-right-16 md:after:-right-20  lg:after:-right-24 after:bg-app-flame after:content-[' '];
+    @apply before:block before:absolute before:top-1/2 before:w-[40px] md:before:w-[60px] lg:before:w-[70px] before:h-[3px] before:-left-16 md:before:-left-20 lg:before:-left-24 before:bg-app-flame before:content-[' '];
+    @apply after:block after:absolute after:top-1/2 after:w-[40px] md:after:w-[60px] lg:after:w-[70px] after:h-[3px] after:-right-16 md:after:-right-20 lg:after:-right-24 after:bg-app-flame after:content-[' '];
   }
 
   .pagination-buttons {
