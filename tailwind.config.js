@@ -3,16 +3,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "app-flame": "#E4572E",
-        "app-cadet": "#29335C",
-        "app-olivine": "#A8C686",
-        "app-bg": "#F8F8F6",
+        "app-primary": "#1D1D1F", // Apple Black (used in dark mode UI)
+        "app-secondary": "#F5F5F7", // Apple Light Gray (subtle backgrounds)
+        "app-highlight": "#0071E3", // Apple Blue (for accents and call-to-actions)
+        "app-accent": "#FFD60A", // Apple Yellow (adds energy, like cocktail garnishes)
+        "app-background": "#FFFFFF", // Pure white for clean UI
       },
       fontFamily: {
-        "app-main": ["Oswald", "sans-serif"],
-        "app-heading": ["Cookie", "cursive"],
-        "app-text": ["Berkshire Swash", "cursive"],
-        "app-quote": ["Special Elite", "cursive"],
+        "app-main": ["Inter", "sans-serif"],  // Clean and readable like SF Pro
+        "app-heading": ["Work Sans", "sans-serif"],  // Modern and minimal
+        "app-text": ["DM Sans", "sans-serif"],  // Rounded and balanced for UI
+        "app-quote": ["Space Grotesk", "sans-serif"],  // Premium and high-tech look
       },
       gridTemplateColumns: {
         "two-by-two": "minmax(0, 1fr) 12px minmax(0, 1fr)",
