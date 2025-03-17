@@ -72,7 +72,6 @@ const Footer = () => {
       </>
       <div className="w-full flex justify-center py-1 bg-app-flame/80">
         <p className="text-[15px] text-white font-app-heading tracking-wider">
-          © 2022 <span className="font-bold">Cocktails</span>.
         </p>
       </div>
     </footer>
