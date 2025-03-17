@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { TbArrowBigUpLines } from "react-icons/tb";
 import { animateScroll as scroll } from "react-scroll";
-import FooterLogo from "./FooterLogo";
 import { alcoholicTypes, categoryTypes, Menu } from "../../app/utils/data";
 
 const Footer = () => {
@@ -20,7 +19,6 @@ const Footer = () => {
         <div className="flex justify-center md:flex-col lg:flex-row py-4 md:py-6 px-12 lg:px-20 xl:px-32 lg:py-10">
           <div className="flex justify-center md:justify-evenly w-full">
             <div className="lg:flex-[3] flex flex-col md:hidden lg:flex justify-center items-center lg:items-start lg:justify-start">
-              <FooterLogo />
               <div className="flex md:hidden mt-3 justify-center gap-4 w-full px-1">
                 {Menu.map((item, index) => {
                   return (
@@ -64,9 +62,6 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="hidden mt-4 md:flex lg:hidden justify-center items-center w-full">
-            <FooterLogo />
-          </div>
         </div>
         <div
           onClick={() => scrollToTop()}
@@ -77,16 +72,7 @@ const Footer = () => {
       </>
       <div className="w-full flex justify-center py-1 bg-app-flame/80">
         <p className="text-[15px] text-white font-app-heading tracking-wider">
-          © 2022 <span className="font-bold">Cocktails</span>. By{"  "}
-          <a
-            className="font-bold"
-            href="https://github.com/RandikaNiroshan"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Randika"
-          >
-            Randika Niroshan
-          </a>
+          © 2022 <span className="font-bold">Cocktails</span>.
         </p>
       </div>
     </footer>
