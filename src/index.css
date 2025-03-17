@@ -19,11 +19,10 @@
   }
 
   blockquote {
-    @apply text-app-cadet font-bold tracking-wide relative italic leading-relaxed;
+    @apply text-app-cadet font-semibold tracking-wide relative italic leading-relaxed; /* Changed font-bold to font-semibold for lighter weight */
     font-family: 'Space Grotesk', sans-serif;
     font-size: 1.25rem;
-    @apply before:absolute before:text-app-cadet/40 before:text-5xl md:before:text-6xl before:w-16 before:h-16 before:-left-14 lg:before:-left-20 before:-top-2 md:before:-top-4 before:content-['\\201C'];
-    @apply after:absolute after:text-app-cadet/40 after:text-5xl md:after:text-6xl after:w-16 after:h-16 after:-right-24 lg:after:-right-24 after:-bottom-12 after:content-['\\201D'];
+    /* Removed the before and after pseudo-elements to fix the 201C/201D issue */
   }
 
   cite {
@@ -58,5 +57,10 @@
   .bg-image {
     @apply bg-cover bg-[url('https://i.imgur.com/nksYEBa.jpg')] relative overflow-hidden;
     @apply before:content-[''] before:block before:blur-[10px] before:absolute before:inset-0 before:bg-[#000] before:opacity-80 before:h-full before:w-full z-[1];
+  }
+
+  /* Added a new class for drink names to make them bolder */
+  .drink-name {
+    @apply font-app-text font-medium; /* Using DM Sans with font-weight: 500 */
   }
 }
