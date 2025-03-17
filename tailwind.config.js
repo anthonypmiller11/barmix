@@ -1,76 +1,71 @@
-import React from "react";
-import { ImagePlaceHolder } from "../../assets";
-import { Alcoholic, Favorite, LinkButton } from "..";
-import { HTTP_STATUS } from "../../app/utils/constants";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-
-const CocktailCard = ({ cocktail, loading, fullData }) => {
-  const { id, drink, image, category, alcoholic } = cocktail;
-  return (
-    <div>
-      <div
-        className={`bg-white h-full w-full rounded-[8px] drop-shadow-lg group overflow-hidden relative hover:ring-1 hover:ring-white ${
-          loading === HTTP_STATUS.FULFILLED && " cocktail-card hover:rotate-0"
-        }`}
-      >
-        <div className="rounded-[8px] overflow-hidden">
-          <div className="p-1 md:px-2 md:pt-2 md:pb-[6px] lg:px-3 lg:pt-3 lg:pb-2 relative">
-            {loading !== HTTP_STATUS.FULFILLED && (
-              <div className="loading animate-loading aspect-[4/5] w-full rounded-[8px]"></div>
-            )}
-            {loading === HTTP_STATUS.FULFILLED && (
-              <>
-                <LazyLoadImage
-                  className="aspect-[4/5] w-full object-cover rounded-[8px] group-hover:scale-[1.35] group-hover:blur-[3px] group-hover:translate-y-5 basic-transition"
-                  src={image ?? ImagePlaceHolder}
-                  alt={drink ?? "Cocktail Image"}
-                  placeholder={<div className="loading animate-loading aspect-[4/5] w-full rounded-[8px]"></div>}
-                />
-                {alcoholic && <Alcoholic alcoholic={alcoholic} />}
-                <Favorite cocktail={cocktail} />
-              </>
-            )}
-          </div>
-          <div className="mx-1 md:mx-2 lg:mx-3 pb-1 md:pb-[6px] lg:pb-2">
-            {loading !== HTTP_STATUS.FULFILLED && (
-              <div className="flex flex-col justify-start items-start">
-                <p className="loading animate-loading rounded-md text-slate-100 h-[24px] lg:h-[28px] w-full mb-1"></p>
-                {fullData && (
-                  <p className="loading animate-loading rounded-[4px] text-slate-100 h-[16px] w-full mb-2 xl:mb-[10px]"></p>
-                )}
-              </div>
-            )}
-            {loading === HTTP_STATUS.FULFILLED && (
-              <>
-                <p className="text-[12px] md:text-[13px] lg:text-[14px] xl:text-[15px] text-center font-app-text text-app-thin-flame truncate leading-5  font-weight-cocktail-name font-900">
-                  {drink ?? "Classic Cocktail"}
-                </p>
-                {category && (
-                  <p className="text-[13x] md:text-[14px] lg:text-[15px] xl:text-[16px] text-center font-app-heading font-bold text-app-cadet truncate leading-5">
-                    {category ?? "Category"}
-                  </p>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-        {loading === HTTP_STATUS.FULFILLED && (
-          <div className="z-[2] rounded-[8px] h-full w-full flex justify-center items-center overflow-hidden absolute top-0 left-0 right-0">
-            <div className="relative w-full flex justify-center items-center">
-              <div className="px-3 pb-2 flex flex-col scale-0 group-hover:scale-100 items-center justify-center absolute -bottom-80 group-hover:-bottom-[6px] delay-[150ms] group-hover:duration-500 duration-150">
-                <p className="text-[12px] md:text-[13px] lg:text-[14px] xl:text-[15px] text-center font-app-text text-white leading-5 font-cocktail-name  font-weight-cocktail-name">
-                  {drink ?? "Classic Cocktail"}
-                </p>
-              </div>
-              <div className="flex items-center justify-center px-8 scale-0 group-hover:scale-100 absolute -bottom-80 group-hover:-bottom-[32px] md:group-hover:-bottom-[35px] lg:group-hover:-bottom-[40px] group-hover:delay-[400ms] group-hover:duration-500 duration-150">
-                <LinkButton link={`/cocktails/${id}`} text="View Recipe" />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        "app-flame": "#E4572E",
+        "app-thin-flame": "#FF572E",
+        "app-cadet": "#29335C",
+        "app-olivine": "#6B8E23", // Darker shade of green (example)
+        "app-bg": "#F8F8F6",
+      },
+      fontFamily: {
+        "app-main": ["Inter", "sans-serif"], // Clean and readable like SF Pro
+        "app-heading": ["Work Sans", "sans-serif"], // Modern and minimal
+        "app-text": ["DM Sans", "sans-serif"], // Rounded and balanced for UI
+        "app-quote": ["Space Grotesk", "sans-serif"], // Premium and high-tech look
+        "cocktail-name": ["Work Sans", "sans-serif"],  // Use Work Sans for cocktail names
+        "ingredient-name": ["DM Sans", "sans-serif"], // Use DM Sans for ingredient names
+      },
+      gridTemplateColumns: {
+        "two-by-two": "minmax(0, 1fr) 12px minmax(0, 1fr)",
+      },
+      gridTemplateRows: {
+        "sm-main-grid":
+          "minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.4fr) minmax(0, 1fr) minmax(0, 1fr)",
+        "md-main-grid":
+          "minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.6fr) minmax(0, 1fr) minmax(0, 1fr)",
+        "xl-main-grid":
+          "minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.5fr) minmax(0, 1fr) minmax(0, 1fr)",
+      },
+      keyframes: {
+        expand: {
+          "50%": { transform: "scale(1.1)" },
+        },
+        loading: {
+          to: { "background-position-x": "-20%" },
+        },
+      },
+      animation: {
+        expand: "expand 1s ease-in-out infinite",
+        loading: "1s loading ease-in-out infinite",
+      },
+      screens: {
+        'xs': '345px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1050px',
+        'xl': '1380px',
+        '2xl': '1536px',
+      },
+      /*  fontSize: {                  //REMOVE TO CLEAN
+         'cocktail-name': '1.2em', // 20% bigger (1em is the base size)
+         'ingredient-name': '1.2em',
+       }, */                     //REMOVE TO CLEAN
+        fontWeight: {
+        //  'cocktail-name': '900', // Up to 900        //REMOVE TO CLEAN
+        // 'ingredient-name': 'bold', // use tailwind built-in bold    //REMOVE TO CLEAN
+        },
+       /*  textShadow: {
+           sm: '0 1px 2px var(--tw-shadow-color)',      //REMOVE TO CLEAN
+            DEFAULT: '0 2px 4px var(--tw-shadow-color)',  //REMOVE TO CLEAN
+            lg: '0 8px 16px var(--tw-shadow-color)',        //REMOVE TO CLEAN
+            xl: '0 2px 2px rgb(0 0 0 / 0.8)', // Example shadow (adjust)     //REMOVE TO CLEAN
+       } */
+    },
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+     //require('tailwindcss-textshadow') // REMOVE TO CLEAN
+  ],
 };
-
-export default CocktailCard;
