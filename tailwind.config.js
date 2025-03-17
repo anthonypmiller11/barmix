@@ -10,10 +10,12 @@ module.exports = {
         "app-bg": "#F8F8F6",
       },
       fontFamily: {
-        "app-main": ["Oswald", "sans-serif"],
-        "app-heading": ["Cookie", "cursive"],
-        "app-text": ["Berkshire Swash", "cursive"],
-        "app-quote": ["Special Elite", "cursive"],
+        "app-main": ["Inter", "sans-serif"], // Clean and readable like SF Pro
+        "app-heading": ["Work Sans", "sans-serif"], // Modern and minimal
+        "app-text": ["DM Sans", "sans-serif"], // Rounded and balanced for UI
+        "app-quote": ["Space Grotesk", "sans-serif"], // Premium and high-tech look
+        "cocktail-name": ["Work Sans", "sans-serif"],  // Use Work Sans for cocktail names
+        "ingredient-name": ["DM Sans", "sans-serif"], // Use DM Sans for ingredient names
       },
       gridTemplateColumns: {
         "two-by-two": "minmax(0, 1fr) 12px minmax(0, 1fr)",
@@ -47,13 +49,13 @@ module.exports = {
         '2xl': '1536px',
       },
        fontSize: {
-         'cocktail-name': '1.2em',
+         'cocktail-name': '1.2em', // 20% bigger (1em is the base size)
          'ingredient-name': '1.2em',
        },
         fontWeight: {
-         'cocktail-name': '700',
-         'ingredient-name': '700',
-       },
+         'cocktail-name': '700',  // Or '800'/'900' if '700' is not bold enough
+         'ingredient-name': '700', // Adjust these values as needed.
+       }
     },
   },
   plugins: [
