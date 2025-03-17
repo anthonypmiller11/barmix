@@ -4,15 +4,16 @@ module.exports = {
     extend: {
       colors: {
         "app-flame": "#E4572E",
+        "app-thin-flame": "#FF572E",
         "app-cadet": "#29335C",
         "app-olivine": "#A8C686",
         "app-bg": "#F8F8F6",
       },
       fontFamily: {
-        "app-main": ["Inter", "sans-serif"],  // Clean and readable like SF Pro
-        "app-heading": ["Work Sans", "sans-serif"],  // Modern and minimal
-        "app-text": ["DM Sans", "sans-serif"],  // Rounded and balanced for UI
-        "app-quote": ["Space Grotesk", "sans-serif"],  // Premium and high-tech look
+        "app-main": ["Oswald", "sans-serif"],
+        "app-heading": ["Cookie", "cursive"],
+        "app-text": ["Berkshire Swash", "cursive"],
+        "app-quote": ["Special Elite", "cursive"],
       },
       gridTemplateColumns: {
         "two-by-two": "minmax(0, 1fr) 12px minmax(0, 1fr)",
@@ -44,7 +45,15 @@ module.exports = {
         'lg': '1050px',
         'xl': '1380px',
         '2xl': '1536px',
-      }
+      },
+       fontSize: {
+         'cocktail-name': '1.2em',
+         'ingredient-name': '1.2em',
+       },
+        fontWeight: {
+         'cocktail-name': '700',
+         'ingredient-name': '700',
+       },
     },
   },
   plugins: [
