@@ -3,11 +3,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "app-primary": "#1D1D1F", // Apple Black (used in dark mode UI)
-        "app-secondary": "#F5F5F7", // Apple Light Gray (subtle backgrounds)
-        "app-highlight": "#0071E3", // Apple Blue (for accents and call-to-actions)
-        "app-accent": "#FFD60A", // Apple Yellow (adds energy, like cocktail garnishes)
-        "app-background": "#FFFFFF", // Pure white for clean UI
+        "app-flame": "#E4572E",
+        "app-cadet": "#29335C",
+        "app-olivine": "#A8C686",
+        "app-bg": "#F8F8F6",
       },
       fontFamily: {
         "app-main": ["Inter", "sans-serif"],  // Clean and readable like SF Pro
