@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { fromBelow } from "../../app/utils/animationsHelper";
-import { LinkButton } from "../buttons/LinkButton";
+import LinkButton from "../buttons/LinkButton";
 
 const OneByThree = ({ cocktail, loading, link }) => {
   return (
@@ -43,22 +43,4 @@ const OneByThree = ({ cocktail, loading, link }) => {
           </p>
         )}
         {loading ? (
-          <div className="loading animate-loading rounded-xl w-1/2 h-4 md:h-5 mb-4"></div>
-        ) : (
-          <p className="text-white font-app-main text-[10px] md:text-[11px] lg:text-[12px] xl:text-[13px] text-center mb-4">
-            {cocktail.alcoholic}
-          </p>
-        )}
-        {loading ? (
-          <div className="loading animate-loading rounded-xl w-1/2 h-8 md:h-10"></div>
-        ) : (
-          <Link to={link}>
-            <LinkButton text="View Recipe" />
-          </Link>
-        )}
-      </div>
-    </motion.div>
-  );
-};
-
-export default OneByThree;
+          <div className="loading animate-loading rounded-xl w-1/2 h
