@@ -1,10 +1,3 @@
-export const HTTP_STATUS = {
-  PENDING: "pending",
-  FULFILLED: "fulfilled",
-  REJECTED: "rejected",
-  IDLE: "idle",
-};
-
 export const SCREEN_SIZE = {
   XS: 345,
   SM: 640,
