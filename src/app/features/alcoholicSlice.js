@@ -1,54 +1,50 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { createSlice } from "@reduxjs/toolkit";
+import { HTTP_STATUS } from "../utils/constants";
 import { alcoholicTypes } from "../utils/data";
-import { organizeCocktailList } from "../utils/helpers";
-
-export const fetchByAlcoholic = createAsyncThunk(
-  "alcoholic/fetchByAlcoholic",
-  async (type, { signal }) => {
-    const source = axios.CancelToken.source();
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
-    if (alcoholicTypes.some((t) => t === alcoholicTypes[type])) {
-      const response = await axios.get(
-        `${API_BASE_URL}/filter.php?a=${alcoholicTypes[type]}`,
-        {
-          cancelToken: source.token,
-        }
-      );
-      return organizeCocktailList(response.data.drinks);
-    }
-
-    throw new Error("Invalid type");
-  }
-);
 
 const initialState = {
   cocktails: [],
-  loading: null,
+  loading: HTTP_STATUS.IDLE,
   error: null,
 };
 
-export const alcoholicSlice = createSlice({
+const alcoholicSlice = createSlice({
   name: "alcoholic",
-  initialState: initialState,
-  extraReducers: {
-    [fetchByAlcoholic.pending]: (state) => {
-      state.cocktails = [];
+  initialState,
+  reducers: {
+    fetchByAlcoholicPending(state) {
       state.loading = HTTP_STATUS.PENDING;
+      state.error = null;
     },
-    [fetchByAlcoholic.fulfilled]: (state, action) => {
-      state.loading = HTTP_STATUS.FULFILLED;
+    fetchByAlcoholicFulfilled(state, action) {
       state.cocktails = action.payload;
+      state.loading = HTTP_STATUS.FULFILLED;
     },
-    [fetchByAlcoholic.rejected]: (state, action) => {
-      state.cocktails = [];
+    fetchByAlcoholicRejected(state, action) {
       state.loading = HTTP_STATUS.REJECTED;
-      state.error = action.error.message;
+      state.error = action.payload;
     },
   },
 });
+
+export const {
+  fetchByAlcoholicPending,
+  fetchByAlcoholicFulfilled,
+  fetchByAlcoholicRejected,
+} = alcoholicSlice.actions;
+
+export const fetchByAlcoholic = (typeIndex) => async (dispatch) => {
+  dispatch(fetchByAlcoholicPending());
+  try {
+    const response = await fetch("/data/cocktailrecipes.json");
+    const cocktails = await response.json();
+    const filteredCocktails = cocktails[0].filter(
+      (cocktail) => cocktail.strAlcoholic.toLowerCase() === alcoholicTypes[typeIndex].toLowerCase()
+    );
+    dispatch(fetchByAlcoholicFulfilled(filteredCocktails));
+  } catch (error) {
+    dispatch(fetchByAlcoholicRejected(error.message));
+  }
+};
 
 export default alcoholicSlice.reducer;
