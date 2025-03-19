@@ -1,133 +1,61 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { HTTP_STATUS } from "../../app/utils/constants";
-import PrimaryButton from "../buttons/PrimaryButton";
-import InfoCard from "./InfoCard";
-import { Link } from "react-scroll";
-import { motion } from "framer-motion";
-import { fromBelow, fromLeft, fromTop } from "../../app/utils/animationsHelper";
+import { showIngredientModal } from "../../app/features/modalSlice";
+import { setCurrentIngredient } from "../../app/features/ingredientSlice";
 
 const AboutCocktail = ({ cocktail, loading }) => {
+  const dispatch = useDispatch();
+
+  const ingredientsList = [];
+  for (let i = 1; i <= 8; i++) {
+    if (cocktail[`strIngredient${i}`]) {
+      ingredientsList.push({
+        name: cocktail[`strIngredient${i}`],
+        measure: cocktail[`strMeasure${i}`] || "",
+        image: `/images/ingredients/${cocktail[`strIngredient${i}`].replace(/\s+/g, "_")}.png`,
+      });
+    }
+  }
+
+  const onIngredientClick = (ingredient) => {
+    dispatch(setCurrentIngredient({ strIngredient1: ingredient.name, image: ingredient.image }));
+    dispatch(showIngredientModal());
+  };
+
   return (
-    <motion.div
-      variants={fromLeft}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true }}
-      transition={{
-        ease: "easeInOut",
-        duration: 0.3,
-        delay: 0.1,
-      }}
-      className="flex flex-col bg-white rounded-xl drop-shadow-lg w-full px-4 lg:px-6 py-4"
-    >
-      {loading !== HTTP_STATUS.FULFILLED && (
-        <>
-          <div className="px-1 space-y-1">
-            <p className="loading animate-loading text-3xl text-slate-100 text-center truncate leading-5">
-              ...
-            </p>
-            <p className="loading animate-loading text-lg text-slate-100 text-center truncate leading-5">
-              ...
-            </p>
-          </div>
-        </>
-      )}
-      {loading === HTTP_STATUS.FULFILLED && (
-        <>
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-app-main text-app-flame font-bold">
-            {cocktail.drink}
-          </h1>
-          <p className="text-lg font-app-heading text-app-cadet font-bold">
-            {cocktail.alcoholic}
+    <div className="w-full flex flex-col justify-start mb-8">
+      <p className="font-app-quote text-app-cadet text-[22px] md:text-[24px] lg:text-[28px] xl:text-[32px] text-center mb-2 md:mb-4 cocktail-name">
+        {loading === HTTP_STATUS.FULFILLED ? cocktail.drink : "Loading..."}
+      </p>
+      <div className="w-full flex justify-between px-2 md:px-4">
+        <div className="flex flex-col gap-1 md:gap-2">
+          <p className="text-app-cadet font-app-text text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px]">
+            <span className="font-bold">Type:</span>{" "}
+            {loading === HTTP_STATUS.FULFILLED ? cocktail.alcoholic : ""}
           </p>
-        </>
-      )}
-      <div className="flex justify-evenly gap-2 lg:gap-3 mt-3 h-auto px-1">
-        <motion.div
-          variants={fromTop}
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
-          transition={{
-            ease: "easeInOut",
-            duration: 0.2,
-            delay: 0.3,
-          }}
-          className="w-full"
-        >
-          <InfoCard
-            title="Ingredients"
-            data={cocktail.ingredients?.length}
-            loading={loading}
-          />
-        </motion.div>
-        <motion.div
-          variants={fromTop}
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
-          transition={{
-            ease: "easeInOut",
-            duration: 0.2,
-            delay: 0.4,
-          }}
-          className="w-full"
-        >
-          <InfoCard
-            title="Category"
-            data={cocktail.category}
-            loading={loading}
-          />
-        </motion.div>
-
-        <motion.div
-          variants={fromTop}
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
-          transition={{
-            ease: "easeInOut",
-            duration: 0.2,
-            delay: 0.5,
-          }}
-          className="w-full"
-        >
-          <InfoCard title="Serve" data={cocktail.glass} loading={loading} />
-        </motion.div>
+          <p className="text-app-cadet font-app-text text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px]">
+            <span className="font-bold">Category:</span>{" "}
+            {loading === HTTP_STATUS.FULFILLED ? cocktail.category : ""}
+          </p>
+          <p className="text-app-cadet font-app-text text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px]">
+            <span className="font-bold">Glass:</span>{" "}
+            {loading === HTTP_STATUS.FULFILLED ? cocktail.glass : ""}
+          </p>
+        </div>
+        <div className="flex flex-col gap-1 md:gap-2">
+          {ingredientsList.map((item, index) => (
+            <p
+              key={index}
+              onClick={() => onIngredientClick(item)}
+              className="text-app-cadet font-app-text text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px] cursor-pointer hover:text-app-flame ingredient-name"
+            >
+              <span className="font-bold">{item.measure}</span> {item.name}
+            </p>
+          ))}
+        </div>
       </div>
-      <motion.div
-        variants={fromBelow}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-        transition={{
-          ease: "easeInOut",
-          duration: 0.2,
-          delay: 0.5,
-        }}
-        className="flex justify-center items-start gap-1 w-full mt-5"
-      >
-        <Link
-          to="instructions"
-          smooth="easeInCubic"
-          offset={-170}
-          duration={700}
-          delay={150}
-        >
-          <PrimaryButton text="Instructions" loading={loading} />
-        </Link>
-
-        <Link
-          to="video-guide"
-          smooth="easeInCubic"
-          offset={-150}
-          duration={700}
-          delay={150}
-        >
-          <PrimaryButton text="Video Guide" loading={loading} />
-        </Link>
-      </motion.div>
-    </motion.div>
+    </div>
   );
 };
 
