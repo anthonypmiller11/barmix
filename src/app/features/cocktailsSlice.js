@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { HTTP_STATUS } from "../utils/constants";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { organizeCocktailList } from "../utils/helpers";
 
 const initialState = {
   cocktails: [],
-  loading: HTTP_STATUS.IDLE,
+  loading: "idle",
   error: null,
 };
 
@@ -11,36 +11,57 @@ const cocktailsSlice = createSlice({
   name: "cocktails",
   initialState,
   reducers: {
-    fetchCocktailsFulfilled(state, action) {
-      state.cocktails = action.payload;
-      state.loading = HTTP_STATUS.FULFILLED;
-    },
-    fetchByFirstLetterFulfilled(state, action) {
-      state.cocktails = action.payload;
-      state.loading = HTTP_STATUS.FULFILLED;
-    },
     onLetterClick(state, action) {
       state.cocktails = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCocktails.pending, (state) => {
+        state.loading = "pending";
+      })
+      .addCase(fetchCocktails.fulfilled, (state, action) => {
+        state.loading = "fulfilled";
+        state.cocktails = action.payload;
+      })
+      .addCase(fetchCocktails.rejected, (state, action) => {
+        state.loading = "rejected";
+        state.error = action.error.message;
+      })
+      .addCase(fetchByFirstLetter.pending, (state) => {
+        state.loading = "pending";
+      })
+      .addCase(fetchByFirstLetter.fulfilled, (state, action) => {
+        state.loading = "fulfilled";
+        state.cocktails = action.payload;
+      })
+      .addCase(fetchByFirstLetter.rejected, (state, action) => {
+        state.loading = "rejected";
+        state.error = action.error.message;
+      });
+  },
 });
 
-export const { fetchCocktailsFulfilled, fetchByFirstLetterFulfilled, onLetterClick } = cocktailsSlice.actions;
+export const fetchCocktails = createAsyncThunk(
+  "cocktails/fetchCocktails",
+  async () => {
+    const response = await fetch("/data/cocktailrecipes.json");
+    const data = await response.json();
+    return organizeCocktailList(data[0]);
+  }
+);
 
-export const fetchCocktails = () => async (dispatch) => {
-  const response = await fetch("/data/cocktailrecipes.json");
-  const data = await response.json();
-  dispatch(fetchCocktailsFulfilled(data[0]));
-};
+export const fetchByFirstLetter = createAsyncThunk(
+  "cocktails/fetchByFirstLetter",
+  async (letter) => {
+    const response = await fetch("/data/cocktailrecipes.json");
+    const data = await response.json();
+    const filtered = data[0].filter(cocktail =>
+      cocktail.strDrink.toUpperCase().startsWith(letter)
+    );
+    return organizeCocktailList(filtered);
+  }
+);
 
-export const fetchByFirstLetter = (letter) => async (dispatch) => {
-  const response = await fetch("/data/cocktailrecipes.json");
-  const data = await response.json();
-  const filtered = data[0].filter(cocktail => 
-    cocktail.strDrink.toUpperCase().startsWith(letter)
-  );
-  dispatch(fetchByFirstLetterFulfilled(filtered));
-  dispatch(onLetterClick(filtered));
-};
-
+export const { onLetterClick } = cocktailsSlice.actions;
 export default cocktailsSlice.reducer;
