@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { showIngredientModal } from "../../app/features/modalSlice";
 import { setIngredient } from "../../app/features/aboutIngredientSlice";
-import { fromBelow, skeletonGrid } from "../../app/utils/animationsHelper";
+import { skeletonGrid } from "../../app/utils/animationsHelper";
 import { DummyCocktail } from "../../app/utils/data";
+// eslint-disable-next-line no-unused-vars
 import LinkButton from "../buttons/LinkButton";
 import IngredientCard from "./IngredientCard";
 
