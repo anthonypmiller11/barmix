@@ -6,7 +6,7 @@ import { showIngredientModal } from "../../app/features/modalSlice";
 import { setIngredient } from "../../app/features/aboutIngredientSlice";
 import { fromBelow, skeletonGrid } from "../../app/utils/animationsHelper";
 import { DummyCocktail } from "../../app/utils/data";
-import { LinkButton } from "../buttons/LinkButton";
+import LinkButton from "../buttons/LinkButton";
 import IngredientCard from "./IngredientCard";
 
 const IngredientsGrid = ({ list, loading, error, perPage }) => {
