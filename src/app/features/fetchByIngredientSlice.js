@@ -1,46 +1,57 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
-import { organizeCocktailList } from "../utils/helpers";
-
-export const fetchByIngredient = createAsyncThunk(
-  "fetchByIngredient/fetchByIngredient",
-  async (id, { signal }) => {
-    const source = axios.CancelToken.source();
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
-    const response = await axios.get(
-      `${API_BASE_URL}/filter.php?i=${id}`, {
-          cancelToken: source.token,
-        }
-    );
-    return organizeCocktailList(response.data.drinks);
-  }
-);
+import { createSlice } from "@reduxjs/toolkit";
+import { HTTP_STATUS } from "../utils/constants";
 
 const initialState = {
   cocktails: [],
-  loading: null,
+  loading: HTTP_STATUS.IDLE,
   error: null,
 };
 
-export const fetchByIngredientSlice = createSlice({
+const fetchByIngredientSlice = createSlice({
   name: "fetchByIngredient",
-  initialState: initialState,
-  extraReducers: {
-    [fetchByIngredient.pending]: (state) => {
+  initialState,
+  reducers: {
+    fetchByIngredientPending(state) {
       state.loading = HTTP_STATUS.PENDING;
+      state.error = null;
     },
-    [fetchByIngredient.fulfilled]: (state, action) => {
-      state.loading = HTTP_STATUS.FULFILLED;
+    fetchByIngredientFulfilled(state, action) {
       state.cocktails = action.payload;
+      state.loading = HTTP_STATUS.FULFILLED;
     },
-    [fetchByIngredient.rejected]: (state, action) => {
+    fetchByIngredientRejected(state, action) {
       state.loading = HTTP_STATUS.REJECTED;
-      state.error = action.error.message;
+      state.error = action.payload;
     },
   },
 });
+
+export const {
+  fetchByIngredientPending,
+  fetchByIngredientFulfilled,
+  fetchByIngredientRejected,
+} = fetchByIngredientSlice.actions;
+
+export const fetchByIngredient = (ingredient) => async (dispatch) => {
+  dispatch(fetchByIngredientPending());
+  try {
+    const response = await fetch("/data/cocktailrecipes.json");
+    const cocktails = await response.json();
+    const filteredCocktails = cocktails[0].filter((cocktail) => {
+      for (let i = 1; i <= 8; i++) {
+        if (
+          cocktail[`strIngredient${i}`] &&
+          cocktail[`strIngredient${i}`].toLowerCase() === ingredient.toLowerCase()
+        ) {
+          return true;
+        }
+      }
+      return false;
+    });
+    dispatch(fetchByIngredientFulfilled(filteredCocktails));
+  } catch (error) {
+    dispatch(fetchByIngredientRejected(error.message));
+  }
+};
 
 export default fetchByIngredientSlice.reducer;
