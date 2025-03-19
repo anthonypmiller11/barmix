@@ -9,12 +9,13 @@ const AboutCocktail = ({ cocktail, loading }) => {
 
   const ingredientsList = [];
   for (let i = 1; i <= 8; i++) {
-    if (cocktail[`strIngredient${i}`]) {
+    if (cocktail?.[`strIngredient${i}`]) {
       const ingrName = cocktail[`strIngredient${i}`].trim();
       const imageBase = ingrName.replace(/\s+/g, "_");
+      const measure = cocktail[`strMeasure${i}`] ? `${cocktail[`strMeasure${i}`]} ml` : "";
       ingredientsList.push({
         name: ingrName,
-        measure: cocktail[`strMeasure${i}`] || "",
+        measure: measure,
         imageSmall: `/images/ingredients/${imageBase}-small.png`,
         imageMedium: `/images/ingredients/${imageBase}-medium.png`,
         image: `/images/ingredients/${imageBase}.png`,
@@ -39,10 +40,6 @@ const AboutCocktail = ({ cocktail, loading }) => {
             {loading === "fulfilled" ? cocktail.strAlcoholic : ""}
           </p>
           <p className="text-app-cadet font-app-text text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px]">
-            <span className="font-bold">Category:</span>{" "}
-            {loading === "fulfilled" ? cocktail.strCategory : ""}
-          </p>
-          <p className="text-app-cadet font-app-text text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px]">
             <span className="font-bold">Glass:</span>{" "}
             {loading === "fulfilled" ? cocktail.strGlass : ""}
           </p>
@@ -50,13 +47,6 @@ const AboutCocktail = ({ cocktail, loading }) => {
         <div className="flex flex-col gap-1 md:gap-2">
           {ingredientsList.map((item, index) => (
             <div key={index} className="flex items-center gap-2">
-              <LazyLoadImage
-                src={item.imageSmall}
-                alt={item.name}
-                className="w-8 h-8 object-cover rounded-full"
-                placeholder={<div className="w-8 h-8 bg-gray-300 rounded-full animate-pulse"></div>}
-                onError={(e) => (e.target.src = "/images/ingredients/default-small.png")}
-              />
               <p
                 onClick={() => onIngredientClick(item)}
                 className="text-app-cadet font-app-text text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px] cursor-pointer hover:text-app-flame ingredient-name"
