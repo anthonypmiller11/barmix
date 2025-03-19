@@ -37,7 +37,7 @@ const CategoriesPage = () => {
     return () => {
       promise.abort();
     };
-  }, [dispatch, selectedType, type]);
+  }, [dispatch, selectedType, type, types]);
 
   return (
     <AnimateRoute>
