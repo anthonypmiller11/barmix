@@ -2,25 +2,28 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
-import { showSearchModal } from "../../app/features/modalSlice";
+import { showIngredientModal } from "../../app/features/modalSlice";
+import { setIngredient } from "../../app/features/aboutIngredientSlice";
 import { skeletonGrid } from "../../app/utils/animationsHelper";
 import { DummyCocktail } from "../../app/utils/data";
+// eslint-disable-next-line no-unused-vars
 import LinkButton from "../buttons/LinkButton";
-import SearchCard from "./SearchCard";
+import IngredientCard from "./IngredientCard";
 
-const SearchItemsGrid = ({ list, loading, error, perPage }) => {
+const IngredientsGrid = ({ list, loading, error, perPage }) => {
   const dispatch = useDispatch();
-  const [cocktails, setCocktails] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
-  const openSearch = () => {
-    dispatch(showSearchModal());
+  const openIngredient = (ingredient) => {
+    dispatch(setIngredient(ingredient));
+    dispatch(showIngredientModal());
   };
 
   useEffect(() => {
     if (list !== null) {
-      setCocktails(list);
+      setIngredients(list);
       setTotalPages(Math.ceil(list.length / perPage));
       setCurrentPage(0);
     }
@@ -33,7 +36,7 @@ const SearchItemsGrid = ({ list, loading, error, perPage }) => {
 
   const startIndex = currentPage * perPage;
   const endIndex = startIndex + perPage;
-  const currentCocktails = cocktails.slice(startIndex, endIndex);
+  const currentIngredients = ingredients.slice(startIndex, endIndex);
 
   return (
     <motion.div
@@ -48,25 +51,33 @@ const SearchItemsGrid = ({ list, loading, error, perPage }) => {
       }}
     >
       {loading === "pending" && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-5 lg:gap-6">
           {[...Array(perPage)].map((_, index) => (
-            <SearchCard key={index} cocktail={DummyCocktail} loading={true} />
+            <IngredientCard
+              key={index}
+              ingredient={DummyCocktail}
+              loading={true}
+            />
           ))}
         </div>
       )}
-      {loading === "fulfilled" && cocktails.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
-          {currentCocktails.map((cocktail) => (
-            <SearchCard key={cocktail.id} cocktail={cocktail} loading={false} />
+      {loading === "fulfilled" && ingredients.length > 0 && (
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-5 lg:gap-6">
+          {currentIngredients.map((ingredient, index) => (
+            <IngredientCard
+              key={index}
+              ingredient={ingredient}
+              onClick={() => openIngredient(ingredient)}
+              loading={false}
+            />
           ))}
         </div>
       )}
-      {loading === "fulfilled" && cocktails.length === 0 && (
+      {loading === "fulfilled" && ingredients.length === 0 && (
         <div className="w-full flex flex-col justify-center items-center">
           <p className="text-app-cadet font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
-            No Cocktails Found!
+            No Ingredients Found!
           </p>
-          <LinkButton onClick={openSearch} text="Search Something Else" />
         </div>
       )}
       {loading === "rejected" && (
@@ -74,7 +85,6 @@ const SearchItemsGrid = ({ list, loading, error, perPage }) => {
           <p className="text-app-flame font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
             {error}
           </p>
-          <LinkButton onClick={openSearch} text="Search Something Else" />
         </div>
       )}
       {totalPages > 1 && (
@@ -139,4 +149,4 @@ const SearchItemsGrid = ({ list, loading, error, perPage }) => {
   );
 };
 
-export default SearchItemsGrid;
+export default IngredientsGrid;
