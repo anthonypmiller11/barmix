@@ -1,53 +1,50 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { createSlice } from "@reduxjs/toolkit";
+import { HTTP_STATUS } from "../utils/constants";
 import { glassTypes } from "../utils/data";
-import { organizeCocktailList } from "../utils/helpers";
-
-export const fetchByGlass = createAsyncThunk(
-  "glass/fetchByGlass",
-  async (type, {signal}) => {
-    const source = axios.CancelToken.source();
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
-    if (glassTypes.some((t) => t === glassTypes[type])) {
-      const response = await axios.get(
-        `${API_BASE_URL}/filter.php?g=${glassTypes[type]}`, {
-          cancelToken: source.token,
-        }
-      );
-      return organizeCocktailList(response.data.drinks);
-    }
-
-    throw new Error("Invalid type");
-  }
-);
 
 const initialState = {
-  cocktails:[],
-  loading: null,
+  cocktails: [],
+  loading: HTTP_STATUS.IDLE,
   error: null,
 };
 
-export const glassSlice = createSlice({
+const glassSlice = createSlice({
   name: "glass",
-  initialState: initialState,
-  extraReducers: {
-    [fetchByGlass.pending]: (state) => {
-      state.cocktails = [];
+  initialState,
+  reducers: {
+    fetchByGlassPending(state) {
       state.loading = HTTP_STATUS.PENDING;
+      state.error = null;
     },
-    [fetchByGlass.fulfilled]: (state, action) => {
-      state.loading = HTTP_STATUS.FULFILLED;
+    fetchByGlassFulfilled(state, action) {
       state.cocktails = action.payload;
+      state.loading = HTTP_STATUS.FULFILLED;
     },
-    [fetchByGlass.rejected]: (state, action) => {
-      state.cocktails = [];
+    fetchByGlassRejected(state, action) {
       state.loading = HTTP_STATUS.REJECTED;
-      state.error = action.error.message;
+      state.error = action.payload;
     },
   },
 });
+
+export const {
+  fetchByGlassPending,
+  fetchByGlassFulfilled,
+  fetchByGlassRejected,
+} = glassSlice.actions;
+
+export const fetchByGlass = (typeIndex) => async (dispatch) => {
+  dispatch(fetchByGlassPending());
+  try {
+    const response = await fetch("/data/cocktailrecipes.json");
+    const cocktails = await response.json();
+    const filteredCocktails = cocktails[0].filter(
+      (cocktail) => cocktail.strGlass.toLowerCase() === glassTypes[typeIndex].toLowerCase()
+    );
+    dispatch(fetchByGlassFulfilled(filteredCocktails));
+  } catch (error) {
+    dispatch(fetchByGlassRejected(error.message));
+  }
+};
 
 export default glassSlice.reducer;
