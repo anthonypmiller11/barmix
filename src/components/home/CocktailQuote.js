@@ -2,20 +2,21 @@ import React, { useEffect, useState } from "react";
 import { Quotes } from "../../app/utils/data";
 
 const CocktailQuote = () => {
-  const [quoteId, setQuoteId] = useState(0);
-  const quotes = Quotes;
+  const [quote, setQuote] = useState({});
 
   useEffect(() => {
-    const len = quotes.length;
-    setQuoteId(Math.floor(Math.random() * len));
-  }, [quotes.length]);
+    const shuffled = Quotes.sort(() => 0.5 - Math.random());
+    setQuote(shuffled[0]);
+  }, []);
 
   return (
-    <div className="relative w-full flex flex-col justify-center items-center">
-      <blockquote>{quotes[quoteId].quote}</blockquote>
-      <cite className="absolute before:block before:absolute before:top-1/2 before:w-[25px] before:h-[2.5px] before:-left-8 before:bg-app-cadet before:content-['']">
-        {quotes[quoteId].author}
-      </cite>
+    <div className="w-full flex flex-col justify-center items-center px-4 md:px-6 lg:px-20 my-6 md:my-8 lg:my-12">
+      <p className="text-app-cadet font-app-quote text-[18px] md:text-[20px] lg:text-[22px] xl:text-[24px] text-center italic">
+        "{quote.quote}"
+      </p>
+      <p className="text-app-flame font-app-heading text-[14px] md:text-[16px] lg:text-[18px] xl:text-[20px] text-center mt-2">
+        — {quote.author}
+      </p>
     </div>
   );
 };
