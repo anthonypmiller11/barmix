@@ -52,7 +52,9 @@ export const fetchIngredients = () => async (dispatch) => {
     });
     const ingredients = Array.from(ingredientsSet).map((name) => ({
       strIngredient1: name,
-      image: `/images/ingredients/${name.replace(/\s+/g, "_")}.png`, // Your local images
+      imageSmall: `/images/ingredients/${name.replace(/\s+/g, "_")}-small.png`,
+      imageMedium: `/images/ingredients/${name.replace(/\s+/g, "_")}-medium.png`,
+      image: `/images/ingredients/${name.replace(/\s+/g, "_")}.png`,
     }));
     dispatch(fetchIngredientsFulfilled(ingredients));
   } catch (error) {
