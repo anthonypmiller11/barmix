@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player/youtube";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchVideoList } from "../../app/features/youtubeSlice";
 import { calcVideoWidth } from "../../app/utils/helpers";
@@ -34,25 +33,15 @@ const VideoTutorial = ({ cocktail, loading }) => {
         {loading === "fulfilled" &&
           youtubeLoading === "fulfilled" && (
             <div className="flex flex-col justify-center items-center">
-              <ReactPlayer
-                width={calcVideoWidth(size?.width) ?? "100%"}
-                height="100%"
-                className="w-full h-auto aspect-video p-[6px] md:p-2 lg:p-3 xl:p-4 mb-4 drop-shadow-lg bg-white rounded-md lg:rounded-xl"
-                controls={true}
-                url={`https://www.youtube-nocookie.com/embed/${videosList[videoIndex]}`}
-              />
-              <div className="w-full p-4 flex justify-center gap-2 items-center">
-                <p className="text-app-cadet font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
-                  Video Guide Not Relevant?
-                </p>
-                <PrimaryButton onClick={onSkipVideo} text="Next Video" />
-              </div>
+              <p className="text-app-cadet font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
+                Video Tutorials Not Available
+              </p>
             </div>
           )}
         {youtubeLoading === "rejected" && (
           <div className="w-full p-4">
             <p className="text-app-flame font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
-              Youtube API Quota Exceeded! Try Again Later
+              Video Tutorials Not Available
             </p>
           </div>
         )}
