@@ -5,6 +5,7 @@ const initialState = {
   ingredients: [],
   loading: HTTP_STATUS.IDLE,
   error: null,
+  currentIngredient: null,
 };
 
 const ingredientSlice = createSlice({
@@ -23,6 +24,9 @@ const ingredientSlice = createSlice({
       state.loading = HTTP_STATUS.REJECTED;
       state.error = action.payload;
     },
+    setCurrentIngredient(state, action) {
+      state.currentIngredient = action.payload;
+    },
   },
 });
 
@@ -30,6 +34,7 @@ export const {
   fetchIngredientsPending,
   fetchIngredientsFulfilled,
   fetchIngredientsRejected,
+  setCurrentIngredient,
 } = ingredientSlice.actions;
 
 export const fetchIngredients = () => async (dispatch) => {
@@ -41,13 +46,13 @@ export const fetchIngredients = () => async (dispatch) => {
     cocktails[0].forEach((cocktail) => {
       for (let i = 1; i <= 8; i++) {
         if (cocktail[`strIngredient${i}`]) {
-          ingredientsSet.add(cocktail[`strIngredient${i}`]);
+          ingredientsSet.add(cocktail[`strIngredient${i}`].trim());
         }
       }
     });
     const ingredients = Array.from(ingredientsSet).map((name) => ({
       strIngredient1: name,
-      image: `/images/ingredients/${name.replace(/\s+/g, "_")}.png`,
+      image: `/images/ingredients/${name.replace(/\s+/g, "_")}.png`, // Your local images
     }));
     dispatch(fetchIngredientsFulfilled(ingredients));
   } catch (error) {
