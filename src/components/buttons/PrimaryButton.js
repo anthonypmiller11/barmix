@@ -1,15 +1,26 @@
 import React from "react";
-import { HTTP_STATUS } from "../../app/utils/constants";
+import { motion } from "framer-motion";
+import { fromBelow } from "../../app/utils/animationsHelper";
 
-const PrimaryButton = ({ text, onClick, loading = HTTP_STATUS.FULFILLED }) => {
+const PrimaryButton = ({ onClick, text }) => {
   return (
-    <button
-      disabled={loading !== HTTP_STATUS.FULFILLED ? true : ""}
+    <motion.div
       onClick={onClick}
-      className={`w-max h-max mx-2 px-[6px] py-[3px] lg:px-[10px] basic-transition rounded-md  text-white text-center text-[14px] lg:text-[15px] font-app-heading tracking-wider drop-shadow-md ${loading !== HTTP_STATUS.FULFILLED ? "bg-app-flame/40" : "bg-app-flame active:scale-[0.95] md:hover:scale-[1.05]"}`}
+      variants={fromBelow}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true }}
+      transition={{
+        ease: "easeInOut",
+        duration: 0.5,
+        delay: 0.5,
+      }}
+      className="active:scale-95 rounded-md bg-white px-4 md:px-6 py-2 md:py-3 drop-shadow-lg group hover:cursor-pointer basic-transition"
     >
-      {text}
-    </button>
+      <p className="text-app-cadet font-app-heading text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px] tracking-wider group-hover:animate-expand">
+        {text}
+      </p>
+    </motion.div>
   );
 };
 
