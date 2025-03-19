@@ -1,44 +1,29 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
-import { organizeCocktail } from "../utils/helpers";
-
-export const fetchRandomDrink = createAsyncThunk(
-  "random/fetchRandomDrink",
-  async (_data, { signal }) => {
-    const source = axios.CancelToken.source();
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
-    const response = await axios.get(`${API_BASE_URL}/random.php`, {
-      cancelToken: source.token,
-    });
-    return organizeCocktail(response.data.drinks[0]);
-  }
-);
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  randomCocktail: {},
-  loading: null,
+  cocktail: null,
+  loading: "idle",
   error: null,
 };
 
-export const randomSlice = createSlice({
+const randomSlice = createSlice({
   name: "random",
-  initialState: initialState,
-  extraReducers: {
-    [fetchRandomDrink.pending]: (state) => {
-      state.loading = HTTP_STATUS.PENDING;
-    },
-    [fetchRandomDrink.fulfilled]: (state, { payload }) => {
-      state.loading = HTTP_STATUS.FULFILLED;
-      state.randomCocktail = payload;
-    },
-    [fetchRandomDrink.rejected]: (state, action) => {
-      state.loading = HTTP_STATUS.REJECTED;
-      state.error = action.error.message;
+  initialState,
+  reducers: {
+    fetchRandomFulfilled(state, action) {
+      state.cocktail = action.payload;
+      state.loading = "fulfilled";
     },
   },
 });
+
+export const { fetchRandomFulfilled } = randomSlice.actions;
+
+export const fetchRandomCocktail = () => async (dispatch) => {
+  const response = await fetch("/data/cocktailrecipes.json");
+  const data = await response.json();
+  const randomCocktail = data[0][Math.floor(Math.random() * data[0].length)];
+  dispatch(fetchRandomFulfilled(randomCocktail));
+};
 
 export default randomSlice.reducer;
