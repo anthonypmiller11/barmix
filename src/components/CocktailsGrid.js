@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 import { motion } from "framer-motion";
 import { showSearchModal } from "../app/features/modalSlice";
 import { fromBelow, skeletonGrid } from "../app/utils/animationsHelper";
 import { DummyCocktail } from "../app/utils/data";
-import { LinkButton } from "./buttons";
+import { LinkButton } from "./buttons/LinkButton";
 import CocktailCard from "./cards/CocktailCard";
 
 const CocktailsGrid = ({ list, loading, error, perPage }) => {
