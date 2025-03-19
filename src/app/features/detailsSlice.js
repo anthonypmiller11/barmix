@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { HTTP_STATUS } from "../utils/constants";
 
 const initialState = {
   cocktail: null,
-  loading: "idle",
+  loading: HTTP_STATUS.IDLE,
   error: null,
 };
 
@@ -12,7 +13,7 @@ const detailsSlice = createSlice({
   reducers: {
     fetchCocktailDetailsFulfilled(state, action) {
       state.cocktail = action.payload;
-      state.loading = "fulfilled";
+      state.loading = HTTP_STATUS.FULFILLED;
     },
   },
 });
