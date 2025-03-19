@@ -30,9 +30,12 @@ const detailsSlice = createSlice({
 export const fetchCocktailDetails = createAsyncThunk(
   "details/fetchCocktailDetails",
   async (id) => {
+    console.log("Fetching cocktail with ID:", id); // Debug: Log the ID being passed
     const response = await fetch("/data/cocktailrecipes.json");
     const data = await response.json();
-    const cocktail = data[0].find(c => c.idDrink === String(id)); // Ensure ID is compared as a string
+    console.log("Fetched data:", data); // Debug: Log the fetched data
+    const cocktail = data[0].find(c => c.idDrink === String(id));
+    console.log("Found cocktail:", cocktail); // Debug: Log the found cocktail
     if (!cocktail) {
       throw new Error("Cocktail not found");
     }
