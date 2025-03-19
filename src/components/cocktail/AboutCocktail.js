@@ -12,12 +12,11 @@ const AboutCocktail = ({ cocktail, loading }) => {
   for (let i = 1; i <= 8; i++) {
     if (cocktail[`strIngredient${i}`]) {
       const ingrName = cocktail[`strIngredient${i}`].trim();
-      // Map TheCocktailDB ingredient names to your local filenames
-      const imageName = ingrName.replace(/\s+/g, "_").replace(/[^\w-]/g, ""); // Clean up special chars
+      const imageName = ingrName.replace(/\s+/g, "_");
       ingredientsList.push({
         name: ingrName,
         measure: cocktail[`strMeasure${i}`] || "",
-        image: `/images/ingredients/${imageName}.png`, // Adjust extension if needed
+        image: `/images/ingredients/${imageName}.png`, // Match your files
       });
     }
   }
