@@ -1,54 +1,50 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { createSlice } from "@reduxjs/toolkit";
+import { HTTP_STATUS } from "../utils/constants";
 import { categoryTypes } from "../utils/data";
-import { organizeCocktailList } from "../utils/helpers";
-
-export const fetchByCategory = createAsyncThunk(
-  "category/fetchByCategory",
-  async (type, { signal }) => {
-    const source = axios.CancelToken.source();
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
-    if (categoryTypes.some((t) => t === categoryTypes[type])) {
-      const response = await axios.get(
-        `${API_BASE_URL}/filter.php?c=${categoryTypes[type]}`,
-        {
-          cancelToken: source.token,
-        }
-      );
-      return organizeCocktailList(response.data.drinks);
-    }
-
-    throw new Error("Invalid type");
-  }
-);
 
 const initialState = {
   cocktails: [],
-  loading: null,
+  loading: HTTP_STATUS.IDLE,
   error: null,
 };
 
-export const categorySlice = createSlice({
+const categorySlice = createSlice({
   name: "category",
-  initialState: initialState,
-  extraReducers: {
-    [fetchByCategory.pending]: (state) => {
-      state.cocktails = [];
+  initialState,
+  reducers: {
+    fetchByCategoryPending(state) {
       state.loading = HTTP_STATUS.PENDING;
+      state.error = null;
     },
-    [fetchByCategory.fulfilled]: (state, action) => {
-      state.loading = HTTP_STATUS.FULFILLED;
+    fetchByCategoryFulfilled(state, action) {
       state.cocktails = action.payload;
+      state.loading = HTTP_STATUS.FULFILLED;
     },
-    [fetchByCategory.rejected]: (state, action) => {
-      state.cocktails = [];
+    fetchByCategoryRejected(state, action) {
       state.loading = HTTP_STATUS.REJECTED;
-      state.error = action.error.message;
+      state.error = action.payload;
     },
   },
 });
+
+export const {
+  fetchByCategoryPending,
+  fetchByCategoryFulfilled,
+  fetchByCategoryRejected,
+} = categorySlice.actions;
+
+export const fetchByCategory = (typeIndex) => async (dispatch) => {
+  dispatch(fetchByCategoryPending());
+  try {
+    const response = await fetch("/data/cocktailrecipes.json");
+    const cocktails = await response.json();
+    const filteredCocktails = cocktails[0].filter(
+      (cocktail) => cocktail.strCategory.toLowerCase() === categoryTypes[typeIndex].toLowerCase()
+    );
+    dispatch(fetchByCategoryFulfilled(filteredCocktails));
+  } catch (error) {
+    dispatch(fetchByCategoryRejected(error.message));
+  }
+};
 
 export default categorySlice.reducer;
