@@ -1,81 +1,140 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { HTTP_STATUS } from "../../app/utils/constants";
-import { Pagination } from "../";
+import { showSearchModal } from "../../app/features/modalSlice";
+import { fromBelow, skeletonGrid } from "../../app/utils/animationsHelper";
 import { DummyCocktail } from "../../app/utils/data";
+import { LinkButton } from "../buttons";
 import SearchCard from "./SearchCard";
-import { cocktailsGridAnimation } from "../../app/utils/animationsHelper";
 
-const SearchItemsGrid = ({ list, loading, perPage, error }) => {
-  const [pageNumber, setPageNumber] = useState(0);
+const SearchItemsGrid = ({ list, loading, error, perPage }) => {
+  const dispatch = useDispatch();
+  const [cocktails, setCocktails] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const itemsPerPage = perPage ?? 8;
-  const itemsVisited = pageNumber * itemsPerPage;
-  const displayItems = list.slice(itemsVisited, itemsVisited + itemsPerPage);
-  const pageCount = Math.ceil(list.length / itemsPerPage);
+  const openSearch = () => {
+    dispatch(showSearchModal());
+  };
 
   useEffect(() => {
-    setPageNumber(0);
-  }, [list]);
+    if (list !== null) {
+      setCocktails(list);
+      setTotalPages(Math.ceil(list.length / perPage));
+      setCurrentPage(0);
+    }
+  }, [list, perPage]);
+
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const startIndex = currentPage * perPage;
+  const endIndex = startIndex + perPage;
+  const currentCocktails = cocktails.slice(startIndex, endIndex);
 
   return (
-    <div>
-      {loading === HTTP_STATUS.FULFILLED && list.length === 0 && (
-        <div className="w-full p-4">
-          <p className="text-app-flame font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
+    <motion.div
+      variants={skeletonGrid}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true }}
+      transition={{
+        ease: "easeInOut",
+        duration: 0.2,
+        delay: 0.1,
+      }}
+    >
+      {loading === "pending" && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
+          {[...Array(perPage)].map((_, index) => (
+            <SearchCard key={index} cocktail={DummyCocktail} loading={true} />
+          ))}
+        </div>
+      )}
+      {loading === "fulfilled" && cocktails.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
+          {currentCocktails.map((cocktail) => (
+            <SearchCard key={cocktail.id} cocktail={cocktail} loading={false} />
+          ))}
+        </div>
+      )}
+      {loading === "fulfilled" && cocktails.length === 0 && (
+        <div className="w-full flex flex-col justify-center items-center">
+          <p className="text-app-cadet font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
             No Cocktails Found!
           </p>
+          <LinkButton onClick={openSearch} text="Search Something Else" />
         </div>
       )}
-
-      {loading === HTTP_STATUS.REJECTED && error !== "Aborted" && (
-        <div className="w-full p-4">
+      {loading === "rejected" && (
+        <div className="w-full flex flex-col justify-center items-center">
           <p className="text-app-flame font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
-            Oops!! No Cocktails Found.
+            {error}
           </p>
+          <LinkButton onClick={openSearch} text="Search Something Else" />
         </div>
       )}
-
-{(loading === HTTP_STATUS.PENDING ||
-        (loading === HTTP_STATUS.REJECTED && error === "Aborted")) && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[12px] md:gap-[16px] lg:gap-[20px] xl:gap-[25px]">
-          {[...Array(itemsPerPage)].map((_item, index) => {
-            return (
-              <div key={index}>
-                {<SearchCard cocktail={DummyCocktail} loading={loading} />}
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {loading === HTTP_STATUS.FULFILLED && list.length > 0 && (
-        <motion.div
-          layoutId="searchGrid"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[12px] md:gap-[16px] lg:gap-[20px] xl:gap-[25px]"
-        >
-          {displayItems.map((item, index) => {
-            return (
-              <motion.div
-                key={item.id}
-                variants={cocktailsGridAnimation}
-                initial="initial"
-                animate="animate"
-                transition={{ duration: 0.2, delay: index * 0.06 }}
+      {totalPages > 1 && (
+        <div className="w-full flex justify-center mt-8">
+          <ReactPaginate
+            previousLabel={
+              <svg
+                className="w-5 h-5 md:w-6 md:h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                {<SearchCard cocktail={item} loading={loading} />}
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      )}
-
-      {loading === HTTP_STATUS.FULFILLED && list.length > 0 && (
-        <div className="mx-8 mt-6 md:mt-8 mb-1 lg:mt-10">
-          <Pagination pageCount={pageCount} setPageNumber={setPageNumber} />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            }
+            nextLabel={
+              <svg
+                className="w-5 h-5 md:w-6 md:h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            }
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={totalPages}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName={
+              "flex justify-center items-center gap-1 md:gap-2 lg:gap-3"
+            }
+            pageClassName={
+              "rounded-full w-8 h-8 md:w-10 md:h-10 flex justify-center items-center font-app-main text-[12px] md:text-[14px] lg:text-[16px] text-app-cadet hover:bg-app-flame hover:text-white cursor-pointer"
+            }
+            activeClassName={"bg-app-flame text-white"}
+            previousClassName={
+              "rounded-full w-8 h-8 md:w-10 md:h-10 flex justify-center items-center font-app-main text-[12px] md:text-[14px] lg:text-[16px] text-app-cadet hover:bg-app-flame hover:text-white cursor-pointer"
+            }
+            nextClassName={
+              "rounded-full w-8 h-8 md:w-10 md:h-10 flex justify-center items-center font-app-main text-[12px] md:text-[14px] lg:text-[16px] text-app-cadet hover:bg-app-flame hover:text-white cursor-pointer"
+            }
+            disabledClassName={"opacity-50 cursor-not-allowed"}
+          />
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
