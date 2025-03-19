@@ -1,8 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { HTTP_STATUS } from "../../app/utils/constants";
 import { showIngredientModal } from "../../app/features/modalSlice";
-import { setCurrentIngredient } from "../../app/features/ingredientSlice";
+import { setIngredient } from "../../app/features/aboutIngredientSlice";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const AboutCocktail = ({ cocktail, loading }) => {
@@ -24,39 +23,39 @@ const AboutCocktail = ({ cocktail, loading }) => {
   }
 
   const onIngredientClick = (ingredient) => {
-    dispatch(setCurrentIngredient({ strIngredient1: ingredient.name, image: ingredient.imageMedium })); // Medium for modal
+    dispatch(setIngredient({ strIngredient1: ingredient.name, imageMedium: ingredient.imageMedium }));
     dispatch(showIngredientModal());
   };
 
   return (
     <div className="w-full flex flex-col justify-start mb-8">
       <p className="font-app-quote text-app-cadet text-[22px] md:text-[24px] lg:text-[28px] xl:text-[32px] text-center mb-2 md:mb-4 cocktail-name">
-        {loading === HTTP_STATUS.FULFILLED ? cocktail.strDrink : "Loading..."}
+        {loading === "fulfilled" ? cocktail.strDrink : "Loading..."}
       </p>
       <div className="w-full flex justify-between px-2 md:px-4">
         <div className="flex flex-col gap-1 md:gap-2">
           <p className="text-app-cadet font-app-text text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px]">
             <span className="font-bold">Type:</span>{" "}
-            {loading === HTTP_STATUS.FULFILLED ? cocktail.strAlcoholic : ""}
+            {loading === "fulfilled" ? cocktail.strAlcoholic : ""}
           </p>
           <p className="text-app-cadet font-app-text text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px]">
             <span className="font-bold">Category:</span>{" "}
-            {loading === HTTP_STATUS.FULFILLED ? cocktail.strCategory : ""}
+            {loading === "fulfilled" ? cocktail.strCategory : ""}
           </p>
           <p className="text-app-cadet font-app-text text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px]">
             <span className="font-bold">Glass:</span>{" "}
-            {loading === HTTP_STATUS.FULFILLED ? cocktail.strGlass : ""}
+            {loading === "fulfilled" ? cocktail.strGlass : ""}
           </p>
         </div>
         <div className="flex flex-col gap-1 md:gap-2">
           {ingredientsList.map((item, index) => (
             <div key={index} className="flex items-center gap-2">
               <LazyLoadImage
-                src={item.imageSmall} // Small for inline display
+                src={item.imageSmall}
                 alt={item.name}
                 className="w-8 h-8 object-cover rounded-full"
                 placeholder={<div className="w-8 h-8 bg-gray-300 rounded-full animate-pulse"></div>}
-                onError={(e) => (e.target.src = "/images/ingredients/default-small.png")} // Fallback
+                onError={(e) => (e.target.src = "/images/ingredients/default-small.png")}
               />
               <p
                 onClick={() => onIngredientClick(item)}
