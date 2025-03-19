@@ -1,45 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { HTTP_STATUS } from "../utils/constants";
 
 const initialState = {
   cocktails: [],
-  loading: "idle",
+  loading: HTTP_STATUS.IDLE,
   error: null,
 };
 
-const cocktailsSlice = createSlice({
-  name: "cocktails",
+const categorySlice = createSlice({
+  name: "category",
   initialState,
   reducers: {
-    fetchCocktailsFulfilled(state, action) {
+    fetchByCategoryFulfilled(state, action) {
       state.cocktails = action.payload;
-      state.loading = "fulfilled";
-    },
-    fetchByFirstLetterFulfilled(state, action) {
-      state.cocktails = action.payload;
-      state.loading = "fulfilled";
-    },
-    onLetterClick(state, action) {
-      state.cocktails = action.payload;
+      state.loading = HTTP_STATUS.FULFILLED;
     },
   },
 });
 
-export const { fetchCocktailsFulfilled, fetchByFirstLetterFulfilled, onLetterClick } = cocktailsSlice.actions;
+export const { fetchByCategoryFulfilled } = categorySlice.actions;
 
-export const fetchCocktails = () => async (dispatch) => {
-  const response = await fetch("/data/cocktailrecipes.json");
-  const data = await response.json();
-  dispatch(fetchCocktailsFulfilled(data[0]));
-};
-
-export const fetchByFirstLetter = (letter) => async (dispatch) => {
+export const fetchByCategory = (type) => async (dispatch) => {
   const response = await fetch("/data/cocktailrecipes.json");
   const data = await response.json();
   const filtered = data[0].filter(cocktail => 
-    cocktail.strDrink.toUpperCase().startsWith(letter)
+    cocktail.strCategory.toLowerCase() === type.toLowerCase()
   );
-  dispatch(fetchByFirstLetterFulfilled(filtered));
-  dispatch(onLetterClick(filtered));
+  dispatch(fetchByCategoryFulfilled(filtered));
 };
 
-export default cocktailsSlice.reducer;
+export default categorySlice.reducer;
