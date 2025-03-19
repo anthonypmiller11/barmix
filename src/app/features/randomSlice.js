@@ -19,7 +19,7 @@ const randomSlice = createSlice({
 
 export const { fetchRandomFulfilled } = randomSlice.actions;
 
-export const fetchRandomCocktail = () => async (dispatch) => {
+export const fetchRandomDrink = () => async (dispatch) => {
   const response = await fetch("/data/cocktailrecipes.json");
   const data = await response.json();
   const randomCocktail = data[0][Math.floor(Math.random() * data[0].length)];
