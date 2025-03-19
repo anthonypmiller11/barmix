@@ -20,4 +20,7 @@ const youtubeSlice = createSlice({
 export const { fetchVideoListFulfilled } = youtubeSlice.actions;
 
 export const fetchVideoList = () => (dispatch) => {
-  dispatch(fetchVideoListF
+  dispatch(fetchVideoListFulfilled());
+};
+
+export default youtubeSlice.reducer;
