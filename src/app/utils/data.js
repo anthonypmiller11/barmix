@@ -50,3 +50,42 @@ export const FeaturedCocktails = [
   { id: "11006", name: "Bloody Mary" },
   { id: "11009", name: "Pina Colada" },
 ];
+
+export const DummyCocktail = {
+  id: "0",
+  drink: "Loading...",
+  category: "Loading...",
+  tags: null,
+  IBA: null,
+  alcoholic: "Loading...",
+  glass: "Loading...",
+  instructions: "Loading...",
+  image: "/images/cocktails/placeholder.jpg",
+  ingredients: [
+    { name: "Loading...", measure: "Loading..." },
+    { name: "Loading...", measure: "Loading..." },
+  ],
+};
+
+export const Quotes = [
+  {
+    quote: "There are two kinds of people I don’t trust: people who don’t drink and people who collect stickers.",
+    author: "Chelsea Handler",
+  },
+  {
+    quote: "I drink to make other people more interesting.",
+    author: "Ernest Hemingway",
+  },
+  {
+    quote: "Here’s to alcohol, the rose colored glasses of life.",
+    author: "F. Scott Fitzgerald",
+  },
+  {
+    quote: "A drink a day keeps the shrink away.",
+    author: "Edward Abbey",
+  },
+  {
+    quote: "I feel bad for people who don’t drink. When they wake up in the morning, that’s as good as they’re going to feel all day.",
+    author: "Frank Sinatra",
+  },
+];
