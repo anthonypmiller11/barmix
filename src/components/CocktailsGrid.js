@@ -1,91 +1,143 @@
 import React, { useEffect, useState } from "react";
-import { DummyCocktail } from "../app/utils/data";
-import { HTTP_STATUS } from "../app/utils/constants";
-import CocktailCard from "./cards/CocktailCard";
-import Pagination from "./Pagination";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  cocktailsGridAnimation,
-} from "../app/utils/animationsHelper";
+import { showSearchModal } from "../app/features/modalSlice";
+import { fromBelow, skeletonGrid } from "../app/utils/animationsHelper";
+import { DummyCocktail } from "../app/utils/data";
+import { LinkButton } from "./buttons";
+import CocktailCard from "./cards/CocktailCard";
 
-const CocktailsGrid = ({ list, loading, perPage, error, fullData }) => {
-  const [pageNumber, setPageNumber] = useState(0);
+const CocktailsGrid = ({ list, loading, error, perPage }) => {
+  const dispatch = useDispatch();
+  const [cocktails, setCocktails] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const itemsPerPage = perPage ?? 8;
-  const itemsVisited = pageNumber * itemsPerPage;
-  const displayItems = list.slice(itemsVisited, itemsVisited + itemsPerPage);
-  const pageCount = Math.ceil(list.length / itemsPerPage);
+  const openSearch = () => {
+    dispatch(showSearchModal());
+  };
 
   useEffect(() => {
-    setPageNumber(0);
-  }, [list]);
+    if (list !== null) {
+      setCocktails(list);
+      setTotalPages(Math.ceil(list.length / perPage));
+      setCurrentPage(0);
+    }
+  }, [list, perPage]);
+
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const startIndex = currentPage * perPage;
+  const endIndex = startIndex + perPage;
+  const currentCocktails = cocktails.slice(startIndex, endIndex);
 
   return (
-    <div>
-      {loading === HTTP_STATUS.FULFILLED && list.length === 0 && (
-        <div className="w-full p-4">
-          <p className="text-app-flame font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
-            {fullData
-              ? "No Cocktails Found For The Selected Letter."
-              : "Oops!! No Cocktails Found."}
+    <motion.div
+      variants={skeletonGrid}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true }}
+      transition={{
+        ease: "easeInOut",
+        duration: 0.2,
+        delay: 0.1,
+      }}
+    >
+      {loading === "pending" && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5 lg:gap-6">
+          {[...Array(perPage)].map((_, index) => (
+            <CocktailCard key={index} cocktail={DummyCocktail} loading={true} />
+          ))}
+        </div>
+      )}
+      {loading === "fulfilled" && cocktails.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5 lg:gap-6">
+          {currentCocktails.map((cocktail) => (
+            <Link key={cocktail.id} to={`/cocktail/${cocktail.id}`}>
+              <CocktailCard cocktail={cocktail} loading={false} />
+            </Link>
+          ))}
+        </div>
+      )}
+      {loading === "fulfilled" && cocktails.length === 0 && (
+        <div className="w-full flex flex-col justify-center items-center">
+          <p className="text-app-cadet font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
+            No Cocktails Found!
           </p>
+          <LinkButton onClick={openSearch} text="Search Something Else" />
         </div>
       )}
-
-      {loading === HTTP_STATUS.REJECTED && error !== "Aborted" && (
-        <div className="w-full p-4">
+      {loading === "rejected" && (
+        <div className="w-full flex flex-col justify-center items-center">
           <p className="text-app-flame font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
-            Oops!! No Cocktails Found.
+            {error}
           </p>
+          <LinkButton onClick={openSearch} text="Search Something Else" />
         </div>
       )}
-
-      {(loading === HTTP_STATUS.PENDING ||
-        (loading === HTTP_STATUS.REJECTED && error === "Aborted")) && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
-          {[...Array(itemsPerPage)].map((_item, index) => {
-            return (
-              <div key={index}>
-                {<CocktailCard cocktail={DummyCocktail} loading={loading} />}
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {loading === HTTP_STATUS.FULFILLED && list.length > 0 && (
-        <motion.div
-          layoutId="cocktailsGrid"
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-[12px] md:gap-[20px] lg:gap-8"
-        >
-          {displayItems.map((item, index) => {
-            return (
-              <motion.div
-                key={item.id}
-                variants={cocktailsGridAnimation}
-                initial="initial"
-                animate="animate"
-                transition={{ duration: 0.2, delay: index * 0.06 }}
+      {totalPages > 1 && (
+        <div className="w-full flex justify-center mt-8">
+          <ReactPaginate
+            previousLabel={
+              <svg
+                className="w-5 h-5 md:w-6 md:h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                {
-                  <CocktailCard
-                    cocktail={item}
-                    loading={loading}
-                    fullData={fullData}
-                  />
-                }
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            }
+            nextLabel={
+              <svg
+                className="w-5 h-5 md:w-6 md:h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            }
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={totalPages}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName={
+              "flex justify-center items-center gap-1 md:gap-2 lg:gap-3"
+            }
+            pageClassName={
+              "rounded-full w-8 h-8 md:w-10 md:h-10 flex justify-center items-center font-app-main text-[12px] md:text-[14px] lg:text-[16px] text-app-cadet hover:bg-app-flame hover:text-white cursor-pointer"
+            }
+            activeClassName={"bg-app-flame text-white"}
+            previousClassName={
+              "rounded-full w-8 h-8 md:w-10 md:h-10 flex justify-center items-center font-app-main text-[12px] md:text-[14px] lg:text-[16px] text-app-cadet hover:bg-app-flame hover:text-white cursor-pointer"
+            }
+            nextClassName={
+              "rounded-full w-8 h-8 md:w-10 md:h-10 flex justify-center items-center font-app-main text-[12px] md:text-[14px] lg:text-[16px] text-app-cadet hover:bg-app-flame hover:text-white cursor-pointer"
+            }
+            disabledClassName={"opacity-50 cursor-not-allowed"}
+          />
+        </div>
       )}
-
-      <div className="mx-8 mb-10 mt-8 md:mb-12 lg:mt-10">
-        {loading === HTTP_STATUS.FULFILLED && list.length > 0 && (
-          <Pagination pageCount={pageCount} setPageNumber={setPageNumber} />
-        )}
-      </div>
-    </div>
+    </motion.div>
   );
 };
 
