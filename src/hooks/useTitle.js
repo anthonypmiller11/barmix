@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const useTitle = (title, loading) => {
+export const useTitle = (title, loading) => {
   useEffect(() => {
     const prevTitle = document.title;
     if (loading === "fulfilled") {
@@ -11,5 +11,3 @@ const useTitle = (title, loading) => {
     };
   }, [title, loading]);
 };
-
-export default useTitle;
