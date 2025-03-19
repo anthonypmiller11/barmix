@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { HTTP_STATUS } from "../app/utils/constants";
 import { calcOtherCocktailGrid } from "../app/utils/helpers";
 import { CocktailsGrid, Title } from "../components";
 import AnimateRoute from "../containers/layout/AnimateRoute";
@@ -22,7 +21,7 @@ const FavoritePage = () => {
       <div className="px-[5vw] md:px-[6vw] lg:px-[7vw] overflow-hidden">
         <CocktailsGrid
           list={favCocktails}
-          loading={HTTP_STATUS.FULFILLED}
+          loading={"fulfilled"}
           error={null}
           perPage={calcOtherCocktailGrid(size.width)}
         />
