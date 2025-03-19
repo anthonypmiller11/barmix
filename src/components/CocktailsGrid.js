@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { showSearchModal } from "../app/features/modalSlice";
 import { fromBelow, skeletonGrid } from "../app/utils/animationsHelper";
 import { DummyCocktail } from "../app/utils/data";
-import { LinkButton } from "./buttons/LinkButton";
+import LinkButton from "./buttons/LinkButton";
 import CocktailCard from "./cards/CocktailCard";
 
 const CocktailsGrid = ({ list, loading, error, perPage }) => {
