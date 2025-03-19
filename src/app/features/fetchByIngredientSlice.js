@@ -1,57 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { HTTP_STATUS } from "../utils/constants";
+import { organizeIngredients } from "../utils/helpers";
 
 const initialState = {
-  cocktails: [],
+  ingredients: [],
   loading: HTTP_STATUS.IDLE,
   error: null,
 };
 
-const fetchByIngredientSlice = createSlice({
-  name: "fetchByIngredient",
+const ingredientSlice = createSlice({
+  name: "ingredient",
   initialState,
   reducers: {
-    fetchByIngredientPending(state) {
-      state.loading = HTTP_STATUS.PENDING;
-      state.error = null;
-    },
-    fetchByIngredientFulfilled(state, action) {
-      state.cocktails = action.payload;
+    fetchIngredientsFulfilled(state, action) {
+      state.ingredients = action.payload;
       state.loading = HTTP_STATUS.FULFILLED;
-    },
-    fetchByIngredientRejected(state, action) {
-      state.loading = HTTP_STATUS.REJECTED;
-      state.error = action.payload;
     },
   },
 });
 
-export const {
-  fetchByIngredientPending,
-  fetchByIngredientFulfilled,
-  fetchByIngredientRejected,
-} = fetchByIngredientSlice.actions;
+export const { fetchIngredientsFulfilled } = ingredientSlice.actions;
 
-export const fetchByIngredient = (ingredient) => async (dispatch) => {
-  dispatch(fetchByIngredientPending());
-  try {
-    const response = await fetch("/data/cocktailrecipes.json");
-    const cocktails = await response.json();
-    const filteredCocktails = cocktails[0].filter((cocktail) => {
-      for (let i = 1; i <= 8; i++) {
-        if (
-          cocktail[`strIngredient${i}`] &&
-          cocktail[`strIngredient${i}`].toLowerCase() === ingredient.toLowerCase()
-        ) {
-          return true;
-        }
+export const fetchIngredients = () => async (dispatch) => {
+  const response = await fetch("/data/cocktailrecipes.json");
+  const data = await response.json();
+  const ingredients = new Set();
+  data[0].forEach(cocktail => {
+    for (let i = 1; i <= 8; i++) {
+      const ingredient = cocktail[`strIngredient${i}`];
+      if (ingredient) {
+        ingredients.add(ingredient.trim());
       }
-      return false;
-    });
-    dispatch(fetchByIngredientFulfilled(filteredCocktails));
-  } catch (error) {
-    dispatch(fetchByIngredientRejected(error.message));
-  }
+    }
+  });
+  const ingredientList = Array.from(ingredients);
+  const organized = organizeIngredients(ingredientList);
+  dispatch(fetchIngredientsFulfilled(organized));
 };
 
-export default fetchByIngredientSlice.reducer;
+export default ingredientSlice.reducer;
