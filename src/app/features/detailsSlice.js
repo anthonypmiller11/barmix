@@ -32,7 +32,10 @@ export const fetchCocktailDetails = createAsyncThunk(
   async (id) => {
     const response = await fetch("/data/cocktailrecipes.json");
     const data = await response.json();
-    const cocktail = data[0].find(c => c.idDrink === id);
+    const cocktail = data[0].find(c => c.idDrink === String(id)); // Ensure ID is compared as a string
+    if (!cocktail) {
+      throw new Error("Cocktail not found");
+    }
     return organizeCocktail(cocktail);
   }
 );
