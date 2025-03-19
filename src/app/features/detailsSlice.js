@@ -1,30 +1,40 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { HTTP_STATUS } from "../utils/constants";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { organizeCocktail } from "../utils/helpers";
 
 const initialState = {
   cocktail: null,
-  loading: HTTP_STATUS.IDLE,
+  loading: "idle",
   error: null,
 };
 
 const detailsSlice = createSlice({
   name: "details",
   initialState,
-  reducers: {
-    fetchCocktailDetailsFulfilled(state, action) {
-      state.cocktail = action.payload;
-      state.loading = HTTP_STATUS.FULFILLED;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCocktailDetails.pending, (state) => {
+        state.loading = "pending";
+      })
+      .addCase(fetchCocktailDetails.fulfilled, (state, action) => {
+        state.loading = "fulfilled";
+        state.cocktail = action.payload;
+      })
+      .addCase(fetchCocktailDetails.rejected, (state, action) => {
+        state.loading = "rejected";
+        state.error = action.error.message;
+      });
   },
 });
 
-export const { fetchCocktailDetailsFulfilled } = detailsSlice.actions;
-
-export const fetchCocktailDetails = (id) => async (dispatch) => {
-  const response = await fetch("/data/cocktailrecipes.json");
-  const data = await response.json();
-  const cocktail = data[0].find(c => c.idDrink === id);
-  dispatch(fetchCocktailDetailsFulfilled(cocktail));
-};
+export const fetchCocktailDetails = createAsyncThunk(
+  "details/fetchCocktailDetails",
+  async (id) => {
+    const response = await fetch("/data/cocktailrecipes.json");
+    const data = await response.json();
+    const cocktail = data[0].find(c => c.idDrink === id);
+    return organizeCocktail(cocktail);
+  }
+);
 
 export default detailsSlice.reducer;
