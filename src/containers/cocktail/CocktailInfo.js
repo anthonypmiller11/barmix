@@ -12,7 +12,7 @@ const CocktailInfo = ({ cocktail, loading }) => {
   useEffect(() => {
     if (loading === "fulfilled" && cocktail) {
       setTags([]);
-      cocktail.strTags !== null && setTags(cocktail.strTags.split(","));
+      cocktail.tags !== null && setTags(cocktail.tags.split(","));
     }
   }, [loading, cocktail]);
 
@@ -46,8 +46,8 @@ const CocktailInfo = ({ cocktail, loading }) => {
             {loading === "fulfilled" && cocktail && (
               <LazyLoadImage
                 className="w-full h-auto rounded-xl object-cover drop-shadow-md md:drop-shadow-lg aspect-[4/3] md:aspect-square"
-                src={cocktail.strDrinkThumb || ImagePlaceHolder}
-                alt={cocktail.strDrink}
+                src={cocktail.image || ImagePlaceHolder}
+                alt={cocktail.drink}
                 placeholder={<div className="loading animate-loading rounded-xl w-full aspect-[4/3] md:aspect-square"></div>}
               />
             )}
