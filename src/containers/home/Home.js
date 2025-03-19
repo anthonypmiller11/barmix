@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRandomCocktail } from "../../app/features/randomSlice";
-import { fetchCocktails } from "../../app/features/cocktailsSlice";
+import { fetchRandomDrink } from "../../app/features/randomSlice";
 import { Title } from "../../components";
-import Cocktails from "./Cocktails";
-import Popular from "./Popular";
+import CocktailQuote from "../../components/home/CocktailQuote";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -12,34 +10,22 @@ const Home = () => {
   const loading = useSelector((state) => state.random.loading);
 
   useEffect(() => {
-    dispatch(fetchRandomCocktail());
-    dispatch(fetchCocktails());
+    dispatch(fetchRandomDrink());
   }, [dispatch]);
 
   return (
     <div>
       <Title title="Welcome to BarMix" />
-      {loading === "fulfilled" && randomCocktail ? (
-        <div>
-          <h2>{randomCocktail.strDrink}</h2>
-          <p>
-            There are two kinds of people I don’t trust: people who don’t drink and people who collect stickers. — Chelsea Handler
-          </p>
-          <div>
-            <p>Total Drinks</p>
-            <p>Non Alcoholic</p>
-            <p>Categories</p>
-            <p>Ingredients</p>
-          </div>
+      {loading === HTTP_STATUS.FULFILLED && randomCocktail ? (
+        <div className="w-full flex flex-col justify-center items-center px-4 md:px-6 lg:px-20 my-6 md:my-8 lg:my-12">
+          <h2 className="text-app-cadet font-app-heading text-[20px] md:text-[24px] lg:text-[28px] text-center">
+            {randomCocktail.strDrink}
+          </h2>
         </div>
       ) : (
-        <p>Loading random cocktail...</p>
+        <p className="text-center">Loading random cocktail...</p>
       )}
-      <Title title="Cocktails from around the world" />
-      <Title title="Most popular cocktails" />
-      <Popular />
-      <Title title="Browse Cocktails by Name" />
-      <Cocktails />
+      <CocktailQuote />
     </div>
   );
 };
