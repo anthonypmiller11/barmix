@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { HTTP_STATUS } from "../utils/constants";
 
 const initialState = {
   videos: [],
-  loading: HTTP_STATUS.IDLE,
+  loading: "idle",
   error: null,
 };
 
@@ -13,7 +12,7 @@ const youtubeSlice = createSlice({
   reducers: {
     fetchVideoListFulfilled(state) {
       state.videos = [];
-      state.loading = HTTP_STATUS.FULFILLED;
+      state.loading = "fulfilled";
     },
   },
 });
