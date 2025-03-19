@@ -22,6 +22,8 @@ const AlcoholicPage = () => {
 
   const [selectedType, setSelectedType] = useState(type);
 
+  console.log("AlcoholicPage state:", { cocktails, loading, error });
+
   useTitle(`${types?.[selectedType] ?? "Error"} | Cocktails`);
   const size = useWindowSize();
 
@@ -33,12 +35,13 @@ const AlcoholicPage = () => {
 
   useEffect(() => {
     setSelectedType(type);
+    console.log("Dispatching fetchByAlcoholic for type:", types[selectedType]);
     const promise = dispatch(fetchByAlcoholic(types[selectedType]));
 
     return () => {
       promise.abort();
     };
-  }, [dispatch, selectedType, type]);
+  }, [dispatch, selectedType, type, types]);
 
   return (
     <AnimateRoute>
