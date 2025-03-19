@@ -23,7 +23,7 @@ const Cocktails = () => {
   return (
     <div className="w-full flex flex-col justify-start items-center px-4 md:px-6 lg:px-20 my-6 md:my-8 lg:my-12">
       <SelectLetter onLetterFilter={handleLetterFilter} />
-      {loading === HTTP_STATUS.FULFILLED ? (
+      {loading === "fulfilled" ? (
         <div className="w-full flex flex-col gap-2">
           {cocktails.map((cocktail) => (
             <Link key={cocktail.idDrink} to={`/cocktail/${cocktail.idDrink}`}>
