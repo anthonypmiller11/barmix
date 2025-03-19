@@ -130,4 +130,21 @@ const IngredientsGrid = ({ list, loading, error, perPage }) => {
               "flex justify-center items-center gap-1 md:gap-2 lg:gap-3"
             }
             pageClassName={
-              "rounded-full w
+              "rounded-full w-8 h-8 md:w-10 md:h-10 flex justify-center items-center font-app-main text-[12px] md:text-[14px] lg:text-[16px] text-app-cadet hover:bg-app-flame hover:text-white cursor-pointer"
+            }
+            activeClassName={"bg-app-flame text-white"}
+            previousClassName={
+              "rounded-full w-8 h-8 md:w-10 md:h-10 flex justify-center items-center font-app-main text-[12px] md:text-[14px] lg:text-[16px] text-app-cadet hover:bg-app-flame hover:text-white cursor-pointer"
+            }
+            nextClassName={
+              "rounded-full w-8 h-8 md:w-10 md:h-10 flex justify-center items-center font-app-main text-[12px] md:text-[14px] lg:text-[16px] text-app-cadet hover:bg-app-flame hover:text-white cursor-pointer"
+            }
+            disabledClassName={"opacity-50 cursor-not-allowed"}
+          />
+        </div>
+      )}
+    </motion.div>
+  );
+};
+
+export default IngredientsGrid;
