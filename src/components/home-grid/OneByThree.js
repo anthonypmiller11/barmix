@@ -43,4 +43,22 @@ const OneByThree = ({ cocktail, loading, link }) => {
           </p>
         )}
         {loading ? (
-          <div className="loading animate-loading rounded-xl w-1/2 h
+          <div className="loading animate-loading rounded-xl w-1/2 h-4 md:h-5 mb-4"></div>
+        ) : (
+          <p className="text-white font-app-main text-[10px] md:text-[11px] lg:text-[12px] xl:text-[13px] text-center mb-4">
+            {cocktail.alcoholic}
+          </p>
+        )}
+        {loading ? (
+          <div className="loading animate-loading rounded-xl w-1/2 h-8 md:h-10"></div>
+        ) : (
+          <Link to={link}>
+            <LinkButton text="View Recipe" />
+          </Link>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
+export default OneByThree;
