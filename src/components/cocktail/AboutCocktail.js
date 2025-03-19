@@ -12,17 +12,19 @@ const AboutCocktail = ({ cocktail, loading }) => {
   for (let i = 1; i <= 8; i++) {
     if (cocktail[`strIngredient${i}`]) {
       const ingrName = cocktail[`strIngredient${i}`].trim();
-      const imageName = ingrName.replace(/\s+/g, "_");
+      const imageBase = ingrName.replace(/\s+/g, "_");
       ingredientsList.push({
         name: ingrName,
         measure: cocktail[`strMeasure${i}`] || "",
-        image: `/images/ingredients/${imageName}.png`, // Match your files
+        imageSmall: `/images/ingredients/${imageBase}-small.png`,
+        imageMedium: `/images/ingredients/${imageBase}-medium.png`,
+        image: `/images/ingredients/${imageBase}.png`,
       });
     }
   }
 
   const onIngredientClick = (ingredient) => {
-    dispatch(setCurrentIngredient({ strIngredient1: ingredient.name, image: ingredient.image }));
+    dispatch(setCurrentIngredient({ strIngredient1: ingredient.name, image: ingredient.imageMedium })); // Medium for modal
     dispatch(showIngredientModal());
   };
 
@@ -50,11 +52,11 @@ const AboutCocktail = ({ cocktail, loading }) => {
           {ingredientsList.map((item, index) => (
             <div key={index} className="flex items-center gap-2">
               <LazyLoadImage
-                src={item.image}
+                src={item.imageSmall} // Small for inline display
                 alt={item.name}
                 className="w-8 h-8 object-cover rounded-full"
                 placeholder={<div className="w-8 h-8 bg-gray-300 rounded-full animate-pulse"></div>}
-                onError={(e) => (e.target.src = "/images/ingredients/default.png")} // Fallback
+                onError={(e) => (e.target.src = "/images/ingredients/default-small.png")} // Fallback
               />
               <p
                 onClick={() => onIngredientClick(item)}
