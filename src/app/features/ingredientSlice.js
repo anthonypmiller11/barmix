@@ -1,33 +1,49 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { HTTP_STATUS } from "../utils/constants";
-import { containsIngredient } from "../utils/helpers";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { organizeIngredients } from "../utils/helpers";
 
 const initialState = {
-  cocktails: [],
-  loading: HTTP_STATUS.IDLE,
+  ingredients: [],
+  loading: "idle",
   error: null,
 };
 
-const fetchByIngredientSlice = createSlice({
-  name: "fetchByIngredient",
+const ingredientSlice = createSlice({
+  name: "ingredient",
   initialState,
-  reducers: {
-    fetchByIngredientFulfilled(state, action) {
-      state.cocktails = action.payload;
-      state.loading = HTTP_STATUS.FULFILLED;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchIngredients.pending, (state) => {
+        state.loading = "pending";
+      })
+      .addCase(fetchIngredients.fulfilled, (state, action) => {
+        state.loading = "fulfilled";
+        state.ingredients = action.payload;
+      })
+      .addCase(fetchIngredients.rejected, (state, action) => {
+        state.loading = "rejected";
+        state.error = action.error.message;
+      });
   },
 });
 
-export const { fetchByIngredientFulfilled } = fetchByIngredientSlice.actions;
+export const fetchIngredients = createAsyncThunk(
+  "ingredient/fetchIngredients",
+  async () => {
+    const response = await fetch("/data/cocktailrecipes.json");
+    const data = await response.json();
+    const ingredients = new Set();
+    data[0].forEach(cocktail => {
+      for (let i = 1; i <= 8; i++) {
+        const ingredient = cocktail[`strIngredient${i}`];
+        if (ingredient) {
+          ingredients.add(ingredient.trim());
+        }
+      }
+    });
+    const ingredientList = Array.from(ingredients);
+    return organizeIngredients(ingredientList);
+  }
+);
 
-export const fetchByIngredient = (ingredient) => async (dispatch) => {
-  const response = await fetch("/data/cocktailrecipes.json");
-  const data = await response.json();
-  const filtered = data[0].filter(cocktail => 
-    containsIngredient(cocktail, [ingredient])
-  );
-  dispatch(fetchByIngredientFulfilled(filtered));
-};
-
-export default fetchByIngredientSlice.reducer;
+export default ingredientSlice.reducer;
