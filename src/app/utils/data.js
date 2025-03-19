@@ -1,35 +1,18 @@
 export const alcoholicTypes = ["Alcoholic", "Non alcoholic", "Optional alcohol"];
 
-export const ingredientCategories = [
-  "Vodka Drinks",
-  "Gin Drinks",
-  "Tequila Drinks",
-  "Rum Drinks",
-  "Whiskey Drinks",
-  "Brandy Drinks",
-  "Liqueur Drinks",
-  "Non-Alcoholic Drinks"
+export const categoryTypes = [
+  "Cocktail",
+  "Ordinary Drink",
+  "Shot",
+  "Punch / Party Drink",
+  "Beer",
+  "Soft Drink",
+  "Other / Unknown",
+  "Coffee / Tea",
+  "Homemade Liqueur",
+  "Milk / Float / Shake",
+  "Cocoa"
 ];
-
-export const ingredientMapping = {
-  "Vodka Drinks": ["Absolut Vodka", "Smirnoff Vodka"],
-  "Gin Drinks": ["Tanqueray Gin"],
-  "Tequila Drinks": ["Patron Tequila", "Jose Cuervo Tequila"],
-  "Rum Drinks": ["Bacardi White Rum", "Captain Morgan Rum", "Coconut Rum"],
-  "Whiskey Drinks": ["Crown Royal Whiskey", "Jack Daniels Whiskey", "Irish Whiskey", "Rye Whiskey"],
-  "Brandy Drinks": ["Hennessy Cognac", "Brandy"],
-  "Liqueur Drinks": [
-    "Grand Marnier", "Cointreau", "Triple Sec", "Amaretto", "Kahlua", "Coffee Liqueur",
-    "Chambord Raspberry Liqueur", "Maraschino Liqueur", "Aperol", "Campari", "Green Chartreuse",
-    "Jägermeister", "Peach Schnapps", "Irish Cream"
-  ],
-  "Non-Alcoholic Drinks": [
-    "Lemon Juice", "Lime Juice", "Orange Juice", "Pineapple Juice", "Grapefruit Juice",
-    "Cranberry Juice", "Tomato Juice", "Tonic Water", "Ginger Beer", "Lemon Lime Soda",
-    "Coca Cola", "Soda Water", "Grenadine", "Simple Syrup", "Honey Syrup", "Orgeat Syrup",
-    "Passion Fruit Syrup", "Raspberry Syrup", "Lemon Syrup", "Chocolate Syrup"
-  ]
-};
 
 export const glassTypes = [
   "Highball glass",
@@ -51,4 +34,19 @@ export const Menu = [
   { menu: "Categories", link: "/categories" },
   { menu: "Glasses", link: "/glasses" },
   { menu: "Ingredients", link: "/ingredients" },
+];
+
+export const FeaturedCocktails = [
+  { id: "11007", name: "Margarita" },
+  { id: "11000", name: "Mojito" },
+  { id: "11118", name: "Old Fashioned" },
+  { id: "17222", name: "A1" },
+  { id: "11001", name: "Negroni" },
+  { id: "11003", name: "Whiskey Sour" },
+  { id: "11008", name: "Dry Martini" },
+  { id: "11002", name: "Daiquiri" },
+  { id: "11005", name: "Manhattan" },
+  { id: "11004", name: "Cosmopolitan" },
+  { id: "11006", name: "Bloody Mary" },
+  { id: "11009", name: "Pina Colada" },
 ];
