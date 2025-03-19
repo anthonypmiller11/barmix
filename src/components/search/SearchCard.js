@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { fromBelow } from "../../app/utils/animationsHelper";
-import { LinkButton } from "../buttons/LinkButton";
+import LinkButton from "../buttons/LinkButton";
 
 const SearchCard = ({ cocktail, loading }) => {
   return (
