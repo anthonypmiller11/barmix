@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Logo = ({alt}) => {
   return (
-    <div className="flex gap-1 h-8 lg:w-20 relative group">
+    <div className="flex gap-1 h-8 lg:w-56 relative group">
       <Link to="/">
         <svg
           className={`h-8 w-8 cursor-pointer md:svg-icon-group md:group-hover:fill-app-flame ${alt ? "fill-white" : "fill-app-cadet"}`}
@@ -21,7 +21,7 @@ const Logo = ({alt}) => {
           </g>
         </svg>
 
-        <span className={`first-letter:text-app-flame first-letter:text-[26px] font-bold font-app-heading text-3xl absolute -bottom-3 left-[10px] cursor-pointer md:basic-transition md:group-hover:text-app-flame md:group-hover:text-[26px] md:group-hover:left-6 ${alt ? "text-white" : "text-app-cadet"}`}>
+        <span className={`first-letter:text-app-flame first-letter:text-[26px] font-bold font-app-heading text-2xl absolute -bottom-2 left-[8px] cursor-pointer md:basic-transition md:group-hover:text-app-flame md:group-hover:text-[26px] md:group-hover:left-8 whitespace-nowrap ${alt ? "text-white" : "text-app-cadet"}`}>
           barmix cocktail machine
         </span>
       </Link>
