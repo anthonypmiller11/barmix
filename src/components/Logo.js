@@ -21,7 +21,7 @@ const Logo = ({alt}) => {
         </svg>
 
         <span className={`first-letter:text-app-flame first-letter:text-[33px] font-bold font-app-heading text-3xl absolute -bottom-3 left-[10px] cursor-pointer md:basic-transition md:group-hover:text-app-flame md:group-hover:text-[31px] md:group-hover:left-6 ${alt ? "text-white" : "text-app-cadet"}`}>
-          Cocktails
+          Barmix Cocktail Machine
         </span>
       </Link>
     </div>
