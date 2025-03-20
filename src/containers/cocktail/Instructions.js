@@ -45,13 +45,13 @@ const Instructions = ({ cocktail, loading }) => {
               <div key={index} className="w-full">
                 {item.trim().length > 1 && (
                   <div className="flex gap-4 justify-center items-start space-y-1">
-                    <div className="flex-[2]flex justify-end mt-[4px] lg:mt-[5px]">
-                      <p className="text-app-olivine font-app-heading text-[13px] md:text-[14px] xl:text-[15px]">
+                    <div className="flex-[2]flex justify-end mt-[9px] lg:mt-[19px]">
+                      <p className="text-app-olivine font-app-heading text-[15px] md:text-[16px] xl:text-[17px]">
                         Step {index + 1}:
                       </p>
                     </div>
                     <div className="flex-[10] flex justify-start pb-2">
-                      <p className="text-white font-app-main text-[12px] md:text-[13px] xl:text-[15px] tracking-wider">
+                      <p className="text-white font-app-main text-[20px] md:text-[21px] xl:text-[23px] tracking-wider">
                         {item.trim()}.
                       </p>
                     </div>
