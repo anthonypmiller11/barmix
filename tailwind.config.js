@@ -49,11 +49,11 @@ module.exports = {
         '2xl': '1536px',
       },
       /*  fontSize: {                  //REMOVE TO CLEAN
-         'cocktail-name': '1.2em', // 20% bigger (1em is the base size)
-         'ingredient-name': '1.2em',
+         'cocktail-name': '1.4em', // 20% bigger (1em is the base size)
+         'ingredient-name': '1.4em',
        }, */                     //REMOVE TO CLEAN
         fontWeight: {
-        //  'cocktail-name': '900', // Up to 900        //REMOVE TO CLEAN
+        //  'cocktail-name': '800', // Up to 900        //REMOVE TO CLEAN
         // 'ingredient-name': 'bold', // use tailwind built-in bold    //REMOVE TO CLEAN
         },
        /*  textShadow: {
