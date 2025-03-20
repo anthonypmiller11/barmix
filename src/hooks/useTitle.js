@@ -9,7 +9,7 @@ export function useTitle(title, loading = HTTP_STATUS.FULFILLED) {
       delay: 50,
       smooth: true,
     });
-    const defaultTitle = "Cocktails";
+    const defaultTitle = "barmix cocktails";
     const prevTitle = document.title;
     if (loading === null) {
       document.title = title;
