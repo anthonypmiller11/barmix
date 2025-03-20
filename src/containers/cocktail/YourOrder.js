@@ -44,7 +44,7 @@ const VideoTutorial = ({ cocktail, loading }) => {
               />
               <div className="w-full p-4 flex justify-center gap-2 items-center">
                 <p className="text-app-cadet font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
-                  Video Guide Not Relevant?
+                  Your Order Below
                 </p>
                 <PrimaryButton onClick={onSkipVideo} text="Next Video" />
               </div>
@@ -53,7 +53,7 @@ const VideoTutorial = ({ cocktail, loading }) => {
         {youtubeLoading === HTTP_STATUS.REJECTED && (
           <div className="w-full p-4">
             <p className="text-app-flame font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
-              Youtube API Quota Exceeded! Try Again Later
+              Customize your cocktail or just send it to us as is.  We'll text you when its ready!
             </p>
           </div>
         )}
