@@ -53,10 +53,10 @@ const TwoByTwo = ({ cocktail, loading }) => {
               )}
               {loading === HTTP_STATUS.FULFILLED && (
                 <>
-                  <p className="text-[12px] md:text-[13px] lg:text-[14px] xl:text-[15px] font-app-text text-app-flame leading-5">
+                  <p className="text-[15px] md:text-[15px] lg:text-[16px] xl:text-[17px] font-app-text text-app-bold-flame leading-5">
                     {drink ?? "Cocktail"}
                   </p>
-                  <p className="xl:mt-2 text-[13px] md:text-[14px] lg:text-[15px] xl:text-[16px] font-app-heading text-app-cadet font-bold truncate leading-5">
+                  <p className="xl:mt-2 text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] font-app-heading text-app-flame font-bold truncate leading-5">
                     {category ?? "Category"}
                   </p>
                   <div className="flex flex-wrap gap-1 xl:gap-2 overflow-hidden mt-1 xl:mt-4">
