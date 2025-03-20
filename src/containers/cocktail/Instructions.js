@@ -46,7 +46,7 @@ const Instructions = ({ cocktail, loading }) => {
                 {item.trim().length > 1 && (
                   <div className="flex gap-4 justify-center items-start space-y-1">
                     <div className="flex-[2]flex justify-end mt-[20px] lg:mt-[23px]">
-                      <p className="text-app-olivine font-app-heading text-[20px] md:text-[21px] xl:text-[13px]">
+                      <p className="text-app-olivine font-app-main text-[20px] md:text-[21px] xl:text-[23px]">
                         Step {index + 1}:
                       </p>
                     </div>
