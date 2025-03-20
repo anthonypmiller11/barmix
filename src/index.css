@@ -5,7 +5,7 @@
   margin: 0;
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   color: #333;
 }
 
@@ -21,13 +21,13 @@
   blockquote {
     @apply text-app-cadet font-semibold tracking-wide relative italic leading-relaxed; /* Changed font-bold to font-semibold for lighter weight */
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     /* Removed the before and after pseudo-elements to fix the 201C/201D issue */
   }
 
   cite {
     @apply text-app-cadet font-app-main text-sm md:text-base lg:text-lg font-bold relative -bottom-8;
-    font-size: 0.875rem;
+    font-size: 1.0rem;
   }
 }
 
