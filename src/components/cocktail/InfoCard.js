@@ -1,36 +1,37 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { fromBelow } from "../../app/utils/animationsHelper";
+import { HTTP_STATUS } from "../../app/utils/constants";
 
-const InfoCard = ({ title, info, loading }) => {
+const InfoCard = ({ title, data, loading }) => {
   return (
-    <motion.div
-      variants={fromBelow}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true }}
-      transition={{
-        ease: "easeInOut",
-        duration: 0.3,
-        delay: 0.2,
-      }}
-      className="w-full flex flex-col justify-start items-center"
-    >
-      {loading ? (
-        <div className="loading animate-loading rounded-xl w-1/2 h-5 md:h-6 mb-2"></div>
-      ) : (
-        <p className="text-app-cadet font-app-heading text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px] font-bold">
-          {title}
-        </p>
+    <>
+      {loading !== HTTP_STATUS.FULFILLED && (
+        <>
+          <div className="loading animate-loading flex flex-col justify-center items-center rounded-lg border-[3px] border-dashed w-full h-auto px-4 py-2">
+            <div className="w-full space-y-1">
+              <p className="loading animate-loading text-[14px] text-slate-100 text-center truncate leading-5">
+                ...
+              </p>
+              <p className="loading animate-loading text-[14px] text-slate-100 text-center truncate leading-5">
+                ...
+              </p>
+            </div>
+          </div>
+        </>
       )}
-      {loading ? (
-        <div className="loading animate-loading rounded-xl w-3/4 h-4 md:h-5"></div>
-      ) : (
-        <p className="text-app-cadet font-app-main text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px] tracking-wider">
-          {info}
-        </p>
+
+      {loading === HTTP_STATUS.FULFILLED && (
+        <>
+          <div className="flex flex-col justify-center items-center rounded-lg border-[3px] border-dashed w-full h-full px-4 lg:px-8 py-2 cursor-default">
+            <p className="text-[11px] md:text-[13px] lg:text-[14px] font-app-text text-app-cadet text-center">
+              {data}
+            </p>
+            <p className="text-[9px] md:text-[10px] lg:text-[11px] font-app-main text-app-olivine text-center tracking-wider">
+              {title}
+            </p>
+          </div>
+        </>
       )}
-    </motion.div>
+    </>
   );
 };
 

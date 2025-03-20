@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { HTTP_STATUS } from "../../app/utils/constants";
 import { motion } from "framer-motion";
 import { fromBelow, skeletonGrid } from "../../app/utils/animationsHelper";
 import Champagne from "../../components/animatedSvg/Champagne";
@@ -7,7 +8,7 @@ const Instructions = ({ cocktail, loading }) => {
   const [instructions, setInstructions] = useState([]);
 
   useEffect(() => {
-    if (loading === "fulfilled") {
+    if (loading === HTTP_STATUS.FULFILLED) {
       setInstructions(cocktail.instructions.split("."));
     }
   }, [loading, cocktail.instructions]);
@@ -37,7 +38,7 @@ const Instructions = ({ cocktail, loading }) => {
         }}
         className="w-full px-6 md:px-20 lg:px-32 py-8 md:py-10 mt-6 md:mt-8 lg:mt-12 mb-8 flex flex-col items-center"
       >
-        {loading === "fulfilled" &&
+        {loading === HTTP_STATUS.FULFILLED &&
           instructions.length > 0 &&
           instructions.map((item, index) => {
             return (

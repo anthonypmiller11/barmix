@@ -1,42 +1,54 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { alcoholicTypes } from "../utils/data";
 import { organizeCocktailList } from "../utils/helpers";
-
-const initialState = {
-  cocktails: [],
-  loading: "idle",
-  error: null,
-};
-
-const alcoholicSlice = createSlice({
-  name: "alcoholic",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchByAlcoholic.pending, (state) => {
-        state.loading = "pending";
-      })
-      .addCase(fetchByAlcoholic.fulfilled, (state, action) => {
-        state.loading = "fulfilled";
-        state.cocktails = action.payload;
-      })
-      .addCase(fetchByAlcoholic.rejected, (state, action) => {
-        state.loading = "rejected";
-        state.error = action.error.message;
-      });
-  },
-});
 
 export const fetchByAlcoholic = createAsyncThunk(
   "alcoholic/fetchByAlcoholic",
-  async (type) => {
-    const response = await fetch("/data/cocktailrecipes.json");
-    const data = await response.json();
-    const filtered = data[0].filter(cocktail => 
-      cocktail.strAlcoholic.toLowerCase() === type.toLowerCase()
-    );
-    return organizeCocktailList(filtered);
+  async (type, { signal }) => {
+    const source = axios.CancelToken.source();
+    signal.addEventListener("abort", () => {
+      source.cancel();
+    });
+    if (alcoholicTypes.some((t) => t === alcoholicTypes[type])) {
+      const response = await axios.get(
+        `${API_BASE_URL}/filter.php?a=${alcoholicTypes[type]}`,
+        {
+          cancelToken: source.token,
+        }
+      );
+      return organizeCocktailList(response.data.drinks);
+    }
+
+    throw new Error("Invalid type");
   }
 );
+
+const initialState = {
+  cocktails: [],
+  loading: null,
+  error: null,
+};
+
+export const alcoholicSlice = createSlice({
+  name: "alcoholic",
+  initialState: initialState,
+  extraReducers: {
+    [fetchByAlcoholic.pending]: (state) => {
+      state.cocktails = [];
+      state.loading = HTTP_STATUS.PENDING;
+    },
+    [fetchByAlcoholic.fulfilled]: (state, action) => {
+      state.loading = HTTP_STATUS.FULFILLED;
+      state.cocktails = action.payload;
+    },
+    [fetchByAlcoholic.rejected]: (state, action) => {
+      state.cocktails = [];
+      state.loading = HTTP_STATUS.REJECTED;
+      state.error = action.error.message;
+    },
+  },
+});
 
 export default alcoholicSlice.reducer;

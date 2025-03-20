@@ -32,12 +32,12 @@ const CategoriesPage = () => {
   };
 
   useEffect(() => {
-    const promise = dispatch(fetchByCategory(types[selectedType]));
+    const promise = dispatch(fetchByCategory(selectedType));
 
     return () => {
       promise.abort();
     };
-  }, [dispatch, selectedType, type, types]);
+  }, [dispatch, selectedType, type]);
 
   return (
     <AnimateRoute>

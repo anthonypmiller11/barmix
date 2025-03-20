@@ -1,42 +1,53 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCocktails, fetchByFirstLetter, onLetterClick } from "../../app/features/cocktailsSlice";
-import SelectLetter from "../../components/home/SelectLetter";
-import { Link } from "react-router-dom";
+import { calcHomeCocktailGrid } from "../../app/utils/helpers";
+import { CocktailsGrid, SelectLetter } from "../../components";
+import useWindowSize from "../../hooks/useWindowSize";
+import {
+  fetchByFirstLetter,
+  initialFetch,
+} from "../../app/features/cocktailsSlice";
 
 const Cocktails = () => {
   const dispatch = useDispatch();
   const cocktails = useSelector((state) => state.cocktails.cocktails);
   const loading = useSelector((state) => state.cocktails.loading);
+  const error = useSelector((state) => state.cocktails.error);
+  const selectedLetter = useSelector((state) => state.cocktails.selectedLetter);
+
+  const size = useWindowSize();
 
   useEffect(() => {
-    dispatch(fetchCocktails());
-  }, [dispatch]);
+    if (selectedLetter === "") {
+      const promise = dispatch(initialFetch());
+      return () => {
+        promise.abort();
+      };
+    } else {
+      const promise = dispatch(fetchByFirstLetter(selectedLetter));
+      return () => {
+        promise.abort();
+      };
+    }
 
-  const handleLetterFilter = (letter) => {
-    dispatch(fetchByFirstLetter(letter));
-    dispatch(onLetterClick(cocktails.filter(cocktail => 
-      cocktail.strDrink.toUpperCase().startsWith(letter)
-    )));
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className="w-full flex flex-col justify-start items-center px-4 md:px-6 lg:px-20 my-6 md:my-8 lg:my-12">
-      <SelectLetter onLetterFilter={handleLetterFilter} />
-      {loading === "fulfilled" ? (
-        <div className="w-full flex flex-col gap-2">
-          {cocktails.map((cocktail) => (
-            <Link key={cocktail.idDrink} to={`/cocktail/${cocktail.idDrink}`}>
-              <div className="text-app-cadet font-app-text text-[14px] md:text-[16px] lg:text-[18px] hover:text-app-flame">
-                {cocktail.strDrink}
-              </div>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
+    <section className="my-4 overflow-hidden" id="cocktails">
+      <div className="mb-8 mt-1 lg:mt-2 mx-12 md:mx-24 lg:mx-12">
+        <SelectLetter />
+      </div>
+      <div className="px-[5vw] md:px-[6vw] lg:px-[7vw]">
+        <CocktailsGrid
+          perPage={calcHomeCocktailGrid(size.width)}
+          list={cocktails}
+          loading={loading}
+          error={error}
+          fullData={true}
+        />
+      </div>
+    </section>
   );
 };
 

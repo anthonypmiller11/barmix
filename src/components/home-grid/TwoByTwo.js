@@ -1,101 +1,101 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { fromBelow } from "../../app/utils/animationsHelper";
-import LinkButton from "../buttons/LinkButton";
+import { HTTP_STATUS } from "../../app/utils/constants";
+import { ImagePlaceHolder } from "../../assets/";
+import { Alcoholic, Favorite, LinkButton } from "../../components";
 
-const TwoByTwo = ({ cocktailOne, cocktailTwo, loading, linkOne, linkTwo }) => {
+const TwoByTwo = ({ cocktail, loading }) => {
+  const { id, drink, image, category, alcoholic, ingredients } = cocktail;
   return (
-    <motion.div
-      variants={fromBelow}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true }}
-      transition={{
-        ease: "easeInOut",
-        duration: 0.3,
-        delay: 0.1,
-      }}
-      className="grid grid-two-by-two gap-2 md:gap-3 lg:gap-4 rounded-xl drop-shadow-xl h-max group ring-1 ring-white"
+    <div
+      className={`bg-white h-full w-full rounded-[5px] drop-shadow-lg group overflow-hidden relative hover:ring-1 hover:ring-white cursor-default ${
+        loading === HTTP_STATUS.FULFILLED && " from-right"
+      }`}
     >
-      <div className="relative">
-        {loading ? (
-          <div className="loading animate-loading rounded-xl w-full aspect-[4/3]"></div>
-        ) : (
-          <LazyLoadImage
-            className="w-full h-auto rounded-xl object-cover drop-shadow-md md:drop-shadow-lg aspect-[4/3]"
-            src={cocktailOne.image}
-            alt={cocktailOne.drink}
-            placeholder={
-              <div className="loading animate-loading rounded-xl w-full aspect-[4/3]"></div>
-            }
-          />
-        )}
-        <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-app-cadet/80 to-transparent rounded-b-xl"></div>
-        <div className="absolute bottom-0 w-full flex flex-col justify-end items-center px-2 py-2">
-          {loading ? (
-            <div className="loading animate-loading rounded-xl w-3/4 h-5 md:h-6 mb-2"></div>
-          ) : (
-            <p className="text-white font-app-heading text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px] text-center mb-2">
-              {cocktailOne.drink}
-            </p>
-          )}
-          {loading ? (
-            <div className="loading animate-loading rounded-xl w-1/2 h-4 md:h-5 mb-4"></div>
-          ) : (
-            <p className="text-white font-app-main text-[10px] md:text-[11px] lg:text-[12px] xl:text-[13px] text-center mb-4">
-              {cocktailOne.alcoholic}
-            </p>
-          )}
-          {loading ? (
-            <div className="loading animate-loading rounded-xl w-1/2 h-8 md:h-10"></div>
-          ) : (
-            <Link to={linkOne}>
-              <LinkButton text="View Recipe" />
-            </Link>
-          )}
+      <div className="rounded-[5px] overflow-hidden">
+        <div className="grid grid-cols-two-by-two">
+          <div className="p-[6px] md:p-2 xl:p-[10px] relative">
+            {loading !== HTTP_STATUS.FULFILLED && (
+              <div className="loading animate-loading aspect-[4/3] w-full rounded-[5px]"></div>
+            )}
+            {loading === HTTP_STATUS.FULFILLED && (
+              <>
+                <LazyLoadImage
+                  placeholder={<div className="loading animate-loading aspect-[4/3] w-full rounded-[5px]"></div>}
+                  className="aspect-[4/3] w-full object-cover rounded-[5px] group-hover:scale-[2.85] group-hover:blur-[2px] group-hover:translate-x-2/4 basic-transition"
+                  src={image ?? ImagePlaceHolder}
+                  alt={drink ?? "Cocktail Image"}
+                />
+                <Alcoholic alcoholic={alcoholic} alt={true} />
+                <Favorite cocktail={cocktail} />
+              </>
+            )}
+          </div>
+          <div className=""></div>
+          <div className="rounded-[5px] relative">
+            <div
+              className={`py-3 absolute -left-[10px] w-full h-full ${
+                loading === HTTP_STATUS.FULFILLED
+                  ? "group-hover:hidden basic-transition pr-2 pl-1 md:pl-0"
+                  : "pr-0"
+              }`}
+            >
+              {loading !== HTTP_STATUS.FULFILLED && (
+                <div className="flex flex-col w-full h-full">
+                  <div className="flex flex-col justify-start items-start">
+                    <p className="loading animate-loading rounded-md text-slate-100 h-[25px] xl:h-[30px] w-full mb-1"></p>
+                    <p className="loading animate-loading rounded-md text-slate-100 h-[20px] xl:h-[25px] w-full mb-2 xl:mb-[10px]"></p>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <p className="loading animate-loading rounded-md text-slate-100 h-[40px] lg:h-[45px] xl:h-[55px] w-full"></p>
+                  </div>
+                </div>
+              )}
+              {loading === HTTP_STATUS.FULFILLED && (
+                <>
+                  <p className="text-[12px] md:text-[13px] lg:text-[14px] xl:text-[15px] font-app-text text-app-flame leading-5">
+                    {drink ?? "Cocktail"}
+                  </p>
+                  <p className="xl:mt-2 text-[13px] md:text-[14px] lg:text-[15px] xl:text-[16px] font-app-heading text-app-cadet font-bold truncate leading-5">
+                    {category ?? "Category"}
+                  </p>
+                  <div className="flex flex-wrap gap-1 xl:gap-2 overflow-hidden mt-1 xl:mt-4">
+                    {ingredients.map((item, i) => {
+                      return (
+                        <div
+                          key={i}
+                          className={`rounded-[4px] border border-app-olivine w-max px-1 text-[8px] md:text-[9px] lg:text-[10px] xl:text-[12px] font-app-main text-app-olivine ${
+                            i > 3 ? "hidden xl:block" : ""
+                          }`}
+                        >
+                          {item.name}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-      <div className="relative">
-        {loading ? (
-          <div className="loading animate-loading rounded-xl w-full aspect-[4/3]"></div>
-        ) : (
-          <LazyLoadImage
-            className="w-full h-auto rounded-xl object-cover drop-shadow-md md:drop-shadow-lg aspect-[4/3]"
-            src={cocktailTwo.image}
-            alt={cocktailTwo.drink}
-            placeholder={
-              <div className="loading animate-loading rounded-xl w-full aspect-[4/3]"></div>
-            }
-          />
-        )}
-        <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-app-cadet/80 to-transparent rounded-b-xl"></div>
-        <div className="absolute bottom-0 w-full flex flex-col justify-end items-center px-2 py-2">
-          {loading ? (
-            <div className="loading animate-loading rounded-xl w-3/4 h-5 md:h-6 mb-2"></div>
-          ) : (
-            <p className="text-white font-app-heading text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px] text-center mb-2">
-              {cocktailTwo.drink}
-            </p>
-          )}
-          {loading ? (
-            <div className="loading animate-loading rounded-xl w-1/2 h-4 md:h-5 mb-4"></div>
-          ) : (
-            <p className="text-white font-app-main text-[10px] md:text-[11px] lg:text-[12px] xl:text-[13px] text-center mb-4">
-              {cocktailTwo.alcoholic}
-            </p>
-          )}
-          {loading ? (
-            <div className="loading animate-loading rounded-xl w-1/2 h-8 md:h-10"></div>
-          ) : (
-            <Link to={linkTwo}>
-              <LinkButton text="View Recipe" />
-            </Link>
-          )}
-        </div>
-      </div>
-    </motion.div>
+      {loading === HTTP_STATUS.FULFILLED && (
+        <>
+          <div className="z-[2] rounded-[5px] h-full w-full flex justify-center items-center overflow-hidden absolute top-0 left-0 right-0">
+            <div className="relative w-full flex justify-center items-center">
+              <div className="px-3 pb-2 flex flex-col items-center justify-center scale-0 group-hover:scale-100 absolute -bottom-48 group-hover:bottom-0 group-hover:delay-[150ms] group-hover:duration-500 duration-150">
+                <p className="text-[12px] md:text-[13px] lg:text-[14px] xl:text-[15px] text-center font-app-text text-white leading-5">
+                  {drink ?? "Cocktail"}
+                </p>
+              </div>
+              <div className="flex items-center justify-center px-8 scale-0 group-hover:scale-100 absolute -bottom-48 group-hover:-bottom-[30px] group-hover:delay-[450ms] group-hover:duration-500 duration-150">
+                <LinkButton link={`/cocktails/${id}`} text="View Recipe" />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 

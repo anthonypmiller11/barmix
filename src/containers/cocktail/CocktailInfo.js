@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { HTTP_STATUS } from "../../app/utils/constants";
 import { ImagePlaceHolder } from "../../assets";
 import { Favorite, IngredientsList } from "../../components";
 import AboutCocktail from "../../components/cocktail/AboutCocktail";
@@ -10,11 +11,11 @@ const CocktailInfo = ({ cocktail, loading }) => {
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    if (loading === "fulfilled" && cocktail) {
+    if (loading === HTTP_STATUS.FULFILLED) {
       setTags([]);
       cocktail.tags !== null && setTags(cocktail.tags.split(","));
     }
-  }, [loading, cocktail]);
+  }, [loading, cocktail.tags]);
 
   return (
     <section className="px-4 md:px-6 lg:px-20 w-full mt-6 md:mt-8 lg:mt-12 mb-8 overflow-hidden">
@@ -40,20 +41,20 @@ const CocktailInfo = ({ cocktail, loading }) => {
             }}
             className="rounded-lg drop-shadow-xl h-max group ring-1 ring-white"
           >
-            {loading !== "fulfilled" && (
+            {loading !== HTTP_STATUS.FULFILLED && (
               <div className="loading animate-loading rounded-xl w-full aspect-[4/3] md:aspect-square"></div>
             )}
-            {loading === "fulfilled" && cocktail && (
+            {loading === HTTP_STATUS.FULFILLED && (
               <LazyLoadImage
                 className="w-full h-auto rounded-xl object-cover drop-shadow-md md:drop-shadow-lg aspect-[4/3] md:aspect-square"
-                src={cocktail.image || ImagePlaceHolder}
+                src={cocktail.image ?? ImagePlaceHolder}
                 alt={cocktail.drink}
                 placeholder={<div className="loading animate-loading rounded-xl w-full aspect-[4/3] md:aspect-square"></div>}
               />
             )}
             <Favorite cocktail={cocktail} />
           </motion.div>
-          {loading === "fulfilled" && tags.length > 0 && (
+          {loading === HTTP_STATUS.FULFILLED && tags.length > 0 && (
             <motion.div
               variants={fromRight}
               initial="initial"
@@ -66,14 +67,16 @@ const CocktailInfo = ({ cocktail, loading }) => {
               }}
               className="hidden md:flex flex-wrap gap-2 overflow-hidden mt-8 pr-4"
             >
-              {tags.map((item, i) => (
-                <div
-                  key={i}
-                  className="rounded-[4px] border border-app-cadet w-max h-min px-[6px] py-[1px] text-[12px] font-app-main text-app-cadet hover:text-white hover:bg-app-cadet cursor-default"
-                >
-                  {item.trim()}
-                </div>
-              ))}
+              {tags.map((item, i) => {
+                return (
+                  <div
+                    key={i}
+                    className="rounded-[4px] border border-app-cadet w-max h-min px-[6px] py-[1px] text-[12px] font-app-main text-app-cadet hover:text-white hover:bg-app-cadet cursor-default"
+                  >
+                    {item.trim()}
+                  </div>
+                );
+              })}
             </motion.div>
           )}
         </div>

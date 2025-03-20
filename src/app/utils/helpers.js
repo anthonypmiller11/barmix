@@ -26,7 +26,7 @@ export const organizeCocktail = (cocktail) => {
     ingredientArray.push({
       name: cocktail["strIngredient" + index],
       measure: cocktail["strMeasure" + index]
-        ? `${cocktail["strMeasure" + index]} ml`
+        ? cocktail["strMeasure" + index]
         : "",
     });
   }
@@ -56,10 +56,12 @@ export const organizeCocktailList = (cocktails, limit = 0) => {
 
 export const organizeIngredient = (ingredient) => {
   return {
-    name: ingredient,
-    imageSmall: `/images/ingredients/${ingredient.replace(/\s+/g, "_")}-small.png`,
-    imageMedium: `/images/ingredients/${ingredient.replace(/\s+/g, "_")}-medium.png`,
-    image: `/images/ingredients/${ingredient.replace(/\s+/g, "_")}.png`,
+    id: ingredient.idIngredient,
+    name: ingredient.strIngredient,
+    description: ingredient.strDescription,
+    type: ingredient.strType,
+    alcohol: ingredient.strAlcohol,
+    abv: ingredient.strABV,
   };
 };
 
@@ -67,7 +69,7 @@ export const organizeIngredients = (ingredients) => {
   const organizedIngredients = [];
   if (ingredients !== null) {
     ingredients.forEach((item) => {
-      const data = organizeIngredient(item);
+      const data = item["strIngredient1"];
       organizedIngredients.push(data);
     });
   }
@@ -77,6 +79,14 @@ export const organizeIngredients = (ingredients) => {
 export const featuredCocktails = () => {
   const shuffled = FeaturedCocktails.sort(() => 0.5 - Math.random());
   return shuffled.slice(0, 6);
+};
+
+export const youtubeResponseToVideos = (response) => {
+  const videoIdList = [];
+  if (response !== null) {
+    response.forEach((item) => videoIdList.push(item.id.videoId));
+  }
+  return videoIdList;
 };
 
 export const calcHomeCocktailGrid = (width) => {
@@ -155,14 +165,4 @@ export const calcVideoWidth = (width) => {
     return width * 0.7;
   }
   return width * 0.6;
-};
-
-export const containsIngredient = (cocktail, ingredients) => {
-  for (let i = 1; i <= 15; i++) {
-    const ingredient = cocktail[`strIngredient${i}`];
-    if (ingredient && ingredients.includes(ingredient.trim())) {
-      return true;
-    }
-  }
-  return false;
 };
