@@ -26,8 +26,8 @@ const CocktailsGrid = ({ list, loading, perPage, error, fullData }) => {
         <div className="w-full p-4">
           <p className="text-app-flame font-app-heading text-[24px] md:text-[26px] lg:text-[28px] font-bold text-center">
             {fullData
-              ? "No Cocktails Found For The Selected Letter."
-              : "Oops!! No Cocktails Found."}
+              ? "       "
+              : "       "}
           </p>
         </div>
       )}
