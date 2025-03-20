@@ -5,7 +5,7 @@
   margin: 0;
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
-  font-weight: 500;
+  font-weight: 700;
   color: #333;
 }
 
@@ -27,7 +27,7 @@
 
   cite {
     @apply text-app-cadet font-app-main text-sm md:text-base lg:text-lg font-bold relative -bottom-8;
-    font-size: 1.0rem;
+    font-size: 1.4rem;
   }
 }
 
