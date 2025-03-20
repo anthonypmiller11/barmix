@@ -3,18 +3,11 @@ import { HTTP_STATUS } from "../../app/utils/constants";
 import { ImagePlaceHolder } from "../../assets";
 import { Favorite, IngredientsList } from "../../components";
 import { motion } from "framer-motion";
-import { fromRight, fromTop } from "../../app/utils/animationsHelper";
+import { fromTop } from "../../app/utils/animationsHelper";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const CocktailInfo = ({ cocktail, loading }) => {
-  const [tags, setTags] = useState([]);
-
-  useEffect(() => {
-    if (loading === HTTP_STATUS.FULFILLED) {
-      setTags([]);
-      cocktail.tags !== null && setTags(cocktail.tags.split(","));
-    }
-  }, [loading, cocktail.tags]);
+  useEffect(() => {}, [loading]);
 
   return (
     <section className="px-6 md:px-12 lg:px-20 w-full mt-6 md:mt-8 lg:mt-12 mb-8 overflow-hidden">
