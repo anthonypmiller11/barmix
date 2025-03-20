@@ -34,7 +34,7 @@ const CocktailPage = () => {
       <CocktailInfo cocktail={cocktail} loading={loading} />
       <Title title={"Instructions"} />
       <Instructions cocktail={cocktail} loading={loading} />
-      <Title title={"Video Guide"} />
+      <Title title={"Your Drink Order:"} />
       <VideoTutorial cocktail={cocktail} loading={loading} />
       <Modal onCloseModal={onCloseModal} show={showModal}>
         <AboutIngredient />
