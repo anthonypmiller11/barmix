@@ -42,11 +42,11 @@ const CocktailCard = ({ cocktail, loading, fullData }) => {
             )}
             {loading === HTTP_STATUS.FULFILLED && (
               <>
-                <p className="text-[18px] md:text-[20px] lg:text-[22px] xl:text-[24px] text-center font-app-text text-app-bold-flame truncate leading-5  font-weight-cocktail-name font-900">
+                <p className="text-[12px] md:text-[13px] lg:text-[15px] xl:text-[16px] text-center font-app-heading-flame text-app-flame truncate leading-5  font-weight-cocktail-name font-900">
                   {drink ?? "Classic Cocktail"}
                 </p>
                 {category && (
-                  <p className="text-[13x] md:text-[14px] lg:text-[15px] xl:text-[16px] text-center font-app-heading font-bold text-app-cadet truncate leading-5">
+                  <p className="text-[12x] md:text-[13px] lg:text-[15px] xl:text-[16px] text-center font-app-heading font-bold text-app-flame truncate leading-5">
                     {category ?? "Category"}
                   </p>
                 )}
