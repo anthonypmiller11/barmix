@@ -36,7 +36,7 @@ const Instructions = ({ cocktail, loading }) => {
           duration: 0.3,
           delay: 0.2,
         }}
-        className="w-full px-6 md:px-20 lg:px-32 py-8 md:py-10 mt-6 md:mt-8 lg:mt-12 mb-8 flex flex-col items-center"
+        className="w-full px-14 md:px-20 lg:px-32 py-8 md:py-10 mt-6 md:mt-8 lg:mt-12 mb-8 flex flex-col items-center"
       >
         {loading === HTTP_STATUS.FULFILLED &&
           instructions.length > 0 &&
@@ -45,8 +45,8 @@ const Instructions = ({ cocktail, loading }) => {
               <div key={index} className="w-full">
                 {item.trim().length > 1 && (
                   <div className="flex gap-4 justify-center items-start space-y-1">
-                    <div className="flex-[2]flex justify-end mt-[9px] lg:mt-[19px]">
-                      <p className="text-app-olivine font-app-heading text-[15px] md:text-[16px] xl:text-[17px]">
+                    <div className="flex-[2]flex justify-end mt-[20px] lg:mt-[23px]">
+                      <p className="text-app-olivine font-app-heading text-[20px] md:text-[21px] xl:text-[13px]">
                         Step {index + 1}:
                       </p>
                     </div>
