@@ -18,7 +18,7 @@ const CocktailInfo = ({ cocktail, loading }) => {
   }, [loading, cocktail.tags]);
 
   return (
-    <section className="px-4 md:px-6 lg:px-20 w-full mt-6 md:mt-8 lg:mt-12 mb-8 overflow-hidden">
+    <section className="px-12 md:px-13 lg:px-20 w-full mt-6 md:mt-8 lg:mt-12 mb-8 overflow-hidden">
       <motion.div
         layoutId="cocktails-details"
         className="flex w-full md:gap-4 lg:gap-10 flex-col-reverse md:flex-row"
@@ -71,7 +71,7 @@ const CocktailInfo = ({ cocktail, loading }) => {
                 return (
                   <div
                     key={i}
-                    className="rounded-[4px] border border-app-cadet w-max h-min px-[6px] py-[1px] text-[12px] font-app-main text-app-cadet hover:text-white hover:bg-app-cadet cursor-default"
+                    className="rounded-[6px] border border-app-cadet w-max h-min px-[8px] py-[3px] text-[15px] font-app-main text-app-cadet hover:text-white hover:bg-app-cadet cursor-default"
                   >
                     {item.trim()}
                   </div>
