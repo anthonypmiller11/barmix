@@ -18,16 +18,38 @@ const CocktailInfo = ({ cocktail, loading }) => {
   }, [loading, cocktail.tags]);
 
   return (
-    <section className="px-12 md:px-13 lg:px-20 w-full mt-6 md:mt-8 lg:mt-12 mb-8 overflow-hidden">
+    <section className="px-12 md:px-14 lg:px-20 w-full mt-6 md:mt-8 lg:mt-12 mb-8 overflow-hidden">
       <motion.div
         layoutId="cocktails-details"
         className="flex w-full md:gap-4 lg:gap-10 flex-col-reverse md:flex-row"
       >
         <div className="flex flex-col justify-start items-center w-full md:w-2/3">
-          <AboutCocktail cocktail={cocktail} loading={loading} />
+          {/* Updated Cocktail Name Styling */}
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-app-red mb-2 text-center">
+            {cocktail.drink}
+          </h1>
+          <p className="text-xl md:text-2xl text-app-cadet font-semibold mb-4">
+            {cocktail.alcoholic}
+          </p>
+
+          {/* Updated Category & Glass Info */}
+          <div className="flex justify-center gap-4 md:gap-6 lg:gap-8 text-lg md:text-xl font-medium text-app-dark mb-6">
+            <div className="border-2 border-app-cadet px-4 py-2 rounded-lg">
+              {cocktail.ingredients?.length} Ingredients
+            </div>
+            <div className="border-2 border-app-cadet px-4 py-2 rounded-lg">
+              {cocktail.category}
+            </div>
+            <div className="border-2 border-app-cadet px-4 py-2 rounded-lg">
+              {cocktail.glass}
+            </div>
+          </div>
+
+          {/* Updated Ingredients List with Larger Font */}
           <IngredientsList cocktail={cocktail} loading={loading} />
         </div>
 
+        {/* Cocktail Image Section */}
         <div className="flex flex-col justify-center md:justify-start w-full md:w-1/3 mb-6 md:p-0">
           <motion.div
             variants={fromTop}
@@ -54,6 +76,8 @@ const CocktailInfo = ({ cocktail, loading }) => {
             )}
             <Favorite cocktail={cocktail} />
           </motion.div>
+
+          {/* Updated Tags with Larger Font */}
           {loading === HTTP_STATUS.FULFILLED && tags.length > 0 && (
             <motion.div
               variants={fromRight}
@@ -71,7 +95,7 @@ const CocktailInfo = ({ cocktail, loading }) => {
                 return (
                   <div
                     key={i}
-                    className="rounded-[6px] border border-app-cadet w-max h-min px-[8px] py-[3px] text-[15px] font-app-main text-app-cadet hover:text-white hover:bg-app-cadet cursor-default"
+                    className="rounded-[6px] border border-app-cadet w-max h-min px-[10px] py-[5px] text-[18px] font-semibold text-app-cadet hover:text-white hover:bg-app-cadet cursor-default"
                   >
                     {item.trim()}
                   </div>
