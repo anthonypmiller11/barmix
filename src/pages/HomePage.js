@@ -10,7 +10,7 @@ const HomePage = () => {
   return (
     <AnimateRoute>
       <Home />
-      <Title title="Choose your favorite cocktail and adjust the strength to your liking.  Cheers!" />
+      <Title title="	“Smart Mixing. Custom Strength. Pure Enjoyment. Cheers!”" />
       <Stats />
       <Title title="Most popular cocktails" />
       <Popular />
