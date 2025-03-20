@@ -24,7 +24,7 @@ const CocktailsGrid = ({ list, loading, perPage, error, fullData }) => {
     <div>
       {loading === HTTP_STATUS.FULFILLED && list.length === 0 && (
         <div className="w-full p-4">
-          <p className="text-app-flame font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
+          <p className="text-app-flame font-app-heading text-[24px] md:text-[26px] lg:text-[28px] font-bold text-center">
             {fullData
               ? "No Cocktails Found For The Selected Letter."
               : "Oops!! No Cocktails Found."}
@@ -34,7 +34,7 @@ const CocktailsGrid = ({ list, loading, perPage, error, fullData }) => {
 
       {loading === HTTP_STATUS.REJECTED && error !== "Aborted" && (
         <div className="w-full p-4">
-          <p className="text-app-flame font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
+          <p className="text-app-flame font-app-heading text-[24px] md:text-[26px] lg:text-[28px] font-bold text-center">
             Oops!! No Cocktails Found.
           </p>
         </div>
