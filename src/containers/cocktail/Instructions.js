@@ -48,18 +48,18 @@ const Instructions = ({ cocktail, loading }) => {
         {loading === HTTP_STATUS.FULFILLED &&
           instructions.length > 0 &&
           instructions.map((item, index) => (
-            <div key={index} className="w-full">
+            <div key={index} className="w-full flex flex-col items-center">
               {item.trim().length > 1 && (
-                <div className="flex gap-4 justify-center items-center space-y-1">
-                  {/* Step Number */}
-                  <div className="flex-[10] flex justify-end">
+                <div className="flex gap-4 justify-start md:justify-center items-center w-[80%] md:w-[70%]">
+                  {/* Left-Aligned Step Numbers */}
+                  <div className="w-[100px] text-right md:text-left flex-shrink-0">
                     <p className="text-app-olivine font-app-main text-[20px] md:text-[21px] xl:text-[23px] leading-tight">
                       Step {index + 1}:
                     </p>
                   </div>
-                  
-                  {/* Instruction Text */}
-                  <div className="flex-[10] flex justify-start pb-2">
+
+                  {/* Centered Instruction Text */}
+                  <div className="flex-1 text-left">
                     <p className="text-white font-app-main text-[20px] md:text-[21px] xl:text-[23px] leading-tight">
                       {item.trim()}.
                     </p>
