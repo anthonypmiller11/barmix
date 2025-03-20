@@ -25,7 +25,7 @@ const AboutIngredient = () => {
       </h1>
       <div className="grid grid-rows-9 grid-cols-1 md:grid-cols-9 md:grid-rows-1 mt-2 justify-center gap-2 md:gap-4">
         <div className="col-start-1 row-start-1 row-span-4 md:row-span-1 md:col-start-1 md:col-span-4 overflow-hidden">
-          <div className="p-[6px] min-h-[150px] md:p-2 h-max md:h-full w-auto bg-app-cadet/50 rounded-[5px] flex justify-center items-center">
+          <div className="p-[12px] min-h-[150px] md:p-2 h-max md:h-full w-auto bg-app-cadet/50 rounded-[8px] flex justify-center items-center">
             {loading === HTTP_STATUS.FULFILLED && (
               <LazyLoadImage
                 className="aspect-square w-full object-cover rounded-[5px] max-w-[75vw] md:max-w-[200px] scale-90 md:scale-110"
