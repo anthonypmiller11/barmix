@@ -43,10 +43,10 @@ const MainCard = ({ cocktail, loading }) => {
           )}
           {loading === HTTP_STATUS.FULFILLED && (
             <>
-              <p className="text-[12px] md:text-[13px] lg:text-[14px] xl:text-[15px] text-center font-app-text text-app-flame truncate leading-5">
+              <p className="text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-center font-app-text text-app-bold-flame truncate leading-5">
                 {drink ?? "Cocktail"}
               </p>
-              <p className="text-[13px] md:text-[14px] lg:text-[15px] xl:text-[16px] text-center font-app-heading font-bold text-app-cadet truncate leading-5">
+              <p className="text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-center font-app-heading font-bold text-app-flame truncate leading-5">
                 {category ?? "Category"}
               </p>
             </>
