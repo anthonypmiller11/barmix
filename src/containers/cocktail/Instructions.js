@@ -12,20 +12,27 @@ const Instructions = ({ cocktail, loading }) => {
       setInstructions(cocktail.instructions.split("."));
     }
   }, [loading, cocktail.instructions]);
-  
+
   return (
-    <motion.div variants={skeletonGrid}
-    initial="initial"
-    whileInView="animate"
-    viewport={{ once: true }}
-    transition={{
-      ease: "easeInOut",
-      duration: 0.2,
-      delay: 0.1,
-    }} className="bg-app-cadet relative overflow-hidden" id="instructions">
+    <motion.div
+      variants={skeletonGrid}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true }}
+      transition={{
+        ease: "easeInOut",
+        duration: 0.2,
+        delay: 0.1,
+      }}
+      className="bg-app-cadet relative overflow-hidden"
+      id="instructions"
+    >
+      {/* Champagne Icon */}
       <div className="hidden md:block absolute w-20 h-20 lg:w-24 lg:h-24 bottom-2 md:right-16 lg:right-24 -rotate-[10deg]">
         <Champagne />
       </div>
+
+      {/* Instructions Content */}
       <motion.div
         variants={fromBelow}
         initial="initial"
@@ -40,26 +47,27 @@ const Instructions = ({ cocktail, loading }) => {
       >
         {loading === HTTP_STATUS.FULFILLED &&
           instructions.length > 0 &&
-          instructions.map((item, index) => {
-            return (
-              <div key={index} className="w-full">
-                {item.trim().length > 1 && (
-                  <div className="flex gap-4 justify-center items-start space-y-1">
-                    <div className="flex-[10]flex justify-end mt-[20px] lg:mt-[23px]">
-                      <p className="text-app-olivine font-app-main text-[20px] md:text-[21px] xl:text-[23px]">
-                        Step {index + 1}:
-                      </p>
-                    </div>
-                    <div className="flex-[10] flex justify-start pb-2">
-                      <p className="text-white font-app-main text-[20px] md:text-[21px] xl:text-[23px] tracking-wider">
-                        {item.trim()}.
-                      </p>
-                    </div>
+          instructions.map((item, index) => (
+            <div key={index} className="w-full">
+              {item.trim().length > 1 && (
+                <div className="flex gap-4 justify-center items-center space-y-1">
+                  {/* Step Number */}
+                  <div className="flex-[10] flex justify-end">
+                    <p className="text-app-olivine font-app-main text-[20px] md:text-[21px] xl:text-[23px] leading-tight">
+                      Step {index + 1}:
+                    </p>
                   </div>
-                )}
-              </div>
-            );
-          })}
+                  
+                  {/* Instruction Text */}
+                  <div className="flex-[10] flex justify-start pb-2">
+                    <p className="text-white font-app-main text-[20px] md:text-[21px] xl:text-[23px] leading-tight">
+                      {item.trim()}.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
       </motion.div>
     </motion.div>
   );
