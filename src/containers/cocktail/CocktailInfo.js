@@ -23,7 +23,7 @@ const CocktailInfo = ({ cocktail, loading }) => {
       >
         <div className="flex flex-col justify-start items-center w-full md:w-2/3">
           {/* Cocktail Name */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-app-red mb-2 text-center md:text-left">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-app-flame mb-2 text-center md:text-left">
             {cocktail.drink}
           </h1>
           <p className="text-lg md:text-xl text-app-cadet font-semibold mb-4">
