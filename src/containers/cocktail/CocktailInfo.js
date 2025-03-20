@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { HTTP_STATUS } from "../../app/utils/constants";
 import { ImagePlaceHolder } from "../../assets";
 import { Favorite, IngredientsList } from "../../components";
-import AboutCocktail from "../../components/cocktail/AboutCocktail";
 import { motion } from "framer-motion";
 import { fromRight, fromTop } from "../../app/utils/animationsHelper";
 import { LazyLoadImage } from "react-lazy-load-image-component";
