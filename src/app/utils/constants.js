@@ -1,4 +1,3 @@
-// src/app/utils/constants.js
 export const API_BASE_URL = "/data";  // Points to your local JSON folder 
 export const YOUTUBE_API_BASE_URL = "https://youtube.googleapis.com/youtube/v3";
 
