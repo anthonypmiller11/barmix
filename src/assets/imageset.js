@@ -1,5 +1,4 @@
 // src/assets/data/imageSet.js
-
 const imageSet = {
   left: [
     "/images/home/left1.jpg",
