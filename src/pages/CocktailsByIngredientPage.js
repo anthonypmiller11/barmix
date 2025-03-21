@@ -1,3 +1,4 @@
+// src/pages/CocktailsByIngredientPage.js
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -18,18 +19,18 @@ const CocktailsByIngredientPage = () => {
 
   useTitle(`Cocktails For ${id} | Cocktails`, loading);
   const size = useWindowSize();
-  
+
   useEffect(() => {
     const promise = dispatch(fetchByIngredient(id));
-
-    return () => {
-      promise.abort();
-    };
+    return () => promise.abort();
   }, [id, dispatch]);
 
   return (
     <AnimateRoute>
-      <Title className="mt-7 mb-8 md:mt-10 md:mb-12 lg:mt-12 lg:mb-16" title={`Recipes For ${id}`} />
+      <Title
+        className="mt-7 mb-8 md:mt-10 md:mb-12 lg:mt-12 lg:mb-16"
+        title={`Recipes For ${id}`}
+      />
       <div className="px-[12vw] md:px-[14vw] lg:px-[16vw] overflow-hidden">
         <CocktailsGrid
           list={cocktails}
