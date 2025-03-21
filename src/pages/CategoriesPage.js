@@ -1,4 +1,3 @@
-// src/pages/CategoriesPage.js
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
@@ -31,9 +30,13 @@ const CategoriesPage = () => {
   };
 
   useEffect(() => {
+    setSelectedType(type);
+  }, [type]);
+
+  useEffect(() => {
     const promise = dispatch(fetchByCategory(selectedType));
     return () => promise.abort();
-  }, [dispatch, selectedType, type]);
+  }, [dispatch, selectedType]);
 
   return (
     <AnimateRoute>
@@ -58,6 +61,11 @@ const CategoriesPage = () => {
         ))}
       </div>
       <div className="px-[12vw] md:px-[13vw] lg:px-[14vw] overflow-hidden">
+        {error && (
+          <div className="text-app-flame text-center text-lg mb-4">
+            Failed to load cocktails: {error}
+          </div>
+        )}
         <CocktailsGrid
           list={cocktails}
           loading={loading}
