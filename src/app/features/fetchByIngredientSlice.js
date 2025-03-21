@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { HTTP_STATUS } from "../utils/constants";
 import { organizeCocktailList } from "../utils/helpers";
 
 export const fetchByIngredient = createAsyncThunk(
@@ -10,12 +10,20 @@ export const fetchByIngredient = createAsyncThunk(
     signal.addEventListener("abort", () => {
       source.cancel();
     });
-    const response = await axios.get(
-      `${API_BASE_URL}/filter.php?i=${id}`, {
-          cancelToken: source.token,
-        }
+
+    // Load full recipe list from local JSON
+    const response = await axios.get("/data/cocktail_recipe.json", {
+      cancelToken: source.token,
+    });
+
+    // Filter cocktails that contain the selected ingredient
+    const filteredCocktails = response.data.drinks.filter(drink =>
+      Object.keys(drink)
+        .filter(key => key.startsWith("strIngredient"))
+        .some(key => drink[key]?.toLowerCase() === id.toLowerCase())
     );
-    return organizeCocktailList(response.data.drinks);
+
+    return organizeCocktailList(filteredCocktails); // Keeps existing data structure
   }
 );
 
@@ -27,7 +35,7 @@ const initialState = {
 
 export const fetchByIngredientSlice = createSlice({
   name: "fetchByIngredient",
-  initialState: initialState,
+  initialState,
   extraReducers: {
     [fetchByIngredient.pending]: (state) => {
       state.loading = HTTP_STATUS.PENDING;
