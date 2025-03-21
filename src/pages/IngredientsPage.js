@@ -1,11 +1,10 @@
-// src/pages/IngredientsPage.js
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchIngredients } from "../app/features/ingredientSlice";
 import { hideIngredientModal } from "../app/features/modalSlice";
-import { calcIngredientsGrid } from "../app/utils/helpers";
+import { calcMaxItems } from "../app/utils/helpers";
 import { AboutIngredient, Title, Modal } from "../components";
-import { IngredientList } from "../components/ingredient"; // Ensure this path matches
+import { IngredientList } from "../components/ingredient/IngredientList";
 import AnimateRoute from "../containers/layout/AnimateRoute";
 import { useTitle } from "../hooks/useTitle";
 import useWindowSize from "../hooks/useWindowSize";
@@ -13,8 +12,8 @@ import useWindowSize from "../hooks/useWindowSize";
 const IngredientsPage = () => {
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.ingredient.ingredients);
-  const loadState = useSelector((state) => state.ingredient.loading);
-  const oops = useSelector((state) => state.ingredient.error);
+  const loading = useSelector((state) => state.ingredient.loading);
+  const error = useSelector((state) => state.ingredient.error);
   const showModal = useSelector((state) => state.modal.showIngredientModal);
 
   useTitle("Ingredients | Cocktails");
@@ -25,15 +24,19 @@ const IngredientsPage = () => {
   };
 
   useEffect(() => {
-    const promise = dispatch(fetchIngredients());
-    return () => promise.abort();
+    dispatch(fetchIngredients());
   }, [dispatch]);
 
   return (
     <AnimateRoute>
-      <Title className="mt-7 mb-8 md:mt-10 md:mb-12 lg:mt-12 lg:mb-16" title="Pick Your Poison" />
+      <Title className="mt-7 mb-8 md:mt-10 md:mb-12 lg:mt-12 lg:mb-16" title="Explore Ingredients" />
       <div className="px-[5vw] md:px-[6vw] lg:px-[7vw]">
-        <IngredientList items={ingredients} loadState={loadState} oops={oops} limit={calcIngredientsGrid(size.width)} />
+        <IngredientList 
+          ingredients={ingredients} 
+          loading={loading} 
+          error={error} 
+          maxItems={calcMaxItems(size.width)} 
+        />
       </div>
       <Modal onCloseModal={onCloseModal} show={showModal}>
         <AboutIngredient />
