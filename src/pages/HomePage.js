@@ -3,7 +3,7 @@ import { Title } from "../components";
 import { Cocktails, Home, Popular, Stats, ImageRotation } from "../containers";
 import AnimateRoute from "../containers/layout/AnimateRoute";
 import { useTitle } from "../hooks/useTitle";
-import CategorySelection from "../components/CategorySelection"; // ✅ Only added import
+import CategorySelection from "../components/category/CategorySelection"; // ✅ Only added import
 
 const HomePage = () => {
   useTitle("Cocktails");
