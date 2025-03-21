@@ -1,5 +1,6 @@
 import React from "react";
 import { HTTP_STATUS } from "../../app/utils/constants";
+import { Link } from "react-router-dom";
 
 const IngredientList = ({ ingredients, loading, error, maxItems }) => {
   if (loading === HTTP_STATUS.PENDING) {
@@ -15,17 +16,20 @@ const IngredientList = ({ ingredients, loading, error, maxItems }) => {
   return (
     <div className="space-y-4">
       {ingredients.slice(0, maxItems).map((ingredient, index) => (
-        <div 
-          key={index} 
+        <Link
+          key={index}
+          to={`/cocktails-by-ingredient/${ingredient.strIngredient1}`}
           className="bg-white p-4 rounded-lg shadow-md flex justify-between items-center"
         >
           <span className="text-app-cadet font-app-text text-base">
             {ingredient.strIngredient1 || "Unknown Ingredient"}
           </span>
-          <button className="text-app-flame hover:underline">
-            View Details
-          </button>
-        </div>
+          <img
+            src={ingredient.image}
+            alt={ingredient.strIngredient1}
+            className="w-12 h-12 object-cover rounded-md"
+          />
+        </Link>
       ))}
     </div>
   );
