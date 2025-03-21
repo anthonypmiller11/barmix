@@ -17,8 +17,13 @@ const IngredientWithMeasure = ({ ingredient, loading }) => {
       promise.abort();
     };
   };
+
   return (
-    <div className={`bg-white h-full w-full rounded-[5px] drop-shadow-lg group overflow-hidden relative hover:ring-1 hover:ring-white cursor-pointer ${loading === HTTP_STATUS.FULFILLED && " ingredient-card"}`}>
+    <div
+      className={`bg-white h-full w-full rounded-[5px] drop-shadow-lg group overflow-hidden relative hover:ring-1 hover:ring-white cursor-pointer ${
+        loading === HTTP_STATUS.FULFILLED && " ingredient-card"
+      }`}
+    >
       <div className="rounded-[5px] overflow-hidden">
         <div className="p-1 md:p-2 lg:p-3 relative">
           {loading !== HTTP_STATUS.FULFILLED && (
@@ -28,9 +33,11 @@ const IngredientWithMeasure = ({ ingredient, loading }) => {
             <div className="p-2 rounded-[5px] bg-app-cadet/30 group-hover:bg-transparent double-transition">
               <LazyLoadImage
                 className="aspect-square w-full object-cover rounded-[5px] group-hover:scale-[1.35] group-hover:blur-[3px] group-hover:translate-y-5 basic-transition"
-                src={`https://www.thecocktaildb.com/images/ingredients/${name}-Medium.png`}
+                src={`/images/ingredients/${name.replace(/\s+/g, "_")}-medium.png`}
                 alt={name}
-                placeholder={<div className="loading animate-loading aspect-square w-full rounded-[5px]"></div>}
+                placeholder={
+                  <div className="loading animate-loading aspect-square w-full rounded-[5px]"></div>
+                }
               />
             </div>
           )}
@@ -38,12 +45,12 @@ const IngredientWithMeasure = ({ ingredient, loading }) => {
         <div className="pb-1 md:pb-2 lg:pb-3 px-1 md:px-2 lg:px-3">
           {loading !== HTTP_STATUS.FULFILLED && (
             <div className="flex flex-col justify-start items-start">
-            <p className="loading animate-loading rounded-md text-slate-100 h-[20px] lg:h-[24px] w-full"></p>
-          </div>
+              <p className="loading animate-loading rounded-md text-slate-100 h-[20px] lg:h-[24px] w-full"></p>
+            </div>
           )}
           {loading === HTTP_STATUS.FULFILLED && (
             <div className="px-1 lg:pb-1">
-              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-center font-app-main  text-app-thin-flame group-hover:text-transparent basic-transition truncate leading-5 font-ingredient-name">
+              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-center font-app-main text-app-thin-flame group-hover:text-transparent basic-transition truncate leading-5 font-ingredient-name">
                 {measure}
               </p>
               <p className="text-[16px] md:text-[17px] lg:text-[18px] xl:text-[19px] text-center font-app-text text-app-cadet group-hover:text-transparent basic-transition truncate leading-5 font-ingredient-name font-bold">
@@ -57,7 +64,7 @@ const IngredientWithMeasure = ({ ingredient, loading }) => {
         <div className="z-[2] pt-5 rounded-[8px] h-full w-full flex justify-center items-center overflow-hidden absolute top-0 left-0 right-0">
           <div className="relative w-full flex justify-center items-center">
             <div className="px-2 md:px-3 pb-2 flex flex-col items-center justify-center scale-0 group-hover:scale-100 absolute delay-150 -top-48 group-hover:-top-10 basic-transition group-hover:duration-500 duration-150">
-              <p className="text-[14px] md:text-[135x] lg:text-[14px] xl:text-[15px] mb-3 text-center font-app-text text-white leading-5 font-ingredient-name ingredient-name">
+              <p className="text-[14px] md:text-[13px] lg:text-[14px] xl:text-[15px] mb-3 text-center font-app-text text-white leading-5 font-ingredient-name ingredient-name">
                 {name}
               </p>
               <PrimaryButton onClick={onClick} text="More Details" />
