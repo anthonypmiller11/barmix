@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { HTTP_STATUS } from "../utils/constants";
 import { organizeCocktailList } from "../utils/helpers";
 
 export const initialFetch = createAsyncThunk(
@@ -10,10 +10,16 @@ export const initialFetch = createAsyncThunk(
     signal.addEventListener("abort", () => {
       source.cancel();
     });
-    const response = await axios.get(`${API_BASE_URL}/search.php?s=`, {
+
+    // Load full recipe list from local JSON
+    const response = await axios.get("/data/cocktail_recipes.json", {
       cancelToken: source.token,
     });
-    return organizeCocktailList(response.data.drinks, 24);
+
+    const drinks = response.data.drinks || [];
+
+    // Return the first 24 cocktails
+    return organizeCocktailList(drinks.slice(0, 24));
   }
 );
 
@@ -24,10 +30,19 @@ export const fetchByFirstLetter = createAsyncThunk(
     signal.addEventListener("abort", () => {
       source.cancel();
     });
-    const response = await axios.get(`${API_BASE_URL}/search.php?f=${letter}`, {
+
+    const response = await axios.get("/data/cocktail_recipes.json", {
       cancelToken: source.token,
     });
-    return organizeCocktailList(response.data.drinks, 24);
+
+    const drinks = response.data.drinks || [];
+
+    // Filter cocktails starting with the given letter (case-insensitive)
+    const filtered = drinks.filter(drink =>
+      drink.strDrink?.toLowerCase().startsWith(letter.toLowerCase())
+    );
+
+    return organizeCocktailList(filtered, 24);
   }
 );
 
