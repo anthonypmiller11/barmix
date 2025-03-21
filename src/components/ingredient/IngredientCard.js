@@ -17,6 +17,12 @@ const IngredientCard = ({ loading, name }) => {
       promise.abort();
     };
   };
+
+  const normalizedName = name
+    .normalize("NFD") // remove accents like in "Curaçao"
+    .replace(/[\u0300-\u036f]/g, "") // removes diacritical marks
+    .replace(/\s+/g, "_"); // replace spaces with underscores
+
   return (
     <div
       className={`bg-white h-full w-full rounded-[5px] drop-shadow-lg group overflow-hidden relative hover:ring-1 hover:ring-white cursor-pointer ${
@@ -32,9 +38,15 @@ const IngredientCard = ({ loading, name }) => {
             <div className="p-2 rounded-[5px] bg-app-cadet/30 group-hover:bg-transparent double-transition">
               <LazyLoadImage
                 className="aspect-square w-full object-cover rounded-[5px] group-hover:scale-[1.35] group-hover:blur-[3px] group-hover:translate-y-5 basic-transition"
-                src={`/images/ingredients/${name.replace(/\s+/g, "_")}-medium.png`}
+                src={`/images/ingredients/${normalizedName}-medium.png`}
                 alt={name}
-                placeholder={<div className="loading animate-loading aspect-square w-full rounded-[5px]"></div>}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/images/ingredients/default.png";
+                }}
+                placeholder={
+                  <div className="loading animate-loading aspect-square w-full rounded-[5px]"></div>
+                }
               />
             </div>
           )}
