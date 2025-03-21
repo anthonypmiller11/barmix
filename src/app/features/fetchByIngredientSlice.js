@@ -5,7 +5,7 @@ import { organizeCocktailList } from "../utils/helpers";
 
 export const fetchByIngredient = createAsyncThunk(
   "fetchByIngredient/fetchByIngredient",
-  async (id, { signal }) => {
+  async (ingredient, { signal }) => {
     const source = axios.CancelToken.source();
     signal.addEventListener("abort", () => {
       source.cancel();
@@ -18,12 +18,12 @@ export const fetchByIngredient = createAsyncThunk(
 
       const allCocktails = response.data.drinks || [];
 
-      // Filter cocktails containing the given ingredient
+      // Filter cocktails containing the given ingredient (Fix: checking ingredient property correctly)
       const filteredCocktails = allCocktails.filter(drink =>
         Object.keys(drink)
           .filter(key => key.startsWith("strIngredient"))
           .some(key => 
-            drink[key]?.toLowerCase().trim() === id.toLowerCase().trim()
+            drink[key] && drink[key].toLowerCase().trim() === ingredient.toLowerCase().trim()
           )
       );
 
