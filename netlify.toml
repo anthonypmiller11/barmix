@@ -1,4 +1,10 @@
 [[redirects]]
+  from = "/api/json/v1/1/*"
+  to = "https://barmix.com"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/"
   status = 200
