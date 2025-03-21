@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { HTTP_STATUS } from "../utils/constants";
 import { organizeIngredient } from "../utils/helpers";
 
 export const fetchIngredientDetails = createAsyncThunk(
@@ -10,13 +10,35 @@ export const fetchIngredientDetails = createAsyncThunk(
     signal.addEventListener("abort", () => {
       source.cancel();
     });
-    const response = await axios.get(
-      `${API_BASE_URL}/search.php?i=${ingredient}`,
-      {
+
+    try {
+      // Load ingredients from local JSON
+      const response = await axios.get("/data/ingredients.json", {
         cancelToken: source.token,
+      });
+
+      const ingredientList = response.data.ingredients;
+      
+      // Find the requested ingredient
+      const found = ingredientList.find(item => 
+        item.toLowerCase() === ingredient.toLowerCase()
+      );
+
+      if (!found) {
+        throw new Error("Ingredient not found");
       }
-    );
-    return organizeIngredient(response.data.ingredients[0]);
+
+      // Structure response similar to API format
+      const ingredientData = {
+        strIngredient: found,
+        description: `This ingredient is used in multiple cocktails.`,
+        image: `/images/ingredients/${found.replace(/\s+/g, "_")}.png` // Optional local image path
+      };
+
+      return organizeIngredient ? organizeIngredient(ingredientData) : ingredientData;
+    } catch (error) {
+      throw new Error("Error loading ingredients.");
+    }
   }
 );
 
@@ -28,7 +50,7 @@ const initialState = {
 
 export const aboutIngredientSlice = createSlice({
   name: "aboutIngredient",
-  initialState: initialState,
+  initialState,
   extraReducers: {
     [fetchIngredientDetails.pending]: (state) => {
       state.loading = HTTP_STATUS.PENDING;
