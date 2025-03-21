@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { HTTP_STATUS } from "../utils/constants";
 import { organizeCocktailList } from "../utils/helpers";
 
 export const searchCocktails = createAsyncThunk(
@@ -10,10 +10,24 @@ export const searchCocktails = createAsyncThunk(
     signal.addEventListener("abort", () => {
       source.cancel();
     });
-    const response = await axios.get(`${API_BASE_URL}/search.php?s=${search}`, {
-      cancelToken: source.token,
-    });
-    return organizeCocktailList(response.data.drinks, 16);
+
+    try {
+      // Load full recipe list from local JSON
+      const response = await axios.get("/data/cocktail_recipes.json", {
+        cancelToken: source.token,
+      });
+
+      const allCocktails = response.data.drinks || [];
+
+      // Filter cocktails matching the search term (case insensitive)
+      const matchedCocktails = allCocktails.filter(drink =>
+        drink.strDrink.toLowerCase().includes(search.toLowerCase())
+      );
+
+      return organizeCocktailList(matchedCocktails, 16);
+    } catch (error) {
+      throw new Error("Failed to search cocktails.");
+    }
   }
 );
 
