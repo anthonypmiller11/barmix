@@ -7,7 +7,10 @@ export const fetchIngredients = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/ingredients.json`);
-      return response.data;
+      return response.data.ingredients.map(item => ({
+        strIngredient1: item.name,
+        image: item.image
+      }));
     } catch (error) {
       return rejectWithValue(error.message);
     }
