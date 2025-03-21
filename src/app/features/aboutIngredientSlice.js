@@ -19,20 +19,23 @@ export const fetchIngredientDetails = createAsyncThunk(
 
       const ingredientList = response.data.ingredients;
       
-      // Find the requested ingredient
+      // Find the requested ingredient (FIXED: Accessing name property)
       const found = ingredientList.find(item => 
-        item.toLowerCase() === ingredient.toLowerCase()
+        item.name.toLowerCase() === ingredient.toLowerCase()
       );
 
       if (!found) {
         throw new Error("Ingredient not found");
       }
 
-      // Structure response similar to API format
+      // Structure response similar to API format (FIXED: Correct image path)
       const ingredientData = {
-        strIngredient: found,
-        description: `This ingredient is used in multiple cocktails.`,
-        image: `/images/ingredients/${found.replace(/\s+/g, "_")}.png` // Optional local image path
+        strIngredient: found.name, 
+        description: found.description || "This ingredient is used in multiple cocktails.",
+        type: found.type || "Unknown",
+        alcohol: found.alcohol || "No",
+        abv: found.abv || "-",
+        image: `/images/ingredients/${found.name.replace(/\s+/g, "_")}-medium.png` // Fixed filename format
       };
 
       return organizeIngredient ? organizeIngredient(ingredientData) : ingredientData;
