@@ -1,6 +1,5 @@
-// src/components/ingredient/IngredientsGrid.js
 import React from "react";
-import { HTTP_STATUS } from "../../app/utils/constants"; // Correct path from src/components/ingredient/
+import { HTTP_STATUS } from "../../app/utils/constants"; // Fixed path from src/components/ingredient/
 import { Link } from "react-router-dom";
 
 const IngredientsGrid = ({ list, loading, error, perPage }) => {
