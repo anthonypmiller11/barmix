@@ -11,19 +11,26 @@ export const fetchByIngredient = createAsyncThunk(
       source.cancel();
     });
 
-    // Load full recipe list from local JSON
-    const response = await axios.get("/data/cocktail_recipe.json", {
-      cancelToken: source.token,
-    });
+    try {
+      const response = await axios.get("/data/cocktail_recipe.json", {
+        cancelToken: source.token,
+      });
 
-    // Filter cocktails that contain the selected ingredient
-    const filteredCocktails = response.data.drinks.filter(drink =>
-      Object.keys(drink)
-        .filter(key => key.startsWith("strIngredient"))
-        .some(key => drink[key]?.toLowerCase() === id.toLowerCase())
-    );
+      const allCocktails = response.data.drinks || [];
 
-    return organizeCocktailList(filteredCocktails); // Keeps existing data structure
+      // Filter cocktails containing the given ingredient
+      const filteredCocktails = allCocktails.filter(drink =>
+        Object.keys(drink)
+          .filter(key => key.startsWith("strIngredient"))
+          .some(key => 
+            drink[key]?.toLowerCase().trim() === id.toLowerCase().trim()
+          )
+      );
+
+      return organizeCocktailList(filteredCocktails);
+    } catch (error) {
+      throw new Error("Could not load cocktails by ingredient.");
+    }
   }
 );
 
