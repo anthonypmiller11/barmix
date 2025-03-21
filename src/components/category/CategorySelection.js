@@ -1,55 +1,57 @@
-// CategorySelection.js
+// src/components/category/CategorySelection.js
 import React, { useState } from "react";
-import SubcategoryButtons from "./SubcategoryButtons";
-import FilteredCocktailGrid from "./FilteredCocktailGrid";
-
-const categories = {
-  Spirit: ["Vodka", "Tequila", "Whiskey", "Gin", "Rum", "Champagne", "Brandy"],
-  Strengths: ["Popular", "Light", "Medium", "Strong", "Nonalcoholic", "Trendy", "Exotic"],
-  Flavor: ["Sweet", "Sour", "Bitter", "Fruity", "Spicy", "Smoky", "Creamy"],
-  Style: ["Classic", "Tropical", "Sparkling", "Creamy", "Frozen", "Longdrink", "Martini"],
-  Mood: ["Relaxed", "Upbeat", "Romantic", "Festive", "Cozy", "Adventurous"],
-  Occasion: ["Party", "Dinner", "Beach", "Casual", "Date Night", "Brunch"],
-};
+import { useDispatch } from "react-redux";
+import { fetchByIngredient } from "../../app/features/fetchByIngredientSlice"; // Adjust as needed
+import { topLevelCategories, subCategories } from "../../app/utils/data";
 
 const CategorySelection = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedTag, setSelectedTag] = useState(null);
+  const dispatch = useDispatch();
+  const [selectedTopCategory, setSelectedTopCategory] = useState("Spirits");
+
+  const handleTopCategoryClick = (category) => {
+    setSelectedTopCategory(category);
+  };
+
+  const handleSubCategoryClick = (subCategory) => {
+    if (selectedTopCategory === "Spirits") {
+      dispatch(fetchByIngredient(subCategory));
+    }
+    // Add logic for Mood, Strength, Occasion if supported by your API/data
+  };
 
   return (
-    <div className="w-full px-4 py-4 md:py-6 lg:py-8">
-      {/* Top Row Buttons */}
-      <div className="flex flex-wrap justify-center gap-3 mb-4">
-        {Object.keys(categories).map((category) => (
-          <button
-            key={category}
-            onClick={() => {
-              setSelectedCategory(category);
-              setSelectedTag(null); // reset grid
-            }}
-            className={`px-4 py-2 rounded-full font-semibold text-sm md:text-base shadow-md hover:scale-105 transition-transform duration-200 
-              ${selectedCategory === category ? "bg-app-flame text-white" : "bg-white text-app-flame border border-app-flame"}`}
+    <div className="flex flex-col gap-4">
+      {/* First Row: Top-Level Categories */}
+      <div className="flex justify-center gap-3 md:gap-5 lg:gap-6 flex-wrap">
+        {topLevelCategories.map((category, index) => (
+          <div
+            key={index}
+            className={`rounded-md px-4 py-2 drop-shadow-lg cursor-pointer group hover:scale-105 basic-transition ${
+              selectedTopCategory === category ? "bg-app-flame text-white" : "bg-white text-app-cadet"
+            }`}
+            onClick={() => handleTopCategoryClick(category)}
           >
-            {category}
-          </button>
+            <p className="text-sm md:text-base lg:text-lg font-app-text">
+              {category}
+            </p>
+          </div>
         ))}
       </div>
 
-      {/* Second Row Subcategories */}
-      {selectedCategory && (
-        <SubcategoryButtons
-          options={categories[selectedCategory]}
-          selectedTag={selectedTag}
-          onSelectTag={setSelectedTag}
-        />
-      )}
-
-      {/* Filtered Cocktail Grid */}
-      {selectedTag && (
-        <div className="mt-6">
-          <FilteredCocktailGrid filterTag={selectedTag} />
-        </div>
-      )}
+      {/* Second Row: Dynamic Sub-Categories */}
+      <div className="flex justify-center gap-3 md:gap-5 lg:gap-6 flex-wrap">
+        {subCategories[selectedTopCategory]?.map((subCategory, index) => (
+          <div
+            key={index}
+            className="rounded-md px-4 py-2 drop-shadow-lg cursor-pointer group hover:scale-105 basic-transition bg-white text-app-cadet"
+            onClick={() => handleSubCategoryClick(subCategory)}
+          >
+            <p className="text-sm md:text-base lg:text-lg font-app-text">
+              {subCategory}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
