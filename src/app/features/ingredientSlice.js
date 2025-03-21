@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { HTTP_STATUS } from "../utils/constants";
 import { organizeIngredients } from "../utils/helpers";
 
 export const fetchIngredients = createAsyncThunk(
@@ -10,10 +10,19 @@ export const fetchIngredients = createAsyncThunk(
     signal.addEventListener("abort", () => {
       source.cancel();
     });
-    const response = await axios.get(`${API_BASE_URL}/list.php?i=list`, {
-      cancelToken: source.token,
-    });
-    return organizeIngredients(response.data.drinks);
+
+    try {
+      // Load local ingredients data
+      const response = await axios.get("/data/ingredients.json", {
+        cancelToken: source.token,
+      });
+
+      const ingredientList = response.data.ingredients || [];
+
+      return organizeIngredients ? organizeIngredients(ingredientList) : ingredientList;
+    } catch (error) {
+      throw new Error("Could not load ingredients.");
+    }
   }
 );
 
@@ -25,7 +34,7 @@ const initialState = {
 
 export const ingredientSlice = createSlice({
   name: "ingredient",
-  initialState: initialState,
+  initialState,
   extraReducers: {
     [fetchIngredients.pending]: (state) => {
       state.loading = HTTP_STATUS.PENDING;
