@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { HTTP_STATUS } from "../utils/constants";
 import { organizeCocktail } from "../utils/helpers";
 
 export const fetchRandomDrink = createAsyncThunk(
@@ -10,10 +10,27 @@ export const fetchRandomDrink = createAsyncThunk(
     signal.addEventListener("abort", () => {
       source.cancel();
     });
-    const response = await axios.get(`${API_BASE_URL}/random.php`, {
-      cancelToken: source.token,
-    });
-    return organizeCocktail(response.data.drinks[0]);
+
+    try {
+      // Load full recipe list from local JSON
+      const response = await axios.get("/data/cocktail_recipes.json", {
+        cancelToken: source.token,
+      });
+
+      const allDrinks = response.data.drinks || [];
+
+      if (allDrinks.length === 0) {
+        throw new Error("No cocktails available.");
+      }
+
+      // Select a random cocktail
+      const randomIndex = Math.floor(Math.random() * allDrinks.length);
+      const randomCocktail = allDrinks[randomIndex];
+
+      return organizeCocktail(randomCocktail);
+    } catch (error) {
+      throw new Error("Failed to load random cocktail.");
+    }
   }
 );
 
