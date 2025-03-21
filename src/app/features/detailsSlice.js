@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { HTTP_STATUS } from "../utils/constants";
 import { organizeCocktail } from "../utils/helpers";
 
 export const fetchCocktailDetails = createAsyncThunk(
@@ -10,10 +10,21 @@ export const fetchCocktailDetails = createAsyncThunk(
     signal.addEventListener("abort", () => {
       source.cancel();
     });
-    const response = await axios.get(`${API_BASE_URL}/lookup.php?i=${id}`, {
+
+    const response = await axios.get("/data/cocktail_recipes.json", {
       cancelToken: source.token,
     });
-    return organizeCocktail(response.data.drinks[0]);
+
+    const allDrinks = response.data.drinks || [];
+
+    // Match by string to avoid type mismatch issues
+    const match = allDrinks.find(drink => drink.idDrink === id.toString());
+
+    if (!match) {
+      throw new Error(`Cocktail with ID ${id} not found`);
+    }
+
+    return organizeCocktail(match);
   }
 );
 
@@ -25,7 +36,7 @@ const initialState = {
 
 export const detailsSlice = createSlice({
   name: "details",
-  initialState: initialState,
+  initialState,
   extraReducers: {
     [fetchCocktailDetails.pending]: (state) => {
       state.loading = HTTP_STATUS.PENDING;
