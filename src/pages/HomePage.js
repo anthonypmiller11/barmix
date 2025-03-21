@@ -1,6 +1,6 @@
 import React from "react";
 import { Title } from "../components";
-import { Cocktails, Home, Popular, Stats } from "../containers";
+import { Cocktails, Home, Popular, Stats, ImageRotation } from "../containers";
 import AnimateRoute from "../containers/layout/AnimateRoute";
 import { useTitle } from "../hooks/useTitle";
 import CategorySelection from "../components/CategorySelection"; // ✅ Only added import
@@ -10,15 +10,22 @@ const HomePage = () => {
 
   return (
     <AnimateRoute>
+      {/* ✅ TOP 20% UI: New category selectors */}
+      <div className="pt-4 px-[5vw] md:px-[6vw] lg:px-[7vw]" style={{ height: '20vh', minHeight: '150px' }}>
+        <CategorySelection />
+      </div>
+
+      {/* ✅ Everything below remains the same */}
       <Home />
 
-      {/* ✅ Keep your original title exactly */}
-      <Title title="	“Smart Mixing. Custom Strength. Pure Enjoyment. Cheers!”" />
+      {/* ✅ Rotating quote section */}
+      <Title
+        title="“Smart Mixing. Custom Strength. Pure Enjoyment. Cheers!”"
+      />
 
-      {/* ✅ Just insert Category Selection here */}
-      <CategorySelection />
+      {/* ✅ 3-column animated layout */}
+      <ImageRotation />
 
-      {/* ✅ Everything below remains untouched */}
       <Stats />
       <Title title="Most popular cocktails" />
       <Popular />
