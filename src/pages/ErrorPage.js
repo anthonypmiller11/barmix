@@ -1,3 +1,4 @@
+// src/pages/ErrorPage.js
 import React from "react";
 import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
@@ -14,6 +15,7 @@ const ErrorPage = () => {
   const openSearch = () => {
     dispatch(showSearchModal());
   };
+
   return (
     <AnimateRoute>
       <div className="flex flex-col justify-center items-center h-full w-full my-10 xl:my-16">
@@ -23,11 +25,7 @@ const ErrorPage = () => {
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
-            transition={{
-              ease: "easeInOut",
-              duration: 0.5,
-              delay: 0.3,
-            }}
+            transition={{ ease: "easeInOut", duration: 0.5, delay: 0.3 }}
             className="text-7xl md:text-8xl xl:text-9xl font-app-main font-bold text-app-flame"
           >
             404
@@ -37,11 +35,7 @@ const ErrorPage = () => {
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
-            transition={{
-              ease: "easeInOut",
-              duration: 0.5,
-              delay: 0.3,
-            }}
+            transition={{ ease: "easeInOut", duration: 0.5, delay: 0.3 }}
             className="text-center text-xl md:text-2xl lg:text-3xl xl:text-5xl font-app-text font-bold text-app-cadet mt-2"
           >
             Page Not Found!
@@ -51,27 +45,17 @@ const ErrorPage = () => {
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
-            transition={{
-              ease: "easeInOut",
-              duration: 0.5,
-              delay: 0.5,
-            }}
+            transition={{ ease: "easeInOut", duration: 0.5, delay: 0.5 }}
             className="text-xl lg:text-[22px] xl:text-2xl font-app-heading text-app-olivine text-center mt-5 xl:mt-8 mb-4 xl:mb-7"
           >
-            The page you were looking for could not be found. It might have been
-            removed, renamed, or did not exist in the first place.
+            The page you were looking for could not be found. It might have been removed, renamed, or did not exist in the first place.
           </motion.p>
-
           <motion.div
             variants={fromBelow}
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
-            transition={{
-              ease: "easeInOut",
-              duration: 0.5,
-              delay: 1
-            }}
+            transition={{ ease: "easeInOut", duration: 0.5, delay: 1 }}
             className="w-full px-10 md:px-20 xl:px-32"
           >
             <input
