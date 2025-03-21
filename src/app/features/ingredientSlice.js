@@ -19,7 +19,10 @@ export const fetchIngredients = createAsyncThunk(
 
       const ingredientList = response.data.ingredients || [];
 
-      return organizeIngredients ? organizeIngredients(ingredientList) : ingredientList;
+      // Ensure the ingredient list is properly formatted
+      return organizeIngredients && typeof organizeIngredients === "function"
+        ? organizeIngredients(ingredientList)
+        : ingredientList;
     } catch (error) {
       throw new Error("Could not load ingredients.");
     }
@@ -35,18 +38,19 @@ const initialState = {
 export const ingredientSlice = createSlice({
   name: "ingredient",
   initialState,
-  extraReducers: {
-    [fetchIngredients.pending]: (state) => {
-      state.loading = HTTP_STATUS.PENDING;
-    },
-    [fetchIngredients.fulfilled]: (state, action) => {
-      state.loading = HTTP_STATUS.FULFILLED;
-      state.ingredients = action.payload;
-    },
-    [fetchIngredients.rejected]: (state, action) => {
-      state.loading = HTTP_STATUS.REJECTED;
-      state.error = action.error.message;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchIngredients.pending, (state) => {
+        state.loading = HTTP_STATUS.PENDING;
+      })
+      .addCase(fetchIngredients.fulfilled, (state, action) => {
+        state.loading = HTTP_STATUS.FULFILLED;
+        state.ingredients = action.payload;
+      })
+      .addCase(fetchIngredients.rejected, (state, action) => {
+        state.loading = HTTP_STATUS.REJECTED;
+        state.error = action.error.message;
+      });
   },
 });
 
