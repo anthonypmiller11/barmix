@@ -1,7 +1,7 @@
 // src/components/category/CategorySelection.js
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchByIngredient } from "../../app/features/fetchByIngredientSlice"; // Adjust as needed
+import { fetchByIngredient } from "../../app/features/fetchByIngredientSlice";
 import { topLevelCategories, subCategories } from "../../app/utils/data";
 
 const CategorySelection = () => {
@@ -16,7 +16,7 @@ const CategorySelection = () => {
     if (selectedTopCategory === "Spirits") {
       dispatch(fetchByIngredient(subCategory));
     }
-    // Add logic for Mood, Strength, Occasion if supported by your API/data
+    // Add logic for Mood, Strength, Occasion if needed
   };
 
   return (
