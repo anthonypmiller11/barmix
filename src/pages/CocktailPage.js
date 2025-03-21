@@ -1,3 +1,4 @@
+// src/pages/CocktailPage.js
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -16,7 +17,7 @@ const CocktailPage = () => {
 
   const showModal = useSelector((state) => state.modal.showIngredientModal);
 
-  useTitle(`${cocktail.drink} | Cocktails`, loading);
+  useTitle(`${cocktail.drink || "Cocktail"} | Cocktails`, loading);
 
   const onCloseModal = () => {
     dispatch(hideIngredientModal());
@@ -24,17 +25,15 @@ const CocktailPage = () => {
 
   useEffect(() => {
     const promise = dispatch(fetchCocktailDetails(id));
-
-    return () => {
-      promise.abort();
-    };
+    return () => promise.abort();
   }, [id, dispatch]);
+
   return (
     <AnimateRoute>
       <CocktailInfo cocktail={cocktail} loading={loading} />
-      <Title title={"Instructions"} />
+      <Title title="Instructions" />
       <Instructions cocktail={cocktail} loading={loading} />
-      <Title title={"Your Drink Order:"} />
+      <Title title="Your Drink Order:" />
       <VideoTutorial cocktail={cocktail} loading={loading} />
       <Modal onCloseModal={onCloseModal} show={showModal}>
         <AboutIngredient />
