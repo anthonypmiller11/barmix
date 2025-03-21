@@ -10,35 +10,23 @@ export const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    showIngredientModal: (state) => {
-      state.showIngredientModal = true;
+    toggleIngredientModal: (state, action) => {
+      state.showIngredientModal = action.payload ?? !state.showIngredientModal;
     },
-    hideIngredientModal: (state) => {
-      state.showIngredientModal = false;
+    toggleSearchModal: (state, action) => {
+      state.showSearchModal = action.payload ?? !state.showSearchModal;
     },
-    showSearchModal: (state) => {
-      state.showSearchModal = true;
-    },
-    hideSearchModal: (state) => {
-      state.showSearchModal = false;
-    },
-    showMobileMenu: (state) => {
-      state.showMobileMenu = true;
-    },
-    hideMobileMenu: (state) => {
-      state.showMobileMenu = false;
+    toggleMobileMenu: (state, action) => {
+      state.showMobileMenu = action.payload ?? !state.showMobileMenu;
     },
   },
 });
 
-// ✅ This is the key part:
+// ✅ Export actions
 export const {
-  showIngredientModal,
-  hideIngredientModal,
-  showSearchModal,
-  hideSearchModal,
-  showMobileMenu,
-  hideMobileMenu,
+  toggleIngredientModal,
+  toggleSearchModal,
+  toggleMobileMenu,
 } = modalSlice.actions;
 
 export default modalSlice.reducer;
