@@ -32,7 +32,13 @@ const AboutIngredient = () => {
                 className="aspect-square w-full object-cover rounded-[5px] max-w-[75vw] md:max-w-[200px] scale-90 md:scale-110"
                 src={`/images/ingredients/${ingredient.name.replace(/\s+/g, "_")}-medium.png`}
                 alt={ingredient.name}
-                placeholder={<div className="loading animate-loading aspect-square w-full rounded-[5px] max-w-[75vw] md:max-w-[200px]"></div>}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/images/ingredients/default.png";
+                }}
+                placeholder={
+                  <div className="loading animate-loading aspect-square w-full rounded-[5px] max-w-[75vw] md:max-w-[200px]"></div>
+                }
               />
             )}
           </div>
