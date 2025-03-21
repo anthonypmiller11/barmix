@@ -1,13 +1,22 @@
+// src/app/features/categorySlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
+// Fetch cocktails by category from static cocktail_recipes.json in public/
 export const fetchByCategory = createAsyncThunk(
   "category/fetchByCategory",
   async (categoryIndex, { rejectWithValue }) => {
     try {
-      const category = ["Cocktail", "Shot", "Punch / Party Drink"][categoryIndex];
-      const response = await axios.get(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
-      return response.data.drinks;
+      // Map index to category type from your categoryData.js
+      const categoryTypes = ["Spirit", "Strengths", "Flavor", "Style", "Mood", "Occasion"];
+      const categoryType = categoryTypes[categoryIndex];
+
+      // Fetch static JSON from public/
+      const response = await fetch('/cocktail_recipes.json');
+      if (!response.ok) throw new Error('Failed to load cocktail recipes');
+      const allRecipes = await response.json();
+
+      // Return cocktails for this category type (e.g., { Vodka: [...], Tequila: [...] })
+      return allRecipes[categoryType] || {};
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -17,8 +26,8 @@ export const fetchByCategory = createAsyncThunk(
 const categorySlice = createSlice({
   name: "category",
   initialState: {
-    cocktails: [],
-    loading: "PENDING",
+    cocktails: {}, // Object for sub-categories
+    loading: "IDLE",
     error: null,
   },
   reducers: {},
@@ -39,4 +48,5 @@ const categorySlice = createSlice({
   },
 });
 
+export { fetchByCategory };
 export default categorySlice.reducer;
