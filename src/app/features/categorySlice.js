@@ -6,33 +6,43 @@ import { organizeCocktailList } from "../utils/helpers";
 
 export const fetchByCategory = createAsyncThunk(
   "category/fetchByCategory",
-  async (type, { signal }) => {
+  async ({ type, value }, { signal }) => {
     const source = axios.CancelToken.source();
     signal.addEventListener("abort", () => {
       source.cancel();
     });
 
-    // Validate the requested type exists
-    const selectedTag = categoryTypes[type]; // This maps to your tag name
-    if (!selectedTag) throw new Error("Invalid category type");
+    try {
+      // Load all cocktails from local JSON
+      const response = await axios.get("/data/cocktail_recipes.json", {
+        cancelToken: source.token,
+      });
 
-    // Load local data
-    const response = await axios.get("/data/cocktail_recipes.json", {
-      cancelToken: source.token,
-    });
+      const allCocktails = response.data.drinks || [];
 
-    const allCocktails = response.data.drinks || [];
+      // Ensure valid category type
+      if (!categoryTypes[type]) {
+        throw new Error("Invalid category type");
+      }
 
-    // Filter by strTags (case-insensitive match)
-    const filtered = allCocktails.filter(drink =>
-      drink.strTags &&
-      drink.strTags
-        .split(",")
-        .map(tag => tag.trim().toLowerCase())
-        .includes(selectedTag.toLowerCase())
-    );
+      // Ensure valid value exists in that category
+      if (!categoryTypes[type].includes(value)) {
+        throw new Error("Invalid category value");
+      }
 
-    return organizeCocktailList(filtered);
+      // Filter cocktails based on tags
+      const filteredCocktails = allCocktails.filter(drink =>
+        drink.strTags &&
+        drink.strTags
+          .split(",")
+          .map(tag => tag.trim().toLowerCase())
+          .includes(value.toLowerCase())
+      );
+
+      return organizeCocktailList(filteredCocktails);
+    } catch (error) {
+      throw new Error("Error filtering cocktails by category.");
+    }
   }
 );
 
@@ -44,7 +54,7 @@ const initialState = {
 
 export const categorySlice = createSlice({
   name: "category",
-  initialState,
+  initialState: initialState,
   extraReducers: {
     [fetchByCategory.pending]: (state) => {
       state.cocktails = [];
