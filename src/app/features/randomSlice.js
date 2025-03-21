@@ -1,61 +1,47 @@
+// src/app/features/randomSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { HTTP_STATUS } from "../utils/constants";
-import { organizeCocktail } from "../utils/helpers";
+import cocktailRecipes from "../../../data/cocktail_recipes.json"; // Adjust the path as needed
 
 export const fetchRandomDrink = createAsyncThunk(
   "random/fetchRandomDrink",
   async (_data, { signal }) => {
-    const source = axios.CancelToken.source();
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
-
-    try {
-      // Load full recipe list from local JSON
-      const response = await axios.get("/data/cocktail_recipes.json", {
-        cancelToken: source.token,
-      });
-
-      const allDrinks = response.data.drinks || [];
-
-      if (allDrinks.length === 0) {
-        throw new Error("No cocktails available.");
-      }
-
-      // Select a random cocktail
-      const randomIndex = Math.floor(Math.random() * allDrinks.length);
-      const randomCocktail = allDrinks[randomIndex];
-
-      return organizeCocktail(randomCocktail);
-    } catch (error) {
-      throw new Error("Failed to load random cocktail.");
-    }
+    // Simulate a fetch by selecting a random drink from cocktail_recipes.json
+    const randomIndex = Math.floor(Math.random() * cocktailRecipes.length);
+    return cocktailRecipes[randomIndex];
   }
 );
 
-const initialState = {
-  randomCocktail: {},
-  loading: null,
-  error: null,
-};
-
-export const randomSlice = createSlice({
+const randomSlice = createSlice({
   name: "random",
-  initialState: initialState,
-  extraReducers: {
-    [fetchRandomDrink.pending]: (state) => {
-      state.loading = HTTP_STATUS.PENDING;
+  initialState: {
+    cocktail: null,
+    loading: HTTP_STATUS.IDLE,
+    error: null,
+  },
+  reducers: {
+    clearRandomDrink: (state) => {
+      state.cocktail = null;
+      state.loading = HTTP_STATUS.IDLE;
+      state.error = null;
     },
-    [fetchRandomDrink.fulfilled]: (state, { payload }) => {
-      state.loading = HTTP_STATUS.FULFILLED;
-      state.randomCocktail = payload;
-    },
-    [fetchRandomDrink.rejected]: (state, action) => {
-      state.loading = HTTP_STATUS.REJECTED;
-      state.error = action.error.message;
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchRandomDrink.pending, (state) => {
+        state.loading = HTTP_STATUS.PENDING;
+        state.error = null;
+      })
+      .addCase(fetchRandomDrink.fulfilled, (state, action) => {
+        state.loading = HTTP_STATUS.FULFILLED;
+        state.cocktail = action.payload;
+      })
+      .addCase(fetchRandomDrink.rejected, (state, action) => {
+        state.loading = HTTP_STATUS.REJECTED;
+        state.error = action.error.message;
+      });
   },
 });
 
+export const { clearRandomDrink } = randomSlice.actions;
 export default randomSlice.reducer;
