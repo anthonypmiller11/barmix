@@ -1,3 +1,4 @@
+// src/pages/FavoritePage.js
 import React from "react";
 import { useSelector } from "react-redux";
 import { HTTP_STATUS } from "../app/utils/constants";
