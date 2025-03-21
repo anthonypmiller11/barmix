@@ -1,3 +1,4 @@
+// src/pages/IngredientsPage.js
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchIngredients } from "../app/features/ingredientSlice";
@@ -23,13 +24,12 @@ const IngredientsPage = () => {
   };
 
   useEffect(() => {
+    console.log("Fetching ingredients...");
     const promise = dispatch(fetchIngredients());
+    return () => promise.abort();
+  }, [dispatch]);
 
-    return () => {
-      promise.abort();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  console.log("State:", { ingredients, loading, error });
 
   return (
     <AnimateRoute>
@@ -37,7 +37,7 @@ const IngredientsPage = () => {
         className="mt-7 mb-8 md:mt-10 md:mb-12 lg:mt-12 lg:mb-16"
         title="Perfect Ingredients Never Exists"
       />
-      <div className="px-[5vw] md:px-[6vw] lg:px-[7vw] overflow-hidden">
+      <div className="px-[5vw] md:px-[6vw] lg:px-[7vw]">
         <IngredientsGrid
           list={ingredients}
           loading={loading}
