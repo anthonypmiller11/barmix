@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_BASE_URL, HTTP_STATUS } from "../utils/constants";
+import { HTTP_STATUS } from "../utils/constants";
 import { categoryTypes } from "../utils/data";
 import { organizeCocktailList } from "../utils/helpers";
 
@@ -11,17 +11,28 @@ export const fetchByCategory = createAsyncThunk(
     signal.addEventListener("abort", () => {
       source.cancel();
     });
-    if (categoryTypes.some((t) => t === categoryTypes[type])) {
-      const response = await axios.get(
-        `${API_BASE_URL}/filter.php?c=${categoryTypes[type]}`,
-        {
-          cancelToken: source.token,
-        }
-      );
-      return organizeCocktailList(response.data.drinks);
-    }
 
-    throw new Error("Invalid type");
+    // Validate the requested type exists
+    const selectedTag = categoryTypes[type]; // This maps to your tag name
+    if (!selectedTag) throw new Error("Invalid category type");
+
+    // Load local data
+    const response = await axios.get("/data/cocktail_recipes.json", {
+      cancelToken: source.token,
+    });
+
+    const allCocktails = response.data.drinks || [];
+
+    // Filter by strTags (case-insensitive match)
+    const filtered = allCocktails.filter(drink =>
+      drink.strTags &&
+      drink.strTags
+        .split(",")
+        .map(tag => tag.trim().toLowerCase())
+        .includes(selectedTag.toLowerCase())
+    );
+
+    return organizeCocktailList(filtered);
   }
 );
 
@@ -33,7 +44,7 @@ const initialState = {
 
 export const categorySlice = createSlice({
   name: "category",
-  initialState: initialState,
+  initialState,
   extraReducers: {
     [fetchByCategory.pending]: (state) => {
       state.cocktails = [];
