@@ -1,0 +1,268 @@
+{
+  "ingredients": [
+    {
+      "name": "Absolut Vodka",
+      "image": "/images/ingredients/Absolut_Vodka-medium.png"
+    },
+    {
+      "name": "Smirnoff Vodka",
+      "image": "/images/ingredients/Smirnoff_Vodka-medium.png"
+    },
+    {
+      "name": "Tanqueray Gin",
+      "image": "/images/ingredients/Tanqueray_Gin-medium.png"
+    },
+    {
+      "name": "Bacardi White Rum",
+      "image": "/images/ingredients/Bacardi_White_Rum-medium.png"
+    },
+    {
+      "name": "Captain Morgan Rum",
+      "image": "/images/ingredients/Captain_Morgan_Rum-medium.png"
+    },
+    {
+      "name": "Jose Cuervo Tequila",
+      "image": "/images/ingredients/Jose_Cuervo_Tequila-medium.png"
+    },
+    {
+      "name": "Patron Tequila",
+      "image": "/images/ingredients/Patron_Tequila-medium.png"
+    },
+    {
+      "name": "Jack Daniels Whiskey",
+      "image": "/images/ingredients/Jack_Daniels_Whiskey-medium.png"
+    },
+    {
+      "name": "Crown Royal Whiskey",
+      "image": "/images/ingredients/Crown_Royal_Whiskey-medium.png"
+    },
+    {
+      "name": "Rye Whiskey",
+      "image": "/images/ingredients/Rye_Whiskey-medium.png"
+    },
+    {
+      "name": "Hennessy Cognac",
+      "image": "/images/ingredients/Hennessy_Cognac-medium.png"
+    },
+    {
+      "name": "Amaretto",
+      "image": "/images/ingredients/Amaretto-medium.png"
+    },
+    {
+      "name": "Aperol",
+      "image": "/images/ingredients/Aperol-medium.png"
+    },
+    {
+      "name": "Blue Curacao Liqueur",
+      "image": "/images/ingredients/Blue_Curacao_Liqueur-medium.png"
+    },
+    {
+      "name": "Campari",
+      "image": "/images/ingredients/Campari-medium.png"
+    },
+    {
+      "name": "Chambord Raspberry Liqueur",
+      "image": "/images/ingredients/Chambord_Raspberry_Liqueur-medium.png"
+    },
+    {
+      "name": "Coffee Liqueur",
+      "image": "/images/ingredients/Coffee_Liqueur-medium.png"
+    },
+    {
+      "name": "Cointreau",
+      "image": "/images/ingredients/Cointreau-medium.png"
+    },
+    {
+      "name": "Green Chartreuse",
+      "image": "/images/ingredients/Green_Chartreuse-medium.png"
+    },
+    {
+      "name": "Maraschino Liqueur",
+      "image": "/images/ingredients/Maraschino_Liqueur-medium.png"
+    },
+    {
+      "name": "Peach Schnapps",
+      "image": "/images/ingredients/Peach_Schnapps-medium.png"
+    },
+    {
+      "name": "Triple Sec",
+      "image": "/images/ingredients/Triple_Sec-medium.png"
+    },
+    {
+      "name": "Apple Schnapps",
+      "image": "/images/ingredients/Apple_Schnapps-medium.png"
+    },
+    {
+      "name": "Coconut Rum",
+      "image": "/images/ingredients/Coconut_Rum-medium.png"
+    },
+    {
+      "name": "Dry Vermouth",
+      "image": "/images/ingredients/Dry_Vermouth-medium.png"
+    },
+    {
+      "name": "Sweet Vermouth",
+      "image": "/images/ingredients/Sweet_Vermouth-medium.png"
+    },
+    {
+      "name": "Cranberry Juice",
+      "image": "/images/ingredients/Cranberry_Juice-medium.png"
+    },
+    {
+      "name": "Grapefruit Juice",
+      "image": "/images/ingredients/Grapefruit_Juice-medium.png"
+    },
+    {
+      "name": "Lime Juice",
+      "image": "/images/ingredients/Lime_Juice-medium.png"
+    },
+    {
+      "name": "Orange Juice",
+      "image": "/images/ingredients/Orange_Juice-medium.png"
+    },
+    {
+      "name": "Pineapple Juice",
+      "image": "/images/ingredients/Pineapple_Juice-medium.png"
+    },
+    {
+      "name": "Tomato Juice",
+      "image": "/images/ingredients/Tomato_Juice-medium.png"
+    },
+    {
+      "name": "Chocolate Syrup",
+      "image": "/images/ingredients/Chocolate_Syrup-medium.png"
+    },
+    {
+      "name": "Grenadine Syrup",
+      "image": "/images/ingredients/Grenadine_Syrup-medium.png"
+    },
+    {
+      "name": "Honey Syrup",
+      "image": "/images/ingredients/Honey_Syrup-medium.png"
+    },
+    {
+      "name": "Lemon Syrup",
+      "image": "/images/ingredients/Lemon_Syrup-medium.png"
+    },
+    {
+      "name": "Orgeat Syrup",
+      "image": "/images/ingredients/Orgeat_Syrup-medium.png"
+    },
+    {
+      "name": "Passion Fruit Syrup",
+      "image": "/images/ingredients/Passion_Fruit_Syrup-medium.png"
+    },
+    {
+      "name": "Raspberry Syrup",
+      "image": "/images/ingredients/Raspberry_Syrup-medium.png"
+    },
+    {
+      "name": "Simple Syrup",
+      "image": "/images/ingredients/Simple_Syrup-medium.png"
+    },
+    {
+      "name": "Coca Cola",
+      "image": "/images/ingredients/Coca_Cola-medium.png"
+    },
+    {
+      "name": "Ginger Beer",
+      "image": "/images/ingredients/Ginger_Beer-medium.png"
+    },
+    {
+      "name": "Lemon Lime Soda",
+      "image": "/images/ingredients/Lemon_Lime_Soda-medium.png"
+    },
+    {
+      "name": "Red Bull",
+      "image": "/images/ingredients/Red_Bull-medium.png"
+    },
+    {
+      "name": "Soda Water",
+      "image": "/images/ingredients/Soda_Water-medium.png"
+    },
+    {
+      "name": "Tonic Water",
+      "image": "/images/ingredients/Tonic_Water-medium.png"
+    },
+    {
+      "name": "Cream",
+      "image": "/images/ingredients/Cream-medium.png"
+    },
+    {
+      "name": "Prosecco-Champagne",
+      "image": "/images/ingredients/Prosecco_Champagne-medium.png"
+    },
+    {
+      "name": "Jagermeister",
+      "image": "/images/ingredients/Jagermeister-medium.png"
+    },
+    {
+      "name": "Irish Whiskey",
+      "image": "/images/ingredients/Irish_Whiskey-medium.png"
+    },
+    {
+      "name": "Lemon Peel",
+      "image": "/images/ingredients/Lemon_Peel-medium.png"
+    },
+    {
+      "name": "Orange Peel",
+      "image": "/images/ingredients/Orange_Peel-medium.png"
+    },
+    {
+      "name": "Maraschino Cherry",
+      "image": "/images/ingredients/Maraschino_Cherry-medium.png"
+    },
+    {
+      "name": "Mint",
+      "image": "/images/ingredients/Mint-medium.png"
+    },
+    {
+      "name": "Lemon Slice",
+      "image": "/images/ingredients/Lemon_Slice-medium.png"
+    },
+    {
+      "name": "Orange Slice",
+      "image": "/images/ingredients/Orange_Slice-medium.png"
+    },
+    {
+      "name": "Lime Peel",
+      "image": "/images/ingredients/Lime_Peel-medium.png"
+    },
+    {
+      "name": "Basil",
+      "image": "/images/ingredients/Basil-medium.png"
+    },
+    {
+      "name": "Rosemary",
+      "image": "/images/ingredients/Rosemary-medium.png"
+    },
+    {
+      "name": "Nutmeg",
+      "image": "/images/ingredients/Nutmeg-medium.png"
+    },
+    {
+      "name": "Pepper",
+      "image": "/images/ingredients/Pepper-medium.png"
+    },
+    {
+      "name": "Olive",
+      "image": "/images/ingredients/Olive-medium.png"
+    },
+    {
+      "name": "Bitters",
+      "image": "/images/ingredients/Bitters-medium.png"
+    },
+    {
+      "name": "Tabasco Sauce",
+      "image": "/images/ingredients/Tabasco_Sauce-medium.png"
+    },
+    {
+      "name": "Worcestershire Sauce",
+      "image": "/images/ingredients/Worcestershire_Sauce-medium.png"
+    },
+    {
+      "name": "Cinnamon",
+      "image": "/images/ingredients/Cinnamon-medium.png"
+    }
+  ]
+}
