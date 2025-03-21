@@ -1,7 +1,7 @@
 import { SCREEN_SIZE } from "./constants";
 import { FeaturedCocktails } from "./data";
 
-// 🍸 Organize a single cocktail's data
+// 🍸 Organize a single cocktail from API or JSON
 export const organizeCocktail = (cocktail) => {
   const cocktailData = {
     id: cocktail.idDrink,
@@ -17,28 +17,39 @@ export const organizeCocktail = (cocktail) => {
 
   const ingredientArray = [];
   for (let index = 1; index <= 15; index++) {
-    const ingredient = cocktail[`strIngredient${index}`];
-    const measure = cocktail[`strMeasure${index}`];
-    if (!ingredient) break;
+    if (
+      cocktail["strIngredient" + index] === null ||
+      cocktail["strIngredient" + index] === ""
+    ) {
+      break;
+    }
 
     ingredientArray.push({
-      name: ingredient,
-      measure: measure ? measure : "",
+      name: cocktail["strIngredient" + index],
+      measure: cocktail["strMeasure" + index] || "",
     });
   }
 
   return { ...cocktailData, ingredients: ingredientArray };
 };
 
-// 🍹 Organize a list of cocktails (with optional limit)
+// 🍹 Organize a cocktail list (limit optional)
 export const organizeCocktailList = (cocktails, limit = 0) => {
   const organizedCocktails = [];
   if (cocktails !== null) {
-    const sliced = limit > 0 ? cocktails.slice(0, limit) : cocktails;
-    sliced.forEach((cocktail) => {
-      const data = organizeCocktail(cocktail);
-      organizedCocktails.push(data);
-    });
+    if (limit > 0) {
+      cocktails.forEach((cocktail, index) => {
+        if (index < limit) {
+          const data = organizeCocktail(cocktail);
+          organizedCocktails.push(data);
+        }
+      });
+    } else {
+      cocktails.forEach((cocktail) => {
+        const data = organizeCocktail(cocktail);
+        organizedCocktails.push(data);
+      });
+    }
   }
   return organizedCocktails;
 };
@@ -48,10 +59,10 @@ export const organizeIngredient = (ingredient) => {
   if (typeof ingredient === "string") {
     return {
       name: ingredient,
-      description: "This ingredient is used in multiple cocktails.",
       type: null,
-      alcohol: null,
       abv: null,
+      alcohol: null,
+      image: `/images/ingredients/${ingredient.replace(/\s+/g, "_")}-medium.png`,
     };
   }
 
@@ -62,22 +73,23 @@ export const organizeIngredient = (ingredient) => {
     type: ingredient.strType,
     alcohol: ingredient.strAlcohol,
     abv: ingredient.strABV,
+    image: `/images/ingredients/${ingredient.strIngredient.replace(/\s+/g, "_")}-medium.png`,
   };
 };
 
-// 🍊 Organize a list of ingredients from your local JSON
+// 🧾 Organize an array of ingredient items into display-ready data
 export const organizeIngredients = (ingredients) => {
-  if (!ingredients || !Array.isArray(ingredients)) return [];
-  return ingredients.map((item) => item.trim());
+  if (!ingredients) return [];
+  return ingredients.map((item) => organizeIngredient(item));
 };
 
-// ✨ Get six featured cocktails (randomized)
+// 🎯 Select featured cocktails randomly
 export const featuredCocktails = () => {
   const shuffled = FeaturedCocktails.sort(() => 0.5 - Math.random());
   return shuffled.slice(0, 6);
 };
 
-// 🎥 Extract video IDs from YouTube API response
+// 📺 Format YouTube API response to just video IDs
 export const youtubeResponseToVideos = (response) => {
   const videoIdList = [];
   if (response !== null) {
@@ -86,7 +98,7 @@ export const youtubeResponseToVideos = (response) => {
   return videoIdList;
 };
 
-// 📐 Responsive grid helpers
+// 📐 Grid and layout utilities based on screen width
 export const calcHomeCocktailGrid = (width) => {
   if (width < SCREEN_SIZE.MD) return 2 * 3;
   if (width < SCREEN_SIZE.LG) return 3 * 3;
