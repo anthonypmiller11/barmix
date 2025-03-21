@@ -1,13 +1,7 @@
+// src/pages/HomePage.js
 import React from "react";
 import { Title } from "../components";
-import {
-  Cocktails,
-  Home,
-  Popular,
-  Stats,
-  CocktailInfo,
-  VideoTutorial,
-} from "../containers";
+import { Cocktails, Home, Popular, Stats } from "../containers";
 import AnimateRoute from "../containers/layout/AnimateRoute";
 import { useTitle } from "../hooks/useTitle";
 import CategorySelection from "../components/category/CategorySelection";
@@ -18,12 +12,12 @@ const HomePage = () => {
 
   return (
     <AnimateRoute>
-      {/* ✅ TOP 20%: Two-Row Category Selector */}
-      <div className="pt-4 px-[5vw] md:px-[6vw] lg:px-[7vw]" style={{ height: '20vh', minHeight: '150px' }}>
+      {/* Two-Row Category Selector */}
+      <div className="pt-4 px-[5vw] md:px-[6vw] lg:px-[7vw] mb-8" style={{ minHeight: "150px" }}>
         <CategorySelection />
       </div>
 
-      {/* 🔸 KEEP EXISTING CONTENT */}
+      {/* Existing Content */}
       <Home />
       <Title title="“Smart Mixing. Custom Strength. Pure Enjoyment. Cheers!”" />
       <ImageRotation />
