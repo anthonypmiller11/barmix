@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchIngredients } from "../app/features/ingredientSlice";
 import { hideIngredientModal } from "../app/features/modalSlice";
 import { calcIngredientsGrid } from "../app/utils/helpers";
-import { AboutIngredient, IngredientList, Title, Modal } from "../components";
+import { AboutIngredient, Title, Modal } from "../components";
+import { IngredientList } from "../components/ingredient"; // Ensure this path matches
 import AnimateRoute from "../containers/layout/AnimateRoute";
 import { useTitle } from "../hooks/useTitle";
 import useWindowSize from "../hooks/useWindowSize";
