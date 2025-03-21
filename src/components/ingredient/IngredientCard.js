@@ -32,7 +32,7 @@ const IngredientCard = ({ loading, name }) => {
             <div className="p-2 rounded-[5px] bg-app-cadet/30 group-hover:bg-transparent double-transition">
               <LazyLoadImage
                 className="aspect-square w-full object-cover rounded-[5px] group-hover:scale-[1.35] group-hover:blur-[3px] group-hover:translate-y-5 basic-transition"
-                src={`https://www.thecocktaildb.com/images/ingredients/${name}-Medium.png`}
+                src={`/images/ingredients/${name.replace(/\s+/g, "_")}-medium.png`}
                 alt={name}
                 placeholder={<div className="loading animate-loading aspect-square w-full rounded-[5px]"></div>}
               />
