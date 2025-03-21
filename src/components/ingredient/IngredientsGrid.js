@@ -1,81 +1,85 @@
-import React, { useEffect, useState } from "react";
-import Pagination from "../Pagination";
+import React from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useDispatch } from "react-redux";
+import { fetchIngredientDetails } from "../../app/features/aboutIngredientSlice";
+import { showIngredientModal } from "../../app/features/modalSlice";
 import { HTTP_STATUS } from "../../app/utils/constants";
-import IngredientCard from "./IngredientCard";
-import { motion } from "framer-motion";
-import { cocktailsGridAnimation } from "../../app/utils/animationsHelper";
+import PrimaryButton from "../buttons/PrimaryButton";
 
-const IngredientsGrid = ({ list, loading, perPage, error }) => {
-  const [pageNumber, setPageNumber] = useState(0);
+const IngredientCard = ({ loading, name }) => {
+  const dispatch = useDispatch();
 
-  const itemsPerPage = perPage ?? 8;
-  const itemsVisited = pageNumber * itemsPerPage;
-  const displayItems = list.slice(itemsVisited, itemsVisited + itemsPerPage);
-  const pageCount = Math.ceil(list.length / itemsPerPage);
+  const onClick = () => {
+    const promise = dispatch(fetchIngredientDetails(name));
+    dispatch(showIngredientModal());
 
-  useEffect(() => {
-    setPageNumber(0);
-  }, [list]);
+    return () => {
+      promise.abort();
+    };
+  };
+
+  // Convert name to image-friendly format
+  const imageName = name.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
+  const imagePath = `/images/ingredients/${imageName}-medium.png`;
 
   return (
-    <div>
-      {loading === HTTP_STATUS.FULFILLED && list.length === 0 && (
-        <div className="w-full p-4">
-          <p className="text-app-flame font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
-            Oops!! No Ingredients Found.
-          </p>
+    <div
+      className={`bg-white h-full w-full rounded-[5px] drop-shadow-lg group overflow-hidden relative hover:ring-1 hover:ring-white cursor-pointer ${
+        loading === HTTP_STATUS.FULFILLED && " ingredient-card"
+      }`}
+    >
+      <div className="rounded-[5px] overflow-hidden">
+        <div className="p-1 md:p-2 lg:p-3 relative">
+          {loading !== HTTP_STATUS.FULFILLED && (
+            <div className="loading animate-loading aspect-square w-full rounded-[5px]"></div>
+          )}
+          {loading === HTTP_STATUS.FULFILLED && (
+            <div className="p-2 rounded-[5px] bg-app-cadet/30 group-hover:bg-transparent double-transition">
+              <LazyLoadImage
+                className="aspect-square w-full object-cover rounded-[5px] group-hover:scale-[1.35] group-hover:blur-[3px] group-hover:translate-y-5 basic-transition"
+                src={imagePath}
+                alt={name}
+                placeholder={
+                  <div className="loading animate-loading aspect-square w-full rounded-[5px]"></div>
+                }
+                onError={(e) => {
+                  e.target.src = "/images/ingredients/default-medium.png"; // fallback image
+                }}
+              />
+            </div>
+          )}
         </div>
-      )}
 
-      {loading === HTTP_STATUS.REJECTED && error !== "Aborted" && (
-        <div className="w-full p-4">
-          <p className="text-app-flame font-app-heading text-[16px] md:text-[18px] lg:text-[20px] font-bold text-center">
-            Oops!! No Ingredients Found.
-          </p>
+        <div className="pb-1 md:pb-2 lg:pb-3 px-1 md:px-2 lg:px-3">
+          {loading !== HTTP_STATUS.FULFILLED && (
+            <div className="flex flex-col justify-start items-start">
+              <p className="loading animate-loading rounded-md text-slate-100 h-[20px] lg:h-[24px] w-full"></p>
+            </div>
+          )}
+          {loading === HTTP_STATUS.FULFILLED && (
+            <div className="px-1 lg:pb-1">
+              <p className="text-[12px] md:text-[13px] lg:text-[14px] xl:text-[15px] text-center font-app-text text-app-cadet group-hover:text-transparent basic-transition truncate leading-5">
+                {name}
+              </p>
+            </div>
+          )}
         </div>
-      )}
-
-      {(loading === HTTP_STATUS.PENDING ||
-        (loading === HTTP_STATUS.REJECTED && error === "Aborted")) && (
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
-          {[...Array(itemsPerPage)].map((_item, index) => {
-            return (
-              <div key={index}>
-                {<IngredientCard name="Ingredient" loading={loading} />}
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {loading === HTTP_STATUS.FULFILLED && list.length > 0 && (
-        <motion.div
-          layoutId="ingredientsGrid"
-          className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-5 lg:gap-8"
-        >
-          {displayItems.map((item, index) => {
-            return (
-              <motion.div
-                key={`${item}-${index}`}
-                variants={cocktailsGridAnimation}
-                initial="initial"
-                animate="animate"
-                transition={{ duration: 0.2, delay: index * 0.06 }}
-              >
-                {<IngredientCard name={item} loading={loading} />}
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      )}
-
-      <div className="mx-8 my-12">
-        {loading === HTTP_STATUS.FULFILLED && list.length > 0 && (
-          <Pagination pageCount={pageCount} setPageNumber={setPageNumber} />
-        )}
       </div>
+
+      {loading === HTTP_STATUS.FULFILLED && (
+        <div className="z-[2] pt-5 rounded-[5px] h-full w-full flex justify-center items-center overflow-hidden absolute top-0 left-0 right-0">
+          <div className="relative w-full flex justify-center items-center">
+            <div className="px-2 md:px-3 pb-2 flex flex-col items-center justify-center scale-0 group-hover:scale-100 absolute delay-150 -top-48 group-hover:-top-10 basic-transition group-hover:duration-500 duration-150">
+              <p className="text-[15px] md:text-[16px] lg:text-[17px] xl:text-[18px] mb-3 text-center font-app-text text-white leading-5">
+                {name}
+              </p>
+              <PrimaryButton onClick={onClick} text="More Details" />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default IngredientsGrid;
+export default IngredientCard;
