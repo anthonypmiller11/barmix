@@ -1,14 +1,27 @@
 // src/app/features/randomSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { HTTP_STATUS } from "../utils/constants";
-import cocktailRecipes from "../../../data/cocktail_recipes.json"; // Adjust the path as needed
+import cocktailRecipes from "../../data/cocktail_recipes.json"; // Adjusted path to match directory structure
 
 export const fetchRandomDrink = createAsyncThunk(
   "random/fetchRandomDrink",
-  async (_data, { signal }) => {
-    // Simulate a fetch by selecting a random drink from cocktail_recipes.json
-    const randomIndex = Math.floor(Math.random() * cocktailRecipes.length);
-    return cocktailRecipes[randomIndex];
+  async (_, { rejectWithValue }) => {
+    try {
+      // Ensure cocktailRecipes is not empty
+      if (!cocktailRecipes || !cocktailRecipes.drinks || cocktailRecipes.drinks.length === 0) {
+        throw new Error("No cocktails available in the dataset.");
+      }
+
+      // Select a random drink
+      const randomIndex = Math.floor(Math.random() * cocktailRecipes.drinks.length);
+      const randomDrink = cocktailRecipes.drinks[randomIndex];
+
+      console.log("Random drink selected:", randomDrink); // Debugging log
+      return randomDrink;
+    } catch (error) {
+      console.error("Error fetching random drink:", error.message);
+      return rejectWithValue(error.message);
+    }
   }
 );
 

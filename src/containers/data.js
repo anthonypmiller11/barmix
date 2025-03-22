@@ -5,18 +5,18 @@ export const FeaturedCocktails = [
     id: 1, 
     name: "Mojito", 
     description: "Minty refreshing drink", 
-    image: "/images/cocktails/mojito.jpg" 
+    image: ".../images/cocktails/mojito.jpg" 
   },
   { 
     id: 2, 
     name: "Margarita", 
     description: "Tequila citrus blend", 
-    image: "/images/cocktails/margarita.jpg" 
+    image: ".../images/cocktails/margarita.jpg" 
   },
   { 
     id: 3, 
     name: "Old Fashioned", 
     description: "Classic whiskey cocktail", 
-    image: "/images/cocktails/oldfashioned.jpg" 
+    image: ".../images/cocktails/oldfashioned.jpg" 
   }
 ];

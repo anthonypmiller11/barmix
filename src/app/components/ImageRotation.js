@@ -10,8 +10,8 @@ const categories = ["Spirit", "Strengths", "Flavor", "Style", "Mood", "Occasion"
 
 const ImageRotation = () => {
   const dispatch = useDispatch();
-  const { cocktails: categoryCocktails, loading: categoryLoading, error: categoryError } = useSelector((state) => state.category);
-  const { cocktails: alcoholicCocktails, loading: alcoholicLoading, error: alcoholicError } = useSelector((state) => state.alcoholic);
+  const { cocktails: categoryCocktails = [], loading: categoryLoading = HTTP_STATUS.IDLE, error: categoryError = null } = useSelector((state) => state.category || {});
+  const { cocktails: alcoholicCocktails = [], loading: alcoholicLoading = HTTP_STATUS.IDLE, error: alcoholicError = null } = useSelector((state) => state.alcoholic || {});
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 

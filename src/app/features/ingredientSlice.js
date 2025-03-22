@@ -1,17 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { API_BASE_URL } from "../../app/utils/constants";
-import axios from "axios";
+import ingredientsData from "../../data/ingredients.json"; // Import the local JSON file
 
 export const fetchIngredients = createAsyncThunk(
   "ingredient/fetchIngredients",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/ingredients.json`);
-      return response.data.ingredients.map(item => ({
+      // Use the local JSON file instead of an API call
+      return ingredientsData.ingredients.map(item => ({
         strIngredient1: item.name,
-        image: item.image
+        image: item.image,
       }));
     } catch (error) {
+      console.error("Error fetching ingredients:", error.message);
       return rejectWithValue(error.message);
     }
   }

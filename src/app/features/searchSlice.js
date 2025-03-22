@@ -13,7 +13,7 @@ export const searchCocktails = createAsyncThunk(
 
     try {
       // Load full recipe list from local JSON
-      const response = await axios.get("/data/cocktail_recipes.json", {
+      const response = await axios.get("../data/cocktail_recipes.json", {
         cancelToken: source.token,
       });
 
@@ -40,6 +40,13 @@ const initialState = {
 export const searchSlice = createSlice({
   name: "search",
   initialState: initialState,
+  reducers: {
+    resetSearch: (state) => {
+      state.cocktails = [];
+      state.loading = null;
+      state.error = null;
+    },
+  },
   extraReducers: {
     [searchCocktails.pending]: (state) => {
       state.loading = HTTP_STATUS.PENDING;
@@ -55,4 +62,5 @@ export const searchSlice = createSlice({
   },
 });
 
+export const { resetSearch } = searchSlice.actions;
 export default searchSlice.reducer;

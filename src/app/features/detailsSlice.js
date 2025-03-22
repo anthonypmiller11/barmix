@@ -11,7 +11,7 @@ export const fetchCocktailDetails = createAsyncThunk(
       source.cancel();
     });
 
-    const response = await axios.get("/data/cocktail_recipes.json", {
+    const response = await axios.get("../data/cocktail_recipes.json", {
       cancelToken: source.token,
     });
 
@@ -27,6 +27,10 @@ export const fetchCocktailDetails = createAsyncThunk(
     return organizeCocktail(match);
   }
 );
+
+export const calcMaxItems = (items, max) => {
+  return items.slice(0, max);
+};
 
 const initialState = {
   cocktail: {},

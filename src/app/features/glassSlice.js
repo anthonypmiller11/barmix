@@ -20,7 +20,7 @@ export const fetchByGlass = createAsyncThunk(
       }
 
       // Load local JSON
-      const response = await axios.get("/data/cocktail_recipes.json", {
+      const response = await axios.get("../data/cocktail_recipes.json", {
         cancelToken: source.token,
       });
 

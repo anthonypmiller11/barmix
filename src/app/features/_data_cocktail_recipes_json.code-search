@@ -1,0 +1,39 @@
+# Query: ../data/cocktail_recipes.json
+# ContextLines: 1
+
+7 results - 7 files
+
+src/app/features/alcoholicSlice.js:
+  3  import { organizeCocktailList } from "../utils/helpers";
+  4: import cocktailRecipes from "../data/cocktail_recipes.json"; // Corrected import path
+  5  
+
+src/app/features/cocktailsSlice.js:
+  3  import { organizeCocktailList } from "../utils/helpers";
+  4: import cocktailRecipes from "../data/cocktail_recipes.json"; // Corrected import path
+  5  
+
+src/app/features/detailsSlice.js:
+  13  
+  14:     const response = await axios.get("../data/cocktail_recipes.json", {
+  15        cancelToken: source.token,
+
+src/app/features/glassSlice.js:
+  22        // Load local JSON
+  23:       const response = await axios.get("../data/cocktail_recipes.json", {
+  24          cancelToken: source.token,
+
+src/app/features/randomSlice.js:
+  3  import { HTTP_STATUS } from "../utils/constants";
+  4: import cocktailRecipes from ".././data/cocktail_recipes.json"; // Adjust the path as needed
+  5  
+
+src/app/features/searchSlice.js:
+  15        // Load full recipe list from local JSON
+  16:       const response = await axios.get("../data/cocktail_recipes.json", {
+  17          cancelToken: source.token,
+
+src/app/features/someFile.ts:
+  1  // ...existing code...
+  2: import cocktailRecipes from '../../data/cocktail_recipes.json';
+  3  // ...existing code...

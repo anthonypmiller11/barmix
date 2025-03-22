@@ -8,6 +8,7 @@ import { IngredientList } from "../components/ingredient/IngredientList";
 import AnimateRoute from "../containers/layout/AnimateRoute";
 import { useTitle } from "../hooks/useTitle";
 import useWindowSize from "../hooks/useWindowSize";
+import ingredientsData from "../data/ingredients.json";
 
 const IngredientsPage = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,15 @@ const IngredientsPage = () => {
     dispatch(fetchIngredients());
   }, [dispatch]);
 
+  let localIngredients = [];
+
+  try {
+    localIngredients = ingredientsData.ingredients || [];
+    console.log("Loaded ingredients:", localIngredients);
+  } catch (error) {
+    console.error("Error loading ingredients:", error);
+  }
+
   return (
     <AnimateRoute>
       <Title className="mt-7 mb-8 md:mt-10 md:mb-12 lg:mt-12 lg:mb-16" title="Explore Ingredients" />
@@ -37,6 +47,11 @@ const IngredientsPage = () => {
           error={error} 
           maxItems={calcMaxItems(size.width)} 
         />
+        {localIngredients.length > 0 ? (
+          <IngredientList ingredients={localIngredients} />
+        ) : (
+          <p>No ingredients found.</p>
+        )}
       </div>
       <Modal onCloseModal={onCloseModal} show={showModal}>
         <AboutIngredient />

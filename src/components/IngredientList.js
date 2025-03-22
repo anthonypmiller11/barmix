@@ -1,6 +1,7 @@
 // src/components/ingredient/IngredientList.js
 import React from "react";
 import { HTTP_STATUS } from "../../app/utils/constants";
+import ingredientsData from "../../data/ingredients.json"; // Import the ingredients JSON file
 
 const IngredientList = ({ items, loadState, oops, limit }) => {
   if (loadState === HTTP_STATUS.PENDING) {

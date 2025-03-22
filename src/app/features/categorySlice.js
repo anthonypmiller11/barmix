@@ -8,17 +8,20 @@ export const fetchByCategory = createAsyncThunk(
     try {
       // Map index to category type from your categoryData.js
       const categoryTypes = ["Spirit", "Strengths", "Flavor", "Style", "Mood", "Occasion"];
+      if (categoryIndex < 0 || categoryIndex >= categoryTypes.length) {
+        return rejectWithValue("Invalid category index"); // Handle invalid index
+      }
       const categoryType = categoryTypes[categoryIndex];
 
       // Fetch static JSON from public/
-      const response = await fetch('/cocktail_recipes.json');
+      const response = await fetch('cocktail_recipes.json'); // Removed leading slash
       if (!response.ok) throw new Error('Failed to load cocktail recipes');
       const allRecipes = await response.json();
 
       // Return cocktails for this category type (e.g., { Vodka: [...], Tequila: [...] })
       return allRecipes[categoryType] || {};
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.message || "An error occurred while fetching categories");
     }
   }
 );
@@ -43,10 +46,9 @@ const categorySlice = createSlice({
       })
       .addCase(fetchByCategory.rejected, (state, action) => {
         state.loading = "REJECTED";
-        state.error = action.payload;
+        state.error = action.payload || "An error occurred"; // Provide fallback error message
       });
   },
 });
 
-export { fetchByCategory };
 export default categorySlice.reducer;

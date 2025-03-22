@@ -6,13 +6,13 @@ import randomReducer from "./features/randomSlice";
 import detailsReducer from "./features/detailsSlice";
 import youtubeReducer from "./features/youtubeSlice";
 import favoriteReducer from "./features/favoriteSlice";
-import popularReducer from "./features/popularSlice"; // Hypothetical
-// ... other reducers
+import categoryReducer from "./features/categorySlice";
+import modalReducer from "./features/modalSlice";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["favorite"], // Only persist the favorite slice
+  whitelist: ["favorite"],
 };
 
 const rootReducer = combineReducers({
@@ -21,8 +21,8 @@ const rootReducer = combineReducers({
   details: detailsReducer,
   youtube: youtubeReducer,
   favorite: favoriteReducer,
-  popular: popularReducer,
-  // ... other reducers
+  category: categoryReducer,
+  modal: modalReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -39,7 +39,6 @@ export const store = configureStore({
 
 export const persistor = persistStore(store);
 
-// Clear the persisted state on app load
 persistor.purge().then(() => {
   console.log("Persisted state cleared");
 });

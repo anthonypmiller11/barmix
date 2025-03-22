@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { HTTP_STATUS } from "../utils/constants";
 import { organizeIngredient } from "../utils/helpers";
+import cocktailRecipes from "../../data/cocktail_recipes.json";
 
 export const fetchIngredientDetails = createAsyncThunk(
   "aboutIngredient/fetchIngredientDetails",
@@ -12,35 +13,48 @@ export const fetchIngredientDetails = createAsyncThunk(
     });
 
     try {
+      // Validate input
+      if (!ingredient || typeof ingredient !== "string") {
+        throw new Error("Invalid ingredient provided.");
+      }
+      console.log("Fetching details for ingredient:", ingredient);
+
       // Load ingredients from local JSON
-      const response = await axios.get("/data/ingredients.json", {
+      const response = await axios.get("../../data/ingredients.json", { // Adjusted path
         cancelToken: source.token,
       });
+      console.log("Fetched ingredient data:", response.data);
 
       const ingredientList = response.data.ingredients;
-      
-      // Find the requested ingredient (FIXED: Accessing name property)
-      const found = ingredientList.find(item => 
-        item.name.toLowerCase() === ingredient.toLowerCase()
+
+      // Find the requested ingredient
+      const found = ingredientList.find(
+        (item) => item.name.toLowerCase() === ingredient.toLowerCase()
       );
 
       if (!found) {
-        throw new Error("Ingredient not found");
+        throw new Error(`Ingredient "${ingredient}" not found.`);
       }
 
-      // Structure response similar to API format (FIXED: Correct image path)
+      // Structure response similar to API format
       const ingredientData = {
-        strIngredient: found.name, 
-        description: found.description || "This ingredient is used in multiple cocktails.",
+        strIngredient: found.name,
+        description:
+          found.description || "This ingredient is used in multiple cocktails.",
         type: found.type || "Unknown",
         alcohol: found.alcohol || "No",
         abv: found.abv || "-",
-        image: `/images/ingredients/${found.name.replace(/\s+/g, "_")}-medium.png` // Fixed filename format
+        image: `../../images/ingredients/${found.name
+          .replace(/\s+/g, "_")
+          .toLowerCase()}-medium.png`, // Adjusted path
       };
+
+      console.log("Organized ingredient data:", ingredientData);
 
       return organizeIngredient ? organizeIngredient(ingredientData) : ingredientData;
     } catch (error) {
-      throw new Error("Error loading ingredients.");
+      console.error("Error fetching ingredient details:", error.message);
+      throw new Error(error.response?.data?.message || "Error loading ingredients.");
     }
   }
 );
@@ -56,13 +70,16 @@ export const aboutIngredientSlice = createSlice({
   initialState,
   extraReducers: {
     [fetchIngredientDetails.pending]: (state) => {
+      console.log("Fetching ingredient details: pending...");
       state.loading = HTTP_STATUS.PENDING;
     },
     [fetchIngredientDetails.fulfilled]: (state, { payload }) => {
+      console.log("Fetching ingredient details: fulfilled", payload);
       state.loading = HTTP_STATUS.FULFILLED;
       state.ingredient = payload;
     },
     [fetchIngredientDetails.rejected]: (state, action) => {
+      console.error("Fetching ingredient details: rejected", action.error.message);
       state.loading = HTTP_STATUS.REJECTED;
       state.error = action.error.message;
     },

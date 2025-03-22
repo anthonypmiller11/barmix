@@ -1,22 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { HTTP_STATUS } from "../utils/constants";
 import { organizeCocktailList } from "../utils/helpers";
+import cocktailRecipes from "../../data/cocktail_recipes.json"; // Adjusted path to match directory structure
 
 export const initialFetch = createAsyncThunk(
   "cocktails/initialFetch",
-  async (_data, { signal }) => {
-    const source = axios.CancelToken.source();
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
-
-    // Load full recipe list from local JSON
-    const response = await axios.get("/data/cocktail_recipes.json", {
-      cancelToken: source.token,
-    });
-
-    const drinks = response.data.drinks || [];
+  async () => {
+    const drinks = cocktailRecipes.drinks || []; // Access data directly
+    console.log("Fetched drinks:", drinks); // Log the fetched drinks array
 
     // Return the first 24 cocktails
     return organizeCocktailList(drinks.slice(0, 24));
@@ -25,17 +16,8 @@ export const initialFetch = createAsyncThunk(
 
 export const fetchByFirstLetter = createAsyncThunk(
   "cocktails/fetchByFirstLetter",
-  async (letter, { signal }) => {
-    const source = axios.CancelToken.source();
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
-
-    const response = await axios.get("/data/cocktail_recipes.json", {
-      cancelToken: source.token,
-    });
-
-    const drinks = response.data.drinks || [];
+  async (letter) => {
+    const drinks = cocktailRecipes.drinks || []; // Access data directly
 
     // Filter cocktails starting with the given letter (case-insensitive)
     const filtered = drinks.filter(drink =>
@@ -71,7 +53,7 @@ export const cocktailsSlice = createSlice({
     },
     [initialFetch.rejected]: (state, action) => {
       state.loading = HTTP_STATUS.REJECTED;
-      state.error = action.error.message;
+      state.error = action.error?.message || "An error occurred"; // Added fallback error message
     },
     [fetchByFirstLetter.pending]: (state) => {
       state.loading = HTTP_STATUS.PENDING;
@@ -82,7 +64,7 @@ export const cocktailsSlice = createSlice({
     },
     [fetchByFirstLetter.rejected]: (state, action) => {
       state.loading = HTTP_STATUS.REJECTED;
-      state.error = action.error.message;
+      state.error = action.error?.message || "An error occurred"; // Added fallback error message
     },
   },
 });

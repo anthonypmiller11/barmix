@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { DummyCocktail } from "../app/utils/data";
+// Removed import for DummyCocktail
+// import { DummyCocktail } from "../app/utils/data";
 import { HTTP_STATUS } from "../app/utils/constants";
 import CocktailCard from "./cards/CocktailCard";
 import Pagination from "./Pagination";
@@ -13,12 +14,22 @@ const CocktailsGrid = ({ list, loading, perPage, error, fullData }) => {
 
   const itemsPerPage = perPage ?? 8;
   const itemsVisited = pageNumber * itemsPerPage;
-  const displayItems = list.slice(itemsVisited, itemsVisited + itemsPerPage);
-  const pageCount = Math.ceil(list.length / itemsPerPage);
+  const displayItems = Array.isArray(list)
+    ? list.slice(itemsVisited, itemsVisited + itemsPerPage)
+    : []; // Ensure list is an array
+  const pageCount = Array.isArray(list) ? Math.ceil(list.length / itemsPerPage) : 0;
 
   useEffect(() => {
     setPageNumber(0);
   }, [list]);
+
+  if (!Array.isArray(list)) {
+    return <p>Error: Invalid data format for cocktails list.</p>; // Handle invalid list
+  }
+
+  if (list.length === 0) {
+    return <p>No cocktails available.</p>; // Provide a fallback message
+  }
 
   return (
     <div>
@@ -26,8 +37,8 @@ const CocktailsGrid = ({ list, loading, perPage, error, fullData }) => {
         <div className="w-full p-4">
           <p className="text-app-flame font-app-heading text-[24px] md:text-[26px] lg:text-[28px] font-bold text-center">
             {fullData
-              ? "       "
-              : "       "}
+              ? "No cocktails found in the full dataset."
+              : "No cocktails match your search criteria."}
           </p>
         </div>
       )}
@@ -35,7 +46,7 @@ const CocktailsGrid = ({ list, loading, perPage, error, fullData }) => {
       {loading === HTTP_STATUS.REJECTED && error !== "Aborted" && (
         <div className="w-full p-4">
           <p className="text-app-flame font-app-heading text-[24px] md:text-[26px] lg:text-[28px] font-bold text-center">
-                      
+            {error || "An error occurred while fetching cocktails."}
           </p>
         </div>
       )}
@@ -46,7 +57,7 @@ const CocktailsGrid = ({ list, loading, perPage, error, fullData }) => {
           {[...Array(itemsPerPage)].map((_item, index) => {
             return (
               <div key={index}>
-                {<CocktailCard cocktail={DummyCocktail} loading={loading} />}
+                {<CocktailCard cocktail={null} loading={loading} />}
               </div>
             );
           })}

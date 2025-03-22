@@ -1,22 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { HTTP_STATUS } from "../utils/constants";
 import { organizeCocktailList } from "../utils/helpers";
+import cocktailRecipes from "../../data/cocktail_recipes.json"; // Adjusted path
 
 export const fetchByAlcoholic = createAsyncThunk(
   "alcoholic/fetchByAlcoholic",
-  async (alcoholicType, { signal }) => {
-    const source = axios.CancelToken.source();
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
+  async (alcoholicType, { rejectWithValue }) => {
+    if (!alcoholicType) {
+      return rejectWithValue("Alcoholic type is required"); // Handle missing input
+    }
 
-    const response = await axios.get("/data/cocktail_recipes.json", {
-      cancelToken: source.token,
-    });
+    const allCocktails = cocktailRecipes.drinks || []; // Access data directly
 
     // Filter drinks by alcoholic status
-    const allCocktails = response.data.drinks || [];
     const filtered = allCocktails.filter(
       (drink) =>
         drink.strAlcoholic &&
@@ -46,7 +42,7 @@ export const alcoholicSlice = createSlice({
     },
     [fetchByAlcoholic.rejected]: (state, action) => {
       state.loading = HTTP_STATUS.REJECTED;
-      state.error = action.error.message;
+      state.error = action.payload || action.error?.message || "An error occurred"; // Prioritize custom error message
     },
   },
 });

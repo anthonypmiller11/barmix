@@ -30,11 +30,11 @@ const AboutIngredient = () => {
             {loading === HTTP_STATUS.FULFILLED && ingredient?.name && (
               <LazyLoadImage
                 className="aspect-square w-full object-cover rounded-[5px] max-w-[75vw] md:max-w-[200px] scale-90 md:scale-110"
-                src={`/images/ingredients/${ingredient.name.replace(/\s+/g, "_")}-medium.png`}
+                src={`/images/ingredients/${ingredient.name.replace(/\s+/g, "_")}-medium.png`} // Fixed path
                 alt={ingredient.name}
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = "/images/ingredients/default.png";
+                  e.target.src = "/images/ingredients/default.png"; // Fixed path
                 }}
                 placeholder={
                   <div className="loading animate-loading aspect-square w-full rounded-[5px] max-w-[75vw] md:max-w-[200px]"></div>

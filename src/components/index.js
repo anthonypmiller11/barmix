@@ -8,7 +8,6 @@ export { default as PrimaryButton } from "./buttons/PrimaryButton";
 export { default as LinkButton } from "./buttons/LinkButton";
 export { default as StatCard } from "./cards/StatCard";
 export { default as Title } from "./Title";
-export { default as PopularCard } from "./cards/PopularCard";
 export { default as CocktailQuote } from "./home/CocktailQuote";
 export { default as SelectLetter } from "./home/SelectLetter";
 export { default as CocktailCard } from "./cards/CocktailCard";

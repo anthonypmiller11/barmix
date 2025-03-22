@@ -11,7 +11,6 @@ const categoryData = {
     "Brandy"
   ],
   Strengths: [
-    "Popular",
     "Light",
     "Medium",
     "Strong",

@@ -1,8 +1,9 @@
 import { SCREEN_SIZE } from "./constants";
-import { FeaturedCocktails } from "./data";
+import cocktailRecipes from "../../data/cocktail_recipes.json"; // Adjusted path to match directory structure
 
 // 🍸 Organize a single cocktail from API or JSON
 export const organizeCocktail = (cocktail) => {
+  console.log("Organizing cocktail:", cocktail); // Log the cocktail being organized
   const cocktailData = {
     id: cocktail.idDrink,
     drink: cocktail.strDrink,
@@ -34,24 +35,16 @@ export const organizeCocktail = (cocktail) => {
 };
 
 // 🍹 Organize a cocktail list (limit optional)
-export const organizeCocktailList = (cocktails, limit = 0) => {
-  const organizedCocktails = [];
-  if (cocktails !== null) {
-    if (limit > 0) {
-      cocktails.forEach((cocktail, index) => {
-        if (index < limit) {
-          const data = organizeCocktail(cocktail);
-          organizedCocktails.push(data);
-        }
-      });
-    } else {
-      cocktails.forEach((cocktail) => {
-        const data = organizeCocktail(cocktail);
-        organizedCocktails.push(data);
-      });
-    }
+export const organizeCocktailList = (cocktails, limit = 24) => {
+  if (!Array.isArray(cocktails)) {
+    throw new Error("Invalid data: cocktails must be an array"); // Handle invalid input
   }
-  return organizedCocktails;
+
+  return cocktails.slice(0, limit).map((cocktail) => ({
+    id: cocktail.idDrink,
+    name: cocktail.strDrink,
+    image: cocktail.strDrinkThumb,
+  }));
 };
 
 // 🍋 Organize a single ingredient (supports string or object)
@@ -62,7 +55,7 @@ export const organizeIngredient = (ingredient) => {
       type: null,
       abv: null,
       alcohol: null,
-      image: `/images/ingredients/${ingredient.replace(/\s+/g, "_")}-medium.png`,
+      image: `../images/ingredients/${ingredient.replace(/\s+/g, "_")}-medium.png`,
     };
   }
 
@@ -73,7 +66,7 @@ export const organizeIngredient = (ingredient) => {
     type: ingredient.strType,
     alcohol: ingredient.strAlcohol,
     abv: ingredient.strABV,
-    image: `/images/ingredients/${ingredient.strIngredient.replace(/\s+/g, "_")}-medium.png`,
+    image: `../images/ingredients/${ingredient.strIngredient.replace(/\s+/g, "_")}-medium.png`,
   };
 };
 
@@ -85,7 +78,12 @@ export const organizeIngredients = (ingredients) => {
 
 // 🎯 Select featured cocktails randomly
 export const featuredCocktails = () => {
-  const shuffled = FeaturedCocktails.sort(() => 0.5 - Math.random());
+  if (!cocktailRecipes || !cocktailRecipes.drinks) {
+    console.error("featuredCocktails: No cocktail data available.");
+    return [];
+  }
+
+  const shuffled = cocktailRecipes.drinks.sort(() => 0.5 - Math.random()); // Use cocktailRecipes.drinks instead of undefined 'data'
   return shuffled.slice(0, 6);
 };
 
@@ -113,13 +111,6 @@ export const calcOtherCocktailGrid = (width) => {
   return 5 * 3;
 };
 
-export const calcPopularSlides = (width) => {
-  if (width < SCREEN_SIZE.MD) return 1;
-  if (width < SCREEN_SIZE.LG) return 2.5;
-  if (width < SCREEN_SIZE.XXL) return 4;
-  return 5;
-};
-
 export const calcIngredientsGrid = (width) => {
   if (width < SCREEN_SIZE.MD) return 3 * 5;
   if (width < SCREEN_SIZE.LG) return 4 * 4;
@@ -127,11 +118,10 @@ export const calcIngredientsGrid = (width) => {
   return 5 * 4;
 };
 
-export const calcSearchGrid = (width) => {
-  if (width < SCREEN_SIZE.MD) return 1 * 4;
-  if (width < SCREEN_SIZE.LG) return 2 * 3;
-  if (width < SCREEN_SIZE.XL) return 3 * 2;
-  return 3 * 2;
+// Ensure only one definition of calcSearchGrid exists:
+export const calcSearchGrid = (size) => {
+  const data = size.width > 768 ? { columns: 4 } : { columns: 2 };
+  return data;
 };
 
 export const calcVideoWidth = (width) => {
@@ -139,4 +129,12 @@ export const calcVideoWidth = (width) => {
   if (width < SCREEN_SIZE.LG) return width * 0.8;
   if (width < SCREEN_SIZE.XL) return width * 0.7;
   return width * 0.6;
+};
+
+export const calcMaxItems = (items, max) => {
+  if (!Array.isArray(items)) {
+    console.error("calcMaxItems: 'items' is not an array.");
+    return [];
+  }
+  return items.slice(0, max);
 };

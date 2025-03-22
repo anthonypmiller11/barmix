@@ -1,41 +1,36 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { HTTP_STATUS } from "../utils/constants";
 import { organizeCocktailList } from "../utils/helpers";
+import cocktailRecipes from "../../data/cocktail_recipes.json"; // Corrected filename
 
 export const fetchByIngredient = createAsyncThunk(
   "fetchByIngredient/fetchByIngredient",
-  async (ingredient, { signal }) => {
-    const source = axios.CancelToken.source();
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
-
+  async (ingredient, { rejectWithValue }) => {
     try {
-      const response = await axios.get("/data/cocktail_recipe.json", {
-        cancelToken: source.token,
-      });
+      const allCocktails = cocktailRecipes.drinks;
+      if (!Array.isArray(allCocktails)) {
+        throw new Error("Invalid cocktail data structure.");
+      }
 
-      const allCocktails = response.data.drinks || [];
-
-      // Filter cocktails containing the given ingredient (Fix: checking ingredient property correctly)
+      // Filter cocktails containing the given ingredient
       const filteredCocktails = allCocktails.filter(drink =>
         Object.keys(drink)
           .filter(key => key.startsWith("strIngredient"))
-          .some(key => 
+          .some(key =>
             drink[key] && drink[key].toLowerCase().trim() === ingredient.toLowerCase().trim()
           )
       );
 
       return organizeCocktailList(filteredCocktails);
     } catch (error) {
-      throw new Error("Could not load cocktails by ingredient.");
+      console.error("Error fetching cocktails by ingredient:", error.message);
+      return rejectWithValue("Could not load cocktails by ingredient.");
     }
   }
 );
 
 const initialState = {
-  cocktails: [],
+  cocktails: [], // Ensure this matches the expected structure
   loading: null,
   error: null,
 };

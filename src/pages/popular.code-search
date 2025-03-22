@@ -1,0 +1,6 @@
+# Query: popular
+
+1 result - 1 file
+
+src/pages/HomePage.js:
+  3: import { Cocktails, Home, Stats } from "../containers";

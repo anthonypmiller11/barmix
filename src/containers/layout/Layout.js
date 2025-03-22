@@ -1,8 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Footer, SearchCocktails } from "../";
+import { Header, Footer } from "../";
 import { hideSearchModal } from "../../app/features/modalSlice";
 import { Modal } from "../../components";
+import { SearchCocktails } from "../"; // Import the existing SearchCocktails component
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
